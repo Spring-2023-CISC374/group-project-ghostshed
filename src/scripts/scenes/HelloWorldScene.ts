@@ -19,13 +19,13 @@ export default class HelloWorldScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('sky', 'src/assets/night_sky.png');
-		this.load.image('ground', 'src/assets/platform_edited.png');
-		this.load.image('star', 'src/assets/star_edited.png');
-		this.load.image('gem', 'src/assets/gem.png');
-		this.load.image('bomb', 'src/assets/bomb.png');
+		this.load.image('sky', '/assets/night_sky.png');
+		this.load.image('ground', '/assets/platform_edited.png');
+		this.load.image('star', '/assets/star_edited.png');
+		this.load.image('gem', '/assets/gem.png');
+		this.load.image('bomb', '/assets/bomb.png');
 		this.load.spritesheet('dude',
-			'src/assets/dude_edited.png',
+			'/assets/dude_edited.png',
 			{ frameWidth: 32, frameHeight: 48 }
 		);
 	}
