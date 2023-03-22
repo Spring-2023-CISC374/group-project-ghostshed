@@ -27,13 +27,10 @@ export default class RoomScene extends Phaser.Scene {
       this.map.createLayer(layerName, this.tiles, 0, 0)
     }
 
-		const groundLayer = this.map.getLayer('Walls').tilemapLayer
-		this.map.setCollisionByExclusion([-1], true, true, groundLayer) // Set all tiles on the Wall layer to be collideable
 
 		this.player = this.physics.add.sprite(315, 408, 'player')
 		this.player.setScale(2,2)
-		this.physics.add.collider(this.player, groundLayer)
-
+		
 		this.cursors = this.input.keyboard.createCursorKeys();
 	}
 
