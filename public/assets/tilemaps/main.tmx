@@ -5,6 +5,17 @@
  </editorsettings>
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="768" columns="48">
   <image source="tileset.png" width="1536" height="512"/>
+  <tile id="96">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="32"/>
+   </objectgroup>
+  </tile>
+  <tile id="144">
+   <objectgroup draworder="index" id="3">
+    <object id="2" x="0" y="0" width="32" height="32"/>
+    <object id="3" x="0" y="0" width="32" height="32"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <layer id="1" name="Ground" width="20" height="20">
   <data encoding="csv">
