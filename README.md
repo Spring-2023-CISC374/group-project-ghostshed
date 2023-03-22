@@ -2,3 +2,11 @@
 # group-game-project
 
 This assignment is where you will submit your code for your MVP as well as the rest of the versions of your educational game.
+
+
+### Jumpstart Features
+Ghosts (By Ben Raymon) and Path Following
+
+- Created a Ghost class that extends a Phaser Sprite
+- new Ghost constructor takes in an integer representing the zone (2, 3, 4)
+- The Ghost will travel along a path that is defined based on the zone
