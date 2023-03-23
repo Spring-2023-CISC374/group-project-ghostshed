@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-
 import TestGhostScene from './scenes/TestGhostScene'
+import RoomScene from './scenes/RoomScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -10,7 +10,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: { y: 500 },
+			gravity: { y: 0 },
 		},
 	},
 	scene: [TestGhostScene],
