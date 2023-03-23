@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-
+import TestGhostScene from './scenes/TestGhostScene'
 import RoomScene from './scenes/RoomScene'
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -13,7 +13,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 0 },
 		},
 	},
-	scene: [RoomScene],
+	scene: [TestGhostScene],
 }
 
 export default new Phaser.Game(config)

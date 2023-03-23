@@ -12,5 +12,10 @@ This example was really helpful in figuring out the tilemap loading syntax neede
 
 #### Patrick
 #### Ben
+Ghosts and Path Following
+- Created a Ghost class that extends a Phaser Sprite
+- new Ghost constructor takes in an integer representing the zone (2, 3, 4)
+- The Ghost will travel along a path that is defined based on the zone
+
 #### Dan
 ### Aaron
