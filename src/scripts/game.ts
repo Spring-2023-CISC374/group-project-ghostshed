@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 import HelloWorldScene from './scenes/HelloWorldScene'
-import RoomScene from './scenes/RoomScene'
+import RoomScene from './scenes/MovementScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
