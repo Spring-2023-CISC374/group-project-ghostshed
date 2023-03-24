@@ -22,7 +22,6 @@ export default class RoomScene extends Phaser.Scene {
 
 	updateZone(newZone: string){
 		this.curZone = newZone
-		console.log(this.curZone)
 	}
 	
 	hide(){
