@@ -13,7 +13,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 0 },
 		},
 	},
-	scene: [TestGhostScene],
+	scene: [RoomScene],
 }
 
 export default new Phaser.Game(config)
