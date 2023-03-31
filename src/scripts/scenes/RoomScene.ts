@@ -7,7 +7,6 @@ export default class RoomScene extends Phaser.Scene {
 	private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 	
-
 	constructor() {
 		super('hello-world')
 	}
@@ -27,10 +26,9 @@ export default class RoomScene extends Phaser.Scene {
       this.map.createLayer(layerName, this.tiles, 0, 0)
     }
 
-
 		this.player = this.physics.add.sprite(315, 408, 'player')
 		this.player.setScale(2,2)
-		
+
 		this.cursors = this.input.keyboard.createCursorKeys();
 	}
 
