@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import  { findPath } from '../objects/findPath';
 
 export default class RoomScene extends Phaser.Scene {
 
@@ -8,8 +9,10 @@ export default class RoomScene extends Phaser.Scene {
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 	private curZone = "Zone 1"
 
-	
-	
+	//movement variables
+	private movePath?: Phaser.Math.Vector2[]
+    private endPath?: Phaser.Math.Vector2
+
 	constructor() {
 		super('hello-world')
 	}
@@ -20,6 +23,7 @@ export default class RoomScene extends Phaser.Scene {
 		this.load.image('player', 'assets/tilemaps/character.png')
 	}
 
+	// this trigger action code
 	updateZone(newZone: string){
 		this.curZone = newZone
 	}
@@ -36,7 +40,6 @@ export default class RoomScene extends Phaser.Scene {
 	create() {
   		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
     	this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
-	
 
     // Render the layers in Phaser
     	for (const layerName of this.map.getTileLayerNames()) {
@@ -119,27 +122,137 @@ export default class RoomScene extends Phaser.Scene {
 			}
 	
 		});
+
+		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+
+		//adapted from https://blog.ourcade.co/posts/2020/phaser-3-point-click-pathfinding-movement-tilemap/
+		//pathfinding code to the Zone 1
+		Zone1Key.on('down',  (key:any, event:any) => {
+			console.log("this is the down key listener")
+			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
+			let targetVec = this.map.worldToTileXY(312.0 , 480.0);
+	
+			// generate the path
+			let path = findPath(startVec, targetVec, zone0)
+			this.moveAlong(path)
+		});
+
+		//pathfinding code to zone 2
+		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+
+		//pathfinding code to the Zone 1
+		Zone2Key.on('down',  (key:any, event:any) => {
+			console.log("this is hte left")
+			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
+			let targetVec = this.map.worldToTileXY(160.0 , 330.0);
+
+			// generate the path from the ground layer
+			let path = findPath(startVec, targetVec, zone0)
+			this.moveAlong(path)
+		});
+
+		//pathfinding code to zone 3
+		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+
+		Zone3Key.on('down',  (key:any, event:any) => {
+			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
+			let targetVec = this.map.worldToTileXY(310.0 , 295.0);
+
+			// generate the path from the ground layer
+			let path = findPath(startVec, targetVec, zone0)
+			this.moveAlong(path)
+		});
+
+		//pathfinding code to zone 4
+		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+		Zone4Key.on('down',  (key:any, event:any) => {
+			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
+			let targetVec = this.map.worldToTileXY(470.0 , 330.0);
+	
+			// generate the path from the ground layer
+			let path = findPath(startVec, targetVec, zone0)
+			this.moveAlong(path)
+		});
+
 	}
 	
+    moveAlong(path: Phaser.Math.Vector2[]){
+        if(!path || path.length <= 0){
+            return
+        }
+
+        this.movePath = path
+        this.moveTo(this.movePath.shift()!)
+    }
+
+	moveTo(target: Phaser.Math.Vector2){
+        this.endPath = target
+
+    }
+
 	update() {
+		let dx = 0
+		let dy = 0
+		if (this.endPath){
+            dx = this.endPath.x - this.player.x
+            dy = this.endPath.y - this.player.y
+
+            if (Math.abs(dx) < 5){
+                dx = 0
+            }
+            if (Math.abs(dy) < 5){
+                dy = 0
+            }
+
+            if (dx === 0 && dy === 0){
+                if(this.movePath){
+                    if (this.movePath.length > 0){
+                        this.moveTo(this.movePath.shift()!)
+                        return
+                    }
+                }
+                this.endPath = undefined
+            }
+        }
+
+		const speed = 160
+
+		let leftDown = dx < 0
+		let rightDown = dx > 0
+		let upDown = dy < 0
+		let downDown = dy > 0
+
+		if (leftDown){
+			this.player.setVelocity(-speed, 0)
+		}
+		else if (rightDown){
+			this.player.setVelocity(speed, 0)
+		}
+		else if (upDown){
+			this.player.setVelocity(0, -speed)
+		}
+		else if (downDown){
+			this.player.setVelocity(0, speed)
+		}
+		else{
+			this.player.setVelocity(0, 0)
+		}
+
 		if (this.cursors.left.isDown) {
 			this.player.setVelocityX(-160);
 		}
 		else if (this.cursors.right.isDown) {
 			this.player.setVelocityX(160);
 		}
-		else {
-			this.player.setVelocityX(0);
-		}
 
 		if (this.cursors.up.isDown) {
 			this.player.setVelocityY(-160);
 		}
-		else if (this.cursors.down.isDown) {
+ 		else if (this.cursors.down.isDown) {
 			this.player.setVelocityY(160);
 		}
-		else {
-			this.player.setVelocityY(0);
-		}
+
+		//console.log(`x${this.player.x} y${this.player.y}`)
 	}
 }
