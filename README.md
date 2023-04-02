@@ -18,4 +18,8 @@ Ghosts and Path Following
 - The Ghost will travel along a path that is defined based on the zone
 
 #### Dan
+Audio
+- Created custom audio
+- Loaded into scene
+
 ### Aaron
