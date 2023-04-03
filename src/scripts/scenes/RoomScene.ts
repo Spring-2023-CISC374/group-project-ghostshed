@@ -128,10 +128,8 @@ export default class RoomScene extends Phaser.Scene {
 		//adapted from https://blog.ourcade.co/posts/2020/phaser-3-point-click-pathfinding-movement-tilemap/
 		//pathfinding code to the Zone 1
 		Zone1Key.on('down',  (key:any, event:any) => {
-			console.log("this is the down key listener")
 			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
 			let targetVec = this.map.worldToTileXY(312.0 , 480.0);
-	
 			// generate the path
 			let path = findPath(startVec, targetVec, zone0)
 			this.moveAlong(path)
@@ -140,9 +138,7 @@ export default class RoomScene extends Phaser.Scene {
 		//pathfinding code to zone 2
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 
-		//pathfinding code to the Zone 1
 		Zone2Key.on('down',  (key:any, event:any) => {
-			console.log("this is hte left")
 			let startVec = this.map.worldToTileXY(this.player.x, this.player.y)
 			let targetVec = this.map.worldToTileXY(160.0 , 330.0);
 
@@ -222,8 +218,29 @@ export default class RoomScene extends Phaser.Scene {
 		let rightDown = dx > 0
 		let upDown = dy < 0
 		let downDown = dy > 0
+		let upleft = ( dx < 0 && dy < 0 )
+		let upright = ( dx > 0 && dy < 0 )
+		let downleft = ( dx < 0 && dy > 0 )
+		let downright = ( dx > 0 && dy > 0 )
 
-		if (leftDown){
+
+		// this is the left up
+		if(upleft){
+			this.player.setVelocity(-speed, -speed)
+		}
+		//this is the right up
+		else if(upright){
+			this.player.setVelocity(speed, -speed)
+		}
+		//this is the left bottom
+		else if(downleft){
+			this.player.setVelocity(-speed, speed)
+		}
+				//this is the right bottom
+		else if (downright){
+			this.player.setVelocity(speed, speed)
+		}
+		else if (leftDown){
 			this.player.setVelocity(-speed, 0)
 		}
 		else if (rightDown){

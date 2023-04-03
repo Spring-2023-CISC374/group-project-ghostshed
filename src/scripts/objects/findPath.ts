@@ -8,6 +8,9 @@ interface TilePosition{
 const toKey = (x:number, y:number) => `${x}x${y}`
 
 export const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.TilemapLayer) => {
+    //finding the path
+
+    ///checks if the path exists on the ground titlemaplayer
     if(!groundLayer.getTileAt(target.x, target.y)){
         console.log("not a valid target")
         return []
@@ -26,17 +29,21 @@ export const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2
     queue.push(start)
 
     while(queue.length > 0){
-        const {x, y} = queue.shift()!
+        let {x, y} = queue.shift()!
         let currentKey= toKey(x, y)
         if(currentKey === targeKey){
             break
         }
 
         let neighbors = [
-			{ x, y: y - 1 },	// top
-			{ x: x + 1, y }, 	// right
-			{ x, y: y + 1 },	// bottom
-			{ x: x - 1, y}		// left
+			{ x, y: y - 1 },        // top
+			{ x: x + 1, y }, 	    // right
+			{ x, y: y + 1 },	    // bottom
+			{ x: x - 1, y},		    // left
+            {x: x + 1, y: y -1},    // top right
+            {x: x - 1, y: y -1},    // top left
+            {x: x + 1, y: y +1},    // bottom right
+            {x: x - 1, y: y +1}    // bottom left
         ]
 
         for (let i = 0; i < neighbors.length; ++i){
@@ -62,7 +69,8 @@ export const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2
 		}
 	}
 
-    const path: Phaser.Math.Vector2[] = []
+    //reading the path from paraentForKey from the target to the start
+    let path: Phaser.Math.Vector2[] = []
     let tempTargetKey = targeKey
     let tempCurrentPos = parentForKey[targeKey].position
 
@@ -78,5 +86,6 @@ export const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2
 		tempCurrentPos = position
     }
 
+    // returns the path from the start to the ending
     return path.reverse();
 }
