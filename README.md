@@ -11,6 +11,11 @@ RoomScene, Tilemap, tile rendering and Free-roam player movement
 This example was really helpful in figuring out the tilemap loading syntax needed: https://labs.phaser.io/edit.html?src=src\tilemap\collision\tile%20callbacks.js
 
 #### Patrick
+Perform Actions
+- Checks what zone the player is in
+- If in the proper zone prints out what action is being done
+- Doesn't effect anything on screen. But will when everything is finalized
+
 #### Ben
 Ghosts and Path Following
 - Created a Ghost class that extends a Phaser Sprite
