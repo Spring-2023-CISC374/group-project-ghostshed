@@ -11,15 +11,6 @@ export default class TestGhostScene extends Phaser.Scene {
 		super({ key: 'TestGhostScene'})
 	}
 
-	preload() {
-		this.load.image('tileset_image', 'assets/tilemaps/tileset.png');
-        this.load.tilemapTiledJSON('tilemap', 'assets/tilemaps/main.json');
-        this.load.spritesheet('dude',
-			'/assets/dude_edited.png',
-			{ frameWidth: 32, frameHeight: 48 }
-		);
-	}
-
 	create() {
         const map = this.make.tilemap({ key: 'tilemap' });
         const tiles = map.addTilesetImage('tileset', 'tileset_image');
