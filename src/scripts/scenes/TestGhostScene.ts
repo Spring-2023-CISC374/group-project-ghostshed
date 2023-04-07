@@ -8,7 +8,7 @@ export default class TestGhostScene extends Phaser.Scene {
     ghost4: any;
 
 	constructor() {
-		super('hello-world')
+		super({ key: 'TestGhostScene'})
 	}
 
 	preload() {
