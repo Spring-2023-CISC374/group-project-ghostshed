@@ -8,16 +8,7 @@ export default class TestGhostScene extends Phaser.Scene {
     ghost4: any;
 
 	constructor() {
-		super('hello-world')
-	}
-
-	preload() {
-		this.load.image('tileset_image', 'assets/tilemaps/tileset.png');
-        this.load.tilemapTiledJSON('tilemap', 'assets/tilemaps/main.json');
-        this.load.spritesheet('dude',
-			'/assets/dude_edited.png',
-			{ frameWidth: 32, frameHeight: 48 }
-		);
+		super({ key: 'TestGhostScene'})
 	}
 
 	create() {
