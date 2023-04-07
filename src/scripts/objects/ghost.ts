@@ -5,6 +5,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     zonePath?: Phaser.Curves.Path;
     GHOST_SPEED: number = 1/5000;
     isInPlayerZone: boolean = false;
+    timeInZone: number = 0;
+    zone: number = 0;
 
     constructor(scene: Phaser.Scene, zone: number) {
         super(scene, 0, 0, 'dude');
@@ -12,6 +14,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
 
+        this.zone = zone;
         //let graphics = scene.add.graphics();    
         //graphics.lineStyle(3, 0xffffff, 1);
 
@@ -48,6 +51,16 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     update(time: any, delta: any)
     {
+        if (this.isInPlayerZone){
+            // time in zone in MS
+            this.timeInZone += delta;
+        }
+
+        // if the ghost is in the zone for more than 8 seconds the player loses
+        if (this.timeInZone >= 8000){
+            return true;
+        }
+
         if (this.follower.t <= 1 && this.follower.t >= 0){
             // move the t point along the path, 0 is the start and 0 is the end
             this.follower.t += this.GHOST_SPEED * delta;
