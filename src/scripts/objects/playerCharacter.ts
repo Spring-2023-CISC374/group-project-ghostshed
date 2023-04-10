@@ -40,12 +40,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     move(currentZone: number, targetZone: number){
-        if (currentZone === targetZone)
+        if (currentZone === targetZone && !this.moving)
             return;
 
-        this.targetZone = targetZone;
+        if (!this.moving) {
+            this.swapPaths(currentZone);
+        }
 
-        this.swapPaths(currentZone);
+        this.targetZone = targetZone;
 
         this.moving = true;
         if (this.follower.t <= 0)

@@ -128,25 +128,21 @@ export default class RoomScene extends Phaser.Scene {
 		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		Zone1Key.on('down',  (key:any, event:any) => {
 			this.player.move(this.curZone, 1);
-			//this.curZone = 1;
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 		Zone2Key.on('down',  (key:any, event:any) => {
 			this.player.move(this.curZone, 2);
-			//this.curZone = 2;
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 		Zone3Key.on('down',  (key:any, event:any) => {
 			this.player.move(this.curZone, 3);
-			//this.curZone = 3;
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 		Zone4Key.on('down',  (key:any, event:any) => {
 			this.player.move(this.curZone, 4);
-			//this.curZone = 4;
 		});
 	}
 	
