@@ -8,7 +8,7 @@ export default class Button {
           .setPadding(20)
           .setFontSize(20)
           .setStyle({ 
-            backgroundColor: '#7CDAF7',
+            backgroundColor: '#852c09',
             color: '#000000'
           })
           .setInteractive({ useHandCursor: true })
@@ -21,14 +21,14 @@ export default class Button {
 
   protected handlePointerOver () {
     this.buttonInnerObj.setStyle({ 
-      backgroundColor: '#49CBF2',
+      backgroundColor: '#712708',
       color: '#000000' 
     })
   }
 
   protected handlePointerOut () {
     this.buttonInnerObj.setStyle({ 
-      backgroundColor: '#7CDAF7',
+      backgroundColor: '#852c09',
       color: '#000000'
      })
   }
