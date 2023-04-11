@@ -10,8 +10,14 @@ export default class MainMenuScene extends Phaser.Scene {
   create () {
 
     const { width, height } = this.scale // width and height of the current view
+    const centerX = width / 2
+    const centerY = height / 2
 
-    const button = new Button(width / 2, height / 2, 'Play', this, () => { this.handlePlay() })
+    const button = new Button(centerX, centerY, 'Play', this, () => { this.handlePlay() })
+
+    this.add.text(centerX, centerY - 100, 'Ghost Shed')
+    .setFontSize(60)
+    .setOrigin(0.5, 0.5)
 
   }
 

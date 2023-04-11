@@ -6,8 +6,11 @@ export default class Button {
       this.buttonInnerObj = scene.add.text(x, y, text)
           .setOrigin(0.5, 0.5) // Set the origin to be the middle of the button, halfway (0.5)
           .setPadding(20)
-          .setFontSize(25)
-          .setStyle({ backgroundColor: '#111' })
+          .setFontSize(20)
+          .setStyle({ 
+            backgroundColor: '#7CDAF7',
+            color: '#000000'
+          })
           .setInteractive({ useHandCursor: true })
           .on('pointerdown', action)
 
@@ -17,10 +20,16 @@ export default class Button {
   }
 
   protected handlePointerOver () {
-    this.buttonInnerObj.setStyle({ fill: '#f39c12' })
+    this.buttonInnerObj.setStyle({ 
+      backgroundColor: '#49CBF2',
+      color: '#000000' 
+    })
   }
 
   protected handlePointerOut () {
-    this.buttonInnerObj.setStyle({ fill: '#FFF' })
+    this.buttonInnerObj.setStyle({ 
+      backgroundColor: '#7CDAF7',
+      color: '#000000'
+     })
   }
 }
