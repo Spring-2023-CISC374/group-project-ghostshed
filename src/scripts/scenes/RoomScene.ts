@@ -11,18 +11,7 @@ export default class RoomScene extends Phaser.Scene {
 	private ghosts: Ghost[] = []
 
 	constructor() {
-		super('hello-world')
-	}
-
-	preload() {
-		this.load.image('tileset_image', 'assets/tilemaps/tileset.png')
-    	this.load.tilemapTiledJSON('tilemap', 'assets/tilemaps/main.json')
-		this.load.image('player', 'assets/tilemaps/character.png')
-
-		this.load.spritesheet('dude',
-			'/assets/dude_edited.png',
-			{ frameWidth: 32, frameHeight: 48 }
-		)
+		super({ key: 'RoomScene' })
 	}
 
 	// this trigger action code
