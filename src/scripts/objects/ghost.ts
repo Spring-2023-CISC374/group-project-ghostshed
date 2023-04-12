@@ -14,7 +14,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
 
     constructor(scene: Phaser.Scene, zone: number) {
-        super(scene, 0, 0, 'dude');
+        super(scene, 0, 0, 'ghost');
         scene.add.existing(this);
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
