@@ -17,7 +17,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         super(scene, 0, 0, 'ghost');
         scene.add.existing(this);
 
-        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        // initialize t as -1 so it doesn't move to start
+        this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
 
         if (zone === 2) {
@@ -72,9 +73,9 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         } else if (this.follower.t > 1) {
             this.follower.t = 1;
-        } else if (this.follower.t < 0){
+        } else if (this.follower.t < 0 && this.follower.t != -1){
             this.follower.t = 0;
-        }
+        } 
         
         this.isInPlayerZone = this.follower.t >= 1;
     }

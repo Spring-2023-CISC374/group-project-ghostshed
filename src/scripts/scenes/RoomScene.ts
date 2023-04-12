@@ -33,8 +33,11 @@ export default class RoomScene extends Phaser.Scene {
     	this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		// the index of the ghost is zone # - 2
 		this.ghosts.push(new Ghost(this, 2))
-		//this.ghosts.push(new Ghost(this, 3))
-		//this.ghosts.push(new Ghost(this, 4))
+		this.ghosts.push(new Ghost(this, 3))
+		this.ghosts.push(new Ghost(this, 4))
+
+		// the game starts with a zone 2 ghost
+		this.ghosts[0].startOnPath();
 
 
     	// Render the layers in Phaser
@@ -77,6 +80,7 @@ export default class RoomScene extends Phaser.Scene {
 			console.log("Trying to Hide")
 			if(this.curZone == 4){
 				console.log("Hiding")
+				this.killGhost();
 			}else{
 				console.log("No wheres to hide")
 			}
@@ -90,7 +94,7 @@ export default class RoomScene extends Phaser.Scene {
 			console.log("Using Flashlight")
 			if(this.curZone == 2 || this.curZone == 3){
 				console.log("Shining Bright")
-				this.ghosts[this.curZone - 2].retreat();
+				this.killGhost();
 			}else{
 				console.log("Wasting Light")
 			}
@@ -104,7 +108,7 @@ export default class RoomScene extends Phaser.Scene {
 			console.log("Trying to close door")
 			if(this.curZone == 2 || this.curZone == 3){
 				console.log("Door Closed")
-				this.ghosts[this.curZone - 2].retreat();
+				this.killGhost();
 			}else{
 				console.log("No door close")
 			}
@@ -158,5 +162,12 @@ export default class RoomScene extends Phaser.Scene {
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
+	}
+
+	killGhost(){
+		// retreat the current ghost
+		this.ghosts[this.curZone - 2].retreat();
+		// make a different ghost start moving again
+		this.ghosts[(this.curZone - 1) % 3].startOnPath();
 	}
 }
