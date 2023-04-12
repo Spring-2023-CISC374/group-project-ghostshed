@@ -8,7 +8,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     timeInZone: number = 0;
     timePaused: number = 0;
 
-    GHOST_SPEED: number = 1/5000;
+    GHOST_SPEED: number = 1/3500;
     PAUSE_TIME: number = 5000;
     GAME_OVER_TIME: number = 8000;
 
