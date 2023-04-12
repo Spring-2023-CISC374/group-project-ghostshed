@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import  { findPath } from '../objects/findPath';
 import Player from '../objects/playerCharacter';
 import Ghost from '../objects/ghost';
 
@@ -8,14 +7,8 @@ export default class RoomScene extends Phaser.Scene {
 	private map!: Phaser.Tilemaps.Tilemap
 	private tiles!: Phaser.Tilemaps.Tileset 
 	private player!: Player
-	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 	private curZone: number = 1
-
 	private ghosts: Ghost[] = []
-
-	//movement variables
-	// private movePath?: Phaser.Math.Vector2[]
-    // private endPath?: Phaser.Math.Vector2
 
 	constructor() {
 		super('hello-world')
@@ -62,8 +55,6 @@ export default class RoomScene extends Phaser.Scene {
 
 		this.player = new Player(this);
 		this.player.setScale(2,2)
-
-		this.cursors = this.input.keyboard.createCursorKeys();
 
 		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
