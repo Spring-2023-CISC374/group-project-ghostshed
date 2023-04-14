@@ -60,6 +60,15 @@ export default class RoomScene extends Phaser.Scene {
 	create() {
   		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
     	this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
+
+		//preping audio
+		let playerMove = this.sound.add('Player Move');
+		let hideSound = this.sound.add('Hide');
+		let useFlashlight = this.sound.add('Flashlight');
+		let killGhostSound = this.sound.add('Ghost Hit By Flashlight');
+		let closeDoor = this.sound.add("Door Close");
+		let blowCandles = this.sound.add('Blow Candles');
+		
 		// the index of the ghost is zone # - 2
 		this.ghosts.push(new Ghost(this, 2))
 		this.ghosts.push(new Ghost(this, 3))
@@ -108,6 +117,7 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Trying to Hide")
 			if(this.curZone == 4){
+				hideSound.play();
 				console.log("Hiding")
 				this.killGhost("hide");
 			}else{
@@ -122,8 +132,10 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Using Flashlight")
 			if(this.curZone == 2|| this.curZone == 3){
+				useFlashlight.play();
 				console.log("Shining Bright")
 				this.killGhost("flashlight");
+				killGhostSound.play();
 			}else{
 				console.log("Wasting Light")
 			}
@@ -136,6 +148,7 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Trying to close door")
 			if(this.curZone == 2 || this.curZone == 3){
+				closeDoor.play();
 				console.log("Door Closed")
 				this.killGhost("door");
 			}else{
@@ -150,6 +163,7 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Trying to Blow out candle")
 			if(this.curZone == 1){
+				blowCandles.play();
 				console.log("Summoning Delayed")
 			}else{
 				console.log("Wasting Breath")
@@ -161,21 +175,25 @@ export default class RoomScene extends Phaser.Scene {
 		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		Zone1Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 1);
+			playerMove.play();
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 		Zone2Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 2);
+			playerMove.play();
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 		Zone3Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 3);
+			playerMove.play();
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 		Zone4Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 4);
+			playerMove.play();
 		});
 	}
 	
