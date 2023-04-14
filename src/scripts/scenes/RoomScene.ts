@@ -12,7 +12,7 @@ export default class RoomScene extends Phaser.Scene {
 	private gameOver: boolean = false
 
 	constructor() {
-		super('hello-world')
+		super({ key: 'RoomScene' })
 	}
 
 	preload() {
@@ -23,23 +23,36 @@ export default class RoomScene extends Phaser.Scene {
 
 	updateZone(newZone: number){
 		this.curZone = newZone
-		console.log(this.curZone)
+	}
+	
+	hide(){
+		console.log("Trying to Hide")
+		if(this.curZone == 4){
+			console.log("Hiding")
+		}else{
+			console.log("No wheres to hide")
+		}
 	}
 
 	create() {
   		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
     	this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
-	
+		// the index of the ghost is zone # - 2
+		this.ghosts.push(new Ghost(this, 2))
+		this.ghosts.push(new Ghost(this, 3))
+		this.ghosts.push(new Ghost(this, 4))
 
-    // Render the layers in Phaser
+		// the game starts with a zone 2 ghost
+		this.ghosts[0].startOnPath();
+
+
+    	// Render the layers in Phaser
     	for (const layerName of this.map.getTileLayerNames()) {
       		this.map.createLayer(layerName, this.tiles, 0, 0)
     	}
 
-		this.player = this.physics.add.sprite(315, 408, 'player')
+		this.player = new Player(this);
 		this.player.setScale(2,2)
-
-		this.cursors = this.input.keyboard.createCursorKeys();
 
 		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
