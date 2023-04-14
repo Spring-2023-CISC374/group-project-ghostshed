@@ -19,6 +19,23 @@ export default class BaseLevelScene extends Phaser.Scene {
   updateZone(newZone: number){
 		this.curZone = newZone
 	}
+	
+	hide(){
+		console.log("Trying to Hide")
+		if(this.curZone == 4){
+			console.log("Hiding")
+		}else{
+			console.log("No wheres to hide")
+		}
+	}
+
+  killGhost(action:string){
+		// retreat the current ghost
+		if(this.ghosts[this.curZone - 2].retreat(action)){
+			// make a different ghost start moving again
+			this.ghosts[(this.curZone - 1) % 3].startOnPath();
+		}
+	}
 
   create () {
     this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })

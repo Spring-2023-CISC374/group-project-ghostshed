@@ -1,6 +1,4 @@
 import Phaser, { Sound } from 'phaser'
-import Player from '../objects/Player'
-import Ghost from '../objects/Ghost'
 import BaseLevelScene from './BaseLevelScene'
 import { Sounds } from '../consts'
 
@@ -8,19 +6,6 @@ export default class RoomScene extends BaseLevelScene {
 
 	constructor() {
 		super({ key: 'RoomScene' })
-	}
-
-	updateZone(newZone: number){
-		this.curZone = newZone
-	}
-	
-	hide(){
-		console.log("Trying to Hide")
-		if(this.curZone == 4){
-			console.log("Hiding")
-		}else{
-			console.log("No wheres to hide")
-		}
 	}
 
 	create() {
@@ -132,13 +117,5 @@ export default class RoomScene extends BaseLevelScene {
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
-	}
-
-	killGhost(action:string){
-		// retreat the current ghost
-		if(this.ghosts[this.curZone - 2].retreat(action)){
-			// make a different ghost start moving again
-			this.ghosts[(this.curZone - 1) % 3].startOnPath();
-		}
 	}
 }

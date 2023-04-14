@@ -1,6 +1,4 @@
 import Phaser from 'phaser'
-import Player from '../objects/Player';
-import Ghost from '../objects/Ghost';
 import BaseLevelScene from './BaseLevelScene';
 
 export default class TutorialScene extends BaseLevelScene {
