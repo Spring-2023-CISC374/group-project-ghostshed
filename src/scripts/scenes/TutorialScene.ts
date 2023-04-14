@@ -3,16 +3,12 @@ import Player from '../objects/Player';
 import Ghost from '../objects/Ghost';
 import BaseLevelScene from './BaseLevelScene';
 
-export default class RoomScene extends BaseLevelScene {
+export default class TutorialScene extends BaseLevelScene {
 
 	constructor() {
-		super({ key: 'RoomScene' })
+		super({ key: 'TutorialScene' })
 	}
 
-	updateZone(newZone: number){
-		this.curZone = newZone
-	}
-	
 	hide(){
 		console.log("Trying to Hide")
 		if(this.curZone == 4){
@@ -22,10 +18,17 @@ export default class RoomScene extends BaseLevelScene {
 		}
 	}
 
+	killGhost(action:string){
+		// retreat the current ghost
+		if(this.ghosts[this.curZone - 2].retreat(action)){
+			// make a different ghost start moving again
+			this.ghosts[(this.curZone - 1) % 3].startOnPath();
+		}
+	}
+
 	create() {
 		super.create()
 
-		//preping audio
 		let playerMove = this.sound.add('Player Move');
 		let hideSound = this.sound.add('Hide');
 		let useFlashlight = this.sound.add('Flashlight');
@@ -141,13 +144,5 @@ export default class RoomScene extends BaseLevelScene {
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
-	}
-
-	killGhost(action:string){
-		// retreat the current ghost
-		if(this.ghosts[this.curZone - 2].retreat(action)){
-			// make a different ghost start moving again
-			this.ghosts[(this.curZone - 1) % 3].startOnPath();
-		}
 	}
 }
