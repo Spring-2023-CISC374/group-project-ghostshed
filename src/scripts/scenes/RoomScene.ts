@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import Player from '../objects/playerCharacter';
+import Ghost from '../objects/ghost';
 
 export default class RoomScene extends Phaser.Scene {
 
@@ -19,18 +21,9 @@ export default class RoomScene extends Phaser.Scene {
 		this.load.image('player', 'assets/tilemaps/character.png')
 	}
 
-	updateZone(newZone: string){
+	updateZone(newZone: number){
 		this.curZone = newZone
 		console.log(this.curZone)
-	}
-	
-	hide(){
-		console.log("Trying to Hide")
-		if(this.curZone == "Zone 4"){
-			console.log("Hiding")
-		}else{
-			console.log("No wheres to hide")
-		}
 	}
 
 	create() {
@@ -48,23 +41,23 @@ export default class RoomScene extends Phaser.Scene {
 
 		this.cursors = this.input.keyboard.createCursorKeys();
 
-		this.map.setTileIndexCallback(435, () => { this.updateZone("Zone 2")}, this, "Zone 2");
+		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
 
-		this.map.setTileIndexCallback(486, () => { this.updateZone("Zone 1")}, this, "Zone 1");
+		this.map.setTileIndexCallback(486, () => { this.updateZone(1)}, this, "Zone 1");
 		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
 		this.physics.add.overlap(this.player, zone1);
 
-		this.map.setTileIndexCallback(436, () => { this.updateZone("Zone 3")}, this, "Zone 3");
+		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");
 		const zone3 = this.map.getLayer("Zone 3").tilemapLayer
 		this.physics.add.overlap(this.player, zone3);
 
-		this.map.setTileIndexCallback(434, () => { this.updateZone("Zone 4")}, this, "Zone 4");
+		this.map.setTileIndexCallback(434, () => { this.updateZone(4)}, this, "Zone 4");
 		const zone4 = this.map.getLayer("Zone 4").tilemapLayer
 		this.physics.add.overlap(this.player, zone4);
 
-		this.map.setTileIndexCallback(338, () => { this.updateZone("Zone 0")}, this, "Ground");
+		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
 
@@ -78,7 +71,7 @@ export default class RoomScene extends Phaser.Scene {
 		hKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to Hide")
-			if(this.curZone == "Zone 4"){
+			if(this.curZone == 4){
 				console.log("Hiding")
 				this.killGhost("hide");
 			}else{
@@ -92,7 +85,7 @@ export default class RoomScene extends Phaser.Scene {
 		fKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Using Flashlight")
-			if(this.curZone == "Zone 2" || this.curZone == "Zone 3"){
+			if(this.curZone == 2|| this.curZone == 3){
 				console.log("Shining Bright")
 				this.killGhost("flashlight");
 			}else{
@@ -106,7 +99,7 @@ export default class RoomScene extends Phaser.Scene {
 		dKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to close door")
-			if(this.curZone == "Zone 2" || this.curZone == "Zone 3"){
+			if(this.curZone == 2 || this.curZone == 3){
 				console.log("Door Closed")
 				this.killGhost("door");
 			}else{
@@ -120,7 +113,7 @@ export default class RoomScene extends Phaser.Scene {
 		cKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to Blow out candle")
-			if(this.curZone == "Zone 1"){
+			if(this.curZone == 1){
 				console.log("Summoning Delayed")
 			}else{
 				console.log("Wasting Breath")
