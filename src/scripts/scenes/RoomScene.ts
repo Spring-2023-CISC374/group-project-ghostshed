@@ -4,12 +4,11 @@ export default class RoomScene extends Phaser.Scene {
 
 	private map!: Phaser.Tilemaps.Tilemap
 	private tiles!: Phaser.Tilemaps.Tileset 
-	private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
-	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-	private curZone = "Zone 1"
+	private player!: Player
+	private curZone: number = 1
+	private ghosts: Ghost[] = []
+	private gameOver: boolean = false
 
-	
-	
 	constructor() {
 		super('hello-world')
 	}
@@ -69,13 +68,19 @@ export default class RoomScene extends Phaser.Scene {
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
 
+		const TESTKEY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+		TESTKEY.on('down',  (_key:any, _event:any) => {
+			this.ghosts[0].startOnPath();
+		});
+
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
-		hKey.on('down',  (key:any, event:any) => {
+		hKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to Hide")
 			if(this.curZone == "Zone 4"){
 				console.log("Hiding")
+				this.killGhost("hide");
 			}else{
 				console.log("No wheres to hide")
 			}
@@ -84,11 +89,12 @@ export default class RoomScene extends Phaser.Scene {
 
 		const fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
-		fKey.on('down',  (key:any, event:any) => {
+		fKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Using Flashlight")
 			if(this.curZone == "Zone 2" || this.curZone == "Zone 3"){
 				console.log("Shining Bright")
+				this.killGhost("flashlight");
 			}else{
 				console.log("Wasting Light")
 			}
@@ -97,11 +103,12 @@ export default class RoomScene extends Phaser.Scene {
 
 		const dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-		dKey.on('down',  (key:any, event:any) => {
+		dKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to close door")
 			if(this.curZone == "Zone 2" || this.curZone == "Zone 3"){
 				console.log("Door Closed")
+				this.killGhost("door");
 			}else{
 				console.log("No door close")
 			}
@@ -110,7 +117,7 @@ export default class RoomScene extends Phaser.Scene {
 
 		const cKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
 
-		cKey.on('down',  (key:any, event:any) => {
+		cKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to Blow out candle")
 			if(this.curZone == "Zone 1"){
@@ -120,27 +127,53 @@ export default class RoomScene extends Phaser.Scene {
 			}
 	
 		});
+
+
+		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+		Zone1Key.on('down',  (_key:any, _event:any) => {
+			this.player.move(this.curZone, 1);
+		});
+
+		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+		Zone2Key.on('down',  (_key:any, _event:any) => {
+			this.player.move(this.curZone, 2);
+		});
+
+		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+		Zone3Key.on('down',  (_key:any, _event:any) => {
+			this.player.move(this.curZone, 3);
+		});
+
+		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+		Zone4Key.on('down',  (_key:any, _event:any) => {
+			this.player.move(this.curZone, 4);
+		});
 	}
 	
-	update() {
-		if (this.cursors.left.isDown) {
-			this.player.setVelocityX(-160);
-		}
-		else if (this.cursors.right.isDown) {
-			this.player.setVelocityX(160);
-		}
-		else {
-			this.player.setVelocityX(0);
-		}
 
-		if (this.cursors.up.isDown) {
-			this.player.setVelocityY(-160);
+	update(time: any, delta: any) {
+		if(this.gameOver){
+			return
 		}
-		else if (this.cursors.down.isDown) {
-			this.player.setVelocityY(160);
+		for (let ghost of this.ghosts){
+			ghost.update(time, delta);
+			let ghostsWin = ghost.gameOver
+			if (ghostsWin){
+				this.gameOver = true
+				console.log("THE GAME IS OVER. THE GHOSTS WIN");
+			}
 		}
-		else {
-			this.player.setVelocityY(0);
+		
+		let zone = this.player.update(time, delta);
+		if (zone)
+			this.curZone = zone;
+	}
+
+	killGhost(action:string){
+		// retreat the current ghost
+		if(this.ghosts[this.curZone - 2].retreat(action)){
+			// make a different ghost start moving again
+			this.ghosts[(this.curZone - 1) % 3].startOnPath();
 		}
 	}
 }
