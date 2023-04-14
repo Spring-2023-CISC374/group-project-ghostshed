@@ -1,4 +1,4 @@
-import Phaser, { Sound } from 'phaser'
+import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
 import { Sounds } from '../consts'
 
