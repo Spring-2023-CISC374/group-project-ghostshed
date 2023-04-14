@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Player from '../objects/Player'
 import Ghost from '../objects/Ghost'
+import { Sounds } from '../consts'
 
 export default class BaseLevelScene extends Phaser.Scene {
 
@@ -59,6 +60,15 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
+
+    this.initializeAudio()
+  }
+
+  initializeAudio () {
+    // Get every registered sound in the enum, load them with the corresponding key here
+    for (const soundKey of Object.values(Sounds)) {
+      this.sound.add(soundKey)
+    }
   }
 
 }

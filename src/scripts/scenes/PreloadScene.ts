@@ -36,7 +36,7 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('Ghost Move Right', 'audio/GhostFootstepsRight.mp3');
 		this.load.audio('Ghost Hit By Flashlight', 'audio/GhostHitByFlashlight.mp3');
 		this.load.audio('Hide', 'audio/Hide.mp3');
-		this.load.audio('Player Move', 'audio/PlayerFootsteps.mp3');
+		this.load.audio('Move', 'audio/PlayerFootsteps.mp3');
 		this.load.audio('Window Close', 'audio/WindowClosing.mp3');
 		this.load.audio('Window Open', 'audio/WindowOpening.mp3');
 		this.load.audio('Window Knock 1', 'audio/WindowKnock1.mp3');
