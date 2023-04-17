@@ -114,6 +114,16 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		}
 		
+		let dist = this.ghosts[0].getDistance()
+		if (dist >= 0.75 && dist <= 0.77){
+			this.ghosts[1].startOnPath();
+		}
+
+		dist = this.ghosts[1].getDistance()
+		if (dist >= 0.75 && dist <= 0.77){
+			this.ghosts[0].startOnPath();
+		}
+
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;

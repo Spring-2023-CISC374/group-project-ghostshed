@@ -33,7 +33,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		// retreat the current ghost
 		if(this.ghosts[this.curZone - 2].retreat(action)){
 			// make a different ghost start moving again
-			this.ghosts[(this.curZone - 1) % 3].startOnPath();
+			//this.ghosts[(this.curZone - 1) % 3].startOnPath();
 		}
 	}
 

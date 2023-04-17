@@ -117,4 +117,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     isPaused(){
         return this.timePaused < this.PAUSE_TIME && this.timePaused > 0;
     }
+
+    getDistance(){
+        return this.follower.t;
+    }
 }
