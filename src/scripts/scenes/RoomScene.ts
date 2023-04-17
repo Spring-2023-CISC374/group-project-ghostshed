@@ -4,13 +4,15 @@ import { Sounds } from '../consts'
 
 export default class RoomScene extends BaseLevelScene {
 
+	protected timeText:any
+
 	constructor() {
 		super({ key: 'RoomScene' })
 	}
 
 	create() {
 		super.create()
-
+		this.timeText = this.add.text(100, 100, "temp")
 		const TESTKEY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 		TESTKEY.on('down',  (_key:any, _event:any) => {
 			this.ghosts[0].startOnPath();
@@ -105,6 +107,9 @@ export default class RoomScene extends BaseLevelScene {
 		if(this.gameOver){
 			return
 		}
+		
+		this.timeText.setText(`Time: ${Math.round(time/1000)}`);
+
 		for (let ghost of this.ghosts){
 			ghost.update(time, delta);
 			let ghostsWin = ghost.gameOver
