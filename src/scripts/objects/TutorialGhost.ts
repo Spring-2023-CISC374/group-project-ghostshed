@@ -1,21 +1,10 @@
-export default class Ghost extends Phaser.Physics.Arcade.Sprite {
+import Ghost from './Ghost'
 
-    // https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/
-    protected follower: { t: number, vec: Phaser.Math.Vector2};
-    protected zonePath?: Phaser.Curves.Path;
-    protected zone: number = 0;
-    protected isInPlayerZone: boolean = false;
-    protected timeInZone: number = 0;
-    protected timePaused: number = 0;
-    public gameOver = false;
-
-    protected GHOST_SPEED: number = 1/3500;
-    protected PAUSE_TIME: number = 5000;
-    protected GAME_OVER_TIME: number = 8000;
+export default class TutorialGhost extends Ghost {
 
 
     constructor(scene: Phaser.Scene, zone: number) {
-        super(scene, 0, 0, 'ghost');
+        super(scene, zone);
         scene.add.existing(this);
 
         // initialize t as -1 so it doesn't move to start
