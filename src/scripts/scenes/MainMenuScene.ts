@@ -31,7 +31,7 @@ export default class MainMenuScene extends Phaser.Scene {
   }
 
   handlePlay () {
-    this.scene.start('RoomScene')
+    this.scene.start('TutorialScene')
   }
 
 }

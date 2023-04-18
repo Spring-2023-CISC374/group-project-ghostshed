@@ -1,26 +1,59 @@
 import Phaser from 'phaser'
-import BaseLevelScene from './BaseLevelScene';
+import BaseLevelScene from './BaseLevelScene'
+import { Sounds } from '../consts'
 
 export default class TutorialScene extends BaseLevelScene {
 
+	paused!: boolean
+	visitedZones!: Array<boolean>
+	curStep = 0
+
 	constructor() {
 		super({ key: 'TutorialScene' })
+		this.paused = false
+		this.visitedZones = [false, false, false, false]
+		this.incrementStep()
+	}
+
+	// Special killGhost function to handle special tutorial logic
+	killGhost (action: string) {
+		super.killGhost(action)
+	}
+
+	incrementStep () {
+		console.log(`Moving to step ${this.curStep + 1}`)
+		this.curStep += 1
+	}
+
+	checkStep () {
+		switch (this.curStep) {
+			case 1:
+				console.log('step 1')
+				console.log('Moved to all four zones using the arrow keys')
+
+				let valid = true
+
+				for (const visitedZone of this.visitedZones) {
+					if (!visitedZone) {
+						valid = false
+					}
+				}
+
+				if (valid) {
+					this.incrementStep()
+				}
+
+				break
+			case 2:
+				console.log('step 2')
+				break
+			default:
+				console.error(`No tutorial step found for ${this.curStep}`)
+		}
 	}
 
 	create() {
 		super.create()
-
-		let playerMove = this.sound.add('Player Move');
-		let hideSound = this.sound.add('Hide');
-		let useFlashlight = this.sound.add('Flashlight');
-		let killGhostSound = this.sound.add('Ghost Hit By Flashlight');
-		let closeDoor = this.sound.add("Door Close");
-		let blowCandles = this.sound.add('Blow Candles');
-
-		const TESTKEY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-		TESTKEY.on('down',  (_key:any, _event:any) => {
-			this.ghosts[0].startOnPath();
-		});
 
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -28,7 +61,6 @@ export default class TutorialScene extends BaseLevelScene {
 
 			console.log("Trying to Hide")
 			if(this.curZone == 4){
-				hideSound.play();
 				console.log("Hiding")
 				this.killGhost("hide");
 			}else{
@@ -43,10 +75,9 @@ export default class TutorialScene extends BaseLevelScene {
 
 			console.log("Using Flashlight")
 			if(this.curZone == 2|| this.curZone == 3){
-				useFlashlight.play();
+				this.sound.play(Sounds.FLASHLIGHT)
 				console.log("Shining Bright")
 				this.killGhost("flashlight");
-				killGhostSound.play();
 			}else{
 				console.log("Wasting Light")
 			}
@@ -59,7 +90,7 @@ export default class TutorialScene extends BaseLevelScene {
 
 			console.log("Trying to close door")
 			if(this.curZone == 2 || this.curZone == 3){
-				closeDoor.play();
+				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Door Closed")
 				this.killGhost("door");
 			}else{
@@ -74,7 +105,7 @@ export default class TutorialScene extends BaseLevelScene {
 
 			console.log("Trying to Blow out candle")
 			if(this.curZone == 1){
-				blowCandles.play();
+				this.sound.play(Sounds.BLOW_CANDLES)
 				console.log("Summoning Delayed")
 			}else{
 				console.log("Wasting Breath")
@@ -86,41 +117,52 @@ export default class TutorialScene extends BaseLevelScene {
 		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		Zone1Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 1);
-			playerMove.play();
+			this.sound.play(Sounds.MOVE)
+			this.visitedZones[0] = true
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 		Zone2Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 2);
-			playerMove.play();
+			this.sound.play(Sounds.MOVE)
+			this.visitedZones[1] = true
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 		Zone3Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 3);
-			playerMove.play();
+			this.sound.play(Sounds.MOVE)
+			this.visitedZones[2] = true
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 		Zone4Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 4);
-			playerMove.play();
+			this.sound.play(Sounds.MOVE)
+			this.visitedZones[3] = true
 		});
+
+
 	}
-	
 
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			return
 		}
-		for (let ghost of this.ghosts){
-			ghost.update(time, delta);
-			let ghostsWin = ghost.gameOver
-			if (ghostsWin){
-				this.gameOver = true
-				console.log("THE GAME IS OVER. THE GHOSTS WIN");
+
+		// Enable ghosts only for the 
+		if (this.curStep !== 1) {
+			for (let ghost of this.ghosts){
+				ghost.update(time, delta);
+				let ghostsWin = ghost.gameOver
+				if (ghostsWin){
+					this.gameOver = true
+					console.log("THE GAME IS OVER. THE GHOSTS WIN");
+				}
 			}
 		}
+
+		this.checkStep()
 		
 		let zone = this.player.update(time, delta);
 		if (zone)
