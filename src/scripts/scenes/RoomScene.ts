@@ -4,7 +4,9 @@ import { Sounds } from '../consts'
 
 export default class RoomScene extends BaseLevelScene {
 
-	protected timeText:any
+	protected timer!: Phaser.Time.TimerEvent
+	protected timeText: any
+	protected currentTime:number = 0;
 
 	constructor() {
 		super({ key: 'RoomScene' })
@@ -18,6 +20,13 @@ export default class RoomScene extends BaseLevelScene {
 			this.ghosts[0].startOnPath();
 		});
 
+		this.timer = this.time.addEvent({
+			delay:1000,
+			callback : this.countTime,
+			callbackScope: this,
+			loop: true
+		  })
+		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
 		hKey.on('down',  (_key:any, _event:any) => {
@@ -31,6 +40,8 @@ export default class RoomScene extends BaseLevelScene {
 			}
 	
 		});
+
+		
 
 		const fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
@@ -102,13 +113,16 @@ export default class RoomScene extends BaseLevelScene {
 		});
 	}
 	
+	countTime(){
+		this.currentTime += 1;
+	}
 
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			return
 		}
 		
-		this.timeText.setText(`Time: ${Math.round(time/1000)}`);
+		this.timeText.setText(`Time: ${this.currentTime}`);
 
 		for (let ghost of this.ghosts){
 			ghost.update(time, delta);
