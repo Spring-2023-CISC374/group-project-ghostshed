@@ -9,13 +9,34 @@ export default class TutorialScene extends BaseLevelScene {
 	visitedZones!: Array<boolean>
 	usedFlashlight = false
 	usedDoor = false
+	usedHide = false
 	curStep = 0
+
+	protected timer!: Phaser.Time.TimerEvent
+	protected timeText: any
+	protected timeCount = 0
 
 	constructor() {
 		super({ key: 'TutorialScene' })
 		this.paused = false
 		this.visitedZones = [false, false, false, false]
 		this.incrementStep()
+	}
+
+	startTimer () {
+		this.timeText = this.add.text(100, 100, "Time Left To Survive: 60s")
+
+		this.timer = this.time.addEvent({
+				delay: 1000,
+				callback : this.countTime,
+				callbackScope: this,
+				loop: true
+		  })
+	}
+
+	countTime(){
+		this.timeCount += 1
+		this.timeText.setText(`Time Left To Survive: ${Math.floor(60 - this.timeCount)}s`);
 	}
 
 	// Special killGhost function to handle special tutorial logic
@@ -28,6 +49,10 @@ export default class TutorialScene extends BaseLevelScene {
 
 		if (this.curStep === 3 && action === 'door') {
 			this.usedDoor = true
+		}
+
+		if (this.curStep === 4 && action === 'hide') {
+			this.usedHide = true
 		}
 	}
 
@@ -53,14 +78,26 @@ export default class TutorialScene extends BaseLevelScene {
 
 				break
 			case 2:
-					if (this.usedFlashlight) {
-						this.incrementStep()
-					}
+				if (this.usedFlashlight) {
+					this.incrementStep()
+				}
 				break
 			case 3:
-					if (this.usedDoor) {
-						this.incrementStep()
-					}
+				if (this.usedDoor) {
+					this.incrementStep()
+				}
+				break
+			case 4:
+				if (this.usedHide) {
+					this.startTimer()
+					this.incrementStep()
+				}
+				break
+			case 5:
+				if (this.timeCount === 60) {
+					this.scene.start('RoomScene')
+				}
+				break
 			default:
 				console.error(`No tutorial step found for ${this.curStep}`)
 		}
