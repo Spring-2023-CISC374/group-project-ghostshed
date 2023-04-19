@@ -1,11 +1,14 @@
 import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
+import TutorialGhost from '../objects/TutorialGhost'
 import { Sounds } from '../consts'
 
 export default class TutorialScene extends BaseLevelScene {
 
 	paused!: boolean
 	visitedZones!: Array<boolean>
+	usedFlashlight = false
+	usedDoor = false
 	curStep = 0
 
 	constructor() {
@@ -18,6 +21,14 @@ export default class TutorialScene extends BaseLevelScene {
 	// Special killGhost function to handle special tutorial logic
 	killGhost (action: string) {
 		super.killGhost(action)
+		
+		if (this.curStep === 2 && action === 'flashlight') {
+			this.usedFlashlight = true
+		}
+
+		if (this.curStep === 3 && action === 'door') {
+			this.usedDoor = true
+		}
 	}
 
 	incrementStep () {
@@ -28,9 +39,6 @@ export default class TutorialScene extends BaseLevelScene {
 	checkStep () {
 		switch (this.curStep) {
 			case 1:
-				console.log('step 1')
-				console.log('Moved to all four zones using the arrow keys')
-
 				let valid = true
 
 				for (const visitedZone of this.visitedZones) {
@@ -45,8 +53,14 @@ export default class TutorialScene extends BaseLevelScene {
 
 				break
 			case 2:
-				console.log('step 2')
+					if (this.usedFlashlight) {
+						this.incrementStep()
+					}
 				break
+			case 3:
+					if (this.usedDoor) {
+						this.incrementStep()
+					}
 			default:
 				console.error(`No tutorial step found for ${this.curStep}`)
 		}
@@ -54,6 +68,23 @@ export default class TutorialScene extends BaseLevelScene {
 
 	create() {
 		super.create()
+
+		// Override the ghosts and set them as Tutorial ghosts
+		for (const ghost of this.ghosts) {
+			ghost.destroy(true)
+		}
+
+		this.ghosts = []
+		this.ghosts.push(new TutorialGhost(this, 2))
+		this.ghosts.push(new TutorialGhost(this, 3))
+		this.ghosts.push(new TutorialGhost(this, 4))
+
+		const zone2Ghost = this.ghosts[0] as TutorialGhost
+		const zone3Ghost = this.ghosts[1] as TutorialGhost
+
+		zone2Ghost.enableFlashlightModeOnly()
+		zone2Ghost.startOnPath()
+		zone3Ghost.enableDoorModeOnly()
 
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 

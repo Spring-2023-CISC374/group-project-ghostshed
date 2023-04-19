@@ -2,6 +2,8 @@ import Ghost from './Ghost'
 
 export default class TutorialGhost extends Ghost {
 
+    protected flashLightMode = false
+    protected doorMode = false
 
     constructor(scene: Phaser.Scene, zone: number) {
         super(scene, zone);
@@ -25,6 +27,20 @@ export default class TutorialGhost extends Ghost {
         }
     }
 
+    /**
+     * Toggles whether this tutorial ghost should stop at the halfway point instead of proceeding after the pauseTime
+     */
+    public enableFlashlightModeOnly() {
+        this.flashLightMode = !this.flashLightMode
+    }
+
+    /**
+     * Toggles whether this tutorial ghost should go straight to the door instead or waiting for the pauseTime
+     */
+    public enableDoorModeOnly() {
+        this.doorMode = !this.doorMode
+    }
+
     startOnPath()
     {
         if (this.GHOST_SPEED < 0) this.GHOST_SPEED *= -1;
@@ -39,20 +55,27 @@ export default class TutorialGhost extends Ghost {
         this.visible = true
     }
 
+
+
     update(_time: any, delta: any)
     {
         if (this.isInPlayerZone){
             this.timeInZone += delta;
         }
 
-        if (this.timeInZone >= this.GAME_OVER_TIME){
-            this.gameOver = true
-        }
-
         if (this.follower.t <= 1 && this.follower.t >= 0){
             if ((this.zone == 2 || this.zone == 3) && this.timePaused < this.PAUSE_TIME){
                 if (this.follower.t >= 0.45 && this.follower.t <= 0.5){
-                    this.timePaused += delta;
+                    if (!this.flashLightMode) {
+                        //Don't increment the paused time so we never move if we are pasued time disabled
+                        this.timePaused += delta;
+                    }
+
+                    if (this.doorMode) {
+                        // Skip the wait period
+                        this.timePaused = this.PAUSE_TIME
+                    }
+
                     // set delta to 0 so the ghost doesn't move
                     delta = 0;
                 }
