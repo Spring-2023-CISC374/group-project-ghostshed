@@ -24,7 +24,7 @@ export default class TutorialScene extends BaseLevelScene {
 	}
 
 	startTimer () {
-		this.timeText = this.add.text(100, 100, "Time Left To Survive: 60s")
+		this.timeText = this.add.text(100, 100, "Time Left To Survive: 30s")
 
 		this.timer = this.time.addEvent({
 				delay: 1000,
@@ -36,7 +36,7 @@ export default class TutorialScene extends BaseLevelScene {
 
 	countTime(){
 		this.timeCount += 1
-		this.timeText.setText(`Time Left To Survive: ${Math.floor(60 - this.timeCount)}s`);
+		this.timeText.setText(`Time Left To Survive: ${Math.floor(30 - this.timeCount)}s`);
 	}
 
 	// Special killGhost function to handle special tutorial logic
@@ -94,7 +94,7 @@ export default class TutorialScene extends BaseLevelScene {
 				}
 				break
 			case 5:
-				if (this.timeCount === 60) {
+				if (this.timeCount === 30) {
 					this.scene.start('RoomScene')
 				}
 				break
