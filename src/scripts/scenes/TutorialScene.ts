@@ -12,9 +12,11 @@ export default class TutorialScene extends BaseLevelScene {
 	usedHide = false
 	curStep = 0
 
-	protected timer!: Phaser.Time.TimerEvent
-	protected timeText: any
-	protected timeCount = 0
+	timer!: Phaser.Time.TimerEvent
+	timeText!: Phaser.GameObjects.Text
+	timeCount = 0
+
+	textBoxText!: Phaser.GameObjects.Text
 
 	constructor() {
 		super({ key: 'TutorialScene' })
@@ -37,6 +39,10 @@ export default class TutorialScene extends BaseLevelScene {
 	countTime(){
 		this.timeCount += 1
 		this.timeText.setText(`Time Left To Survive: ${Math.floor(30 - this.timeCount)}s`);
+	}
+
+	handleTextBox () {
+
 	}
 
 	// Special killGhost function to handle special tutorial logic
@@ -122,6 +128,22 @@ export default class TutorialScene extends BaseLevelScene {
 		zone2Ghost.enableFlashlightModeOnly()
 		zone2Ghost.startOnPath()
 		zone3Ghost.enableDoorModeOnly()
+
+		this.textBoxText = this.make.text({
+			x: 615,
+			y: 500,
+			text: 'Hello World',
+			origin: {
+				x: 0.5,
+				y: 0.5
+			},
+			style: {
+				font: '18px Arial',
+				wordWrap: { width: 300, useAdvancedWrap: true }
+			}
+		})
+
+		// Inputs
 
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
