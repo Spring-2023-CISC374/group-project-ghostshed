@@ -4,7 +4,6 @@ export default class TutorialGhost extends Ghost {
 
     protected flashLightMode = false
     protected doorMode = false
-    protected fadedIn = false
 
     constructor(scene: Phaser.Scene, zone: number) {
         super(scene, zone);
@@ -40,32 +39,6 @@ export default class TutorialGhost extends Ghost {
      */
     public enableDoorModeOnly() {
         this.doorMode = !this.doorMode
-    }
-
-    startOnPath()
-    {
-        if (this.GHOST_SPEED < 0) this.GHOST_SPEED *= -1;
-        this.timePaused = 0;
-
-        // set the t parameter at the start of the path
-        this.follower.t = 0;
-        // get x and y of the given t point            
-        this.zonePath?.getPoint(this.follower.t, this.follower.vec);
-        // set the x and y of our enemy to the received from the previous step
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
-        this.visible = true
-        this.setAlpha(0)
-        this.fadedIn = false
-    }
-
-    handleFadeIn () {
-        const newAlpha = this.alpha += 0.02
-
-        this.setAlpha(newAlpha)
-
-        if (newAlpha === 1) {
-            this.fadedIn = true
-        }
     }
 
     update(_time: any, delta: any)

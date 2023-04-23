@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
 import TutorialGhost from '../objects/TutorialGhost'
 import { Sounds, TutorialStepText } from '../consts'
+import Button from '../objects/Button'
 
 export default class TutorialScene extends BaseLevelScene {
 
@@ -17,6 +18,8 @@ export default class TutorialScene extends BaseLevelScene {
 	timeCount = 0
 
 	textBoxText!: Phaser.GameObjects.Text
+
+	finishButton!: Button
 
 	constructor() {
 		super({ key: 'TutorialScene' })
@@ -45,6 +48,10 @@ export default class TutorialScene extends BaseLevelScene {
 		if (this.textBoxText) {
 			this.textBoxText.setText(TutorialStepText[step - 1])
 		}
+	}
+
+	handleFinish () {
+		this.scene.start('RoomScene')
 	}
 
 	// Special killGhost function to handle special tutorial logic
@@ -104,8 +111,15 @@ export default class TutorialScene extends BaseLevelScene {
 				break
 			case 5:
 				if (this.timeCount === 30) {
-					this.scene.start('RoomScene')
+					this.incrementStep()
+					this.timeText.setVisible(false)
+					this.finishButton.setVisible(true)
+					this.timer.destroy()
+					this.gameOver = true
 				}
+				break
+			case 6:
+				// Empty end step to wait for complete
 				break
 			default:
 				console.error(`No tutorial step found for ${this.curStep}`)
@@ -147,6 +161,9 @@ export default class TutorialScene extends BaseLevelScene {
 		})
 
 		this.handleTextBox(this.curStep)
+
+		this.finishButton = new Button(650, 400, 'Finish', this, () => { this.handleFinish() }, 18, 10)
+		this.finishButton.setVisible(false)
 
 		// Inputs
 
