@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
 import TutorialGhost from '../objects/TutorialGhost'
-import { Sounds } from '../consts'
+import { Sounds, TutorialStepText } from '../consts'
 
 export default class TutorialScene extends BaseLevelScene {
 
@@ -41,8 +41,10 @@ export default class TutorialScene extends BaseLevelScene {
 		this.timeText.setText(`Time Left To Survive: ${Math.floor(30 - this.timeCount)}s`);
 	}
 
-	handleTextBox () {
-
+	handleTextBox (step: number) {
+		if (this.textBoxText) {
+			this.textBoxText.setText(TutorialStepText[step - 1])
+		}
 	}
 
 	// Special killGhost function to handle special tutorial logic
@@ -64,7 +66,9 @@ export default class TutorialScene extends BaseLevelScene {
 
 	incrementStep () {
 		console.log(`Moving to step ${this.curStep + 1}`)
-		this.curStep += 1
+		const step = this.curStep += 1
+		this.handleTextBox(step)
+		this.curStep = step
 	}
 
 	checkStep () {
