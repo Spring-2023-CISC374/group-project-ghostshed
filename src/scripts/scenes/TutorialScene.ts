@@ -66,9 +66,8 @@ export default class TutorialScene extends BaseLevelScene {
 
 	incrementStep () {
 		console.log(`Moving to step ${this.curStep + 1}`)
-		const step = this.curStep += 1
-		this.handleTextBox(step)
-		this.curStep = step
+		this.curStep += 1
+		this.handleTextBox(this.curStep)
 	}
 
 	checkStep () {
@@ -134,18 +133,20 @@ export default class TutorialScene extends BaseLevelScene {
 		zone3Ghost.enableDoorModeOnly()
 
 		this.textBoxText = this.make.text({
-			x: 615,
-			y: 500,
+			x: 650,
+			y: 175,
 			text: 'Hello World',
 			origin: {
 				x: 0.5,
 				y: 0.5
 			},
 			style: {
-				font: '18px Arial',
-				wordWrap: { width: 300, useAdvancedWrap: true }
+				font: '20px Arial',
+				wordWrap: { width: 200, useAdvancedWrap: true }
 			}
 		})
+
+		this.handleTextBox(this.curStep)
 
 		// Inputs
 
