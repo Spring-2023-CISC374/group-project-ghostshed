@@ -22,6 +22,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         // initialize t as -1 so it doesn't move to start
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
+        this.visible = false
 
         if (zone === 2) {
             this.zonePath = scene.add.path(130, 100);
@@ -68,7 +69,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         if (!this.fadedIn) {
             this.handleFadeIn()
         }
-        
+
         if (this.isInPlayerZone){
             this.timeInZone += delta;
         }
