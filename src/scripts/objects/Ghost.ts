@@ -8,6 +8,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     protected timeInZone: number = 0;
     protected timePaused: number = 0;
     public gameOver = false;
+    protected fadedIn = false
 
     protected GHOST_SPEED: number = 1/3500;
     protected PAUSE_TIME: number = 5000;
@@ -48,10 +49,26 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         // set the x and y of our enemy to the received from the previous step
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         this.visible = true
+        this.setAlpha(0)
+        this.fadedIn = false
+    }
+
+    handleFadeIn () {
+        const newAlpha = this.alpha += 0.02
+
+        this.setAlpha(newAlpha)
+
+        if (newAlpha === 1) {
+            this.fadedIn = true
+        }
     }
 
     update(_time: any, delta: any)
     {
+        if (!this.fadedIn) {
+            this.handleFadeIn()
+        }
+        
         if (this.isInPlayerZone){
             this.timeInZone += delta;
         }
