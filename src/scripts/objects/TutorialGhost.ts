@@ -1,28 +1,17 @@
-export default class Ghost extends Phaser.Physics.Arcade.Sprite {
+import Ghost from './Ghost'
 
-    // https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/
-    protected follower: { t: number, vec: Phaser.Math.Vector2};
-    protected zonePath?: Phaser.Curves.Path;
-    protected zone: number = 0;
-    protected isInPlayerZone: boolean = false;
-    protected timeInZone: number = 0;
-    protected timePaused: number = 0;
-    public gameOver = false;
-    protected fadedIn = false
+export default class TutorialGhost extends Ghost {
 
-    protected GHOST_SPEED: number = 1/3500;
-    protected PAUSE_TIME: number = 5000;
-    protected GAME_OVER_TIME: number = 8000;
-
+    protected flashLightMode = false
+    protected doorMode = false
 
     constructor(scene: Phaser.Scene, zone: number) {
-        super(scene, 0, 0, 'ghost');
+        super(scene, zone);
         scene.add.existing(this);
 
         // initialize t as -1 so it doesn't move to start
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
-        this.visible = false
 
         if (zone === 2) {
             this.zonePath = scene.add.path(130, 100);
@@ -38,30 +27,18 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    startOnPath()
-    {
-        if (this.GHOST_SPEED < 0) this.GHOST_SPEED *= -1;
-        this.timePaused = 0;
-
-        // set the t parameter at the start of the path
-        this.follower.t = 0;
-        // get x and y of the given t point            
-        this.zonePath?.getPoint(this.follower.t, this.follower.vec);
-        // set the x and y of our enemy to the received from the previous step
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
-        this.visible = true
-        this.setAlpha(0)
-        this.fadedIn = false
+    /**
+     * Toggles whether this tutorial ghost should stop at the halfway point instead of proceeding after the pauseTime
+     */
+    public enableFlashlightModeOnly() {
+        this.flashLightMode = !this.flashLightMode
     }
 
-    handleFadeIn () {
-        const newAlpha = this.alpha += 0.02
-
-        this.setAlpha(newAlpha)
-
-        if (newAlpha === 1) {
-            this.fadedIn = true
-        }
+    /**
+     * Toggles whether this tutorial ghost should go straight to the door instead or waiting for the pauseTime
+     */
+    public enableDoorModeOnly() {
+        this.doorMode = !this.doorMode
     }
 
     update(_time: any, delta: any)
@@ -74,14 +51,19 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
             this.timeInZone += delta;
         }
 
-        if (this.timeInZone >= this.GAME_OVER_TIME){
-            this.gameOver = true
-        }
-
         if (this.follower.t <= 1 && this.follower.t >= 0){
             if ((this.zone == 2 || this.zone == 3) && this.timePaused < this.PAUSE_TIME){
                 if (this.follower.t >= 0.45 && this.follower.t <= 0.5){
-                    this.timePaused += delta;
+                    if (!this.flashLightMode) {
+                        //Don't increment the paused time so we never move if we are pasued time disabled
+                        this.timePaused += delta;
+                    }
+
+                    if (this.doorMode) {
+                        // Skip the wait period
+                        this.timePaused = this.PAUSE_TIME
+                    }
+
                     // set delta to 0 so the ghost doesn't move
                     delta = 0;
                 }

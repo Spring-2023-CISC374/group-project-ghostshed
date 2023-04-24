@@ -2,11 +2,11 @@ export default class Button {
 
   public buttonInnerObj
 
-  constructor(x: number, y: number, text: string, scene: Phaser.Scene, action: Function) {
+  constructor(x: number, y: number, text: string, scene: Phaser.Scene, action: Function, fontSize: number = 20, padding: number = 20) {
       this.buttonInnerObj = scene.add.text(x, y, text)
           .setOrigin(0.5, 0.5) // Set the origin to be the middle of the button, halfway (0.5)
-          .setPadding(20)
-          .setFontSize(20)
+          .setPadding(padding)
+          .setFontSize(fontSize)
           .setStyle({ 
             backgroundColor: '#852c09',
             color: '#000000'
@@ -31,5 +31,9 @@ export default class Button {
       backgroundColor: '#852c09',
       color: '#000000'
      })
+  }
+
+  public setVisible (visible: boolean) {
+    this.buttonInnerObj.setVisible(visible)
   }
 }
