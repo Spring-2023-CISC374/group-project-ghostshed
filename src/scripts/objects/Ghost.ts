@@ -18,7 +18,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Phaser.Scene, zone: number) {
         super(scene, 0, 0, 'ghost');
         scene.add.existing(this);
-
+        this.setDepth(1)
         // initialize t as -1 so it doesn't move to start
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
@@ -31,6 +31,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         } else if (zone === 4) {
             this.zonePath = scene.add.path(200, 100);
             this.zonePath.lineTo(320, 100);
+            this.zonePath.lineTo(320, 150)
         } else if (zone === 3) {
             this.zonePath = scene.add.path(510, 100);
             this.zonePath.lineTo(560, 100);
@@ -69,7 +70,6 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         if (!this.fadedIn) {
             this.handleFadeIn()
         }
-
         if (this.isInPlayerZone){
             this.timeInZone += delta;
         }
@@ -101,7 +101,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     }
 
     retreat(action :string){
-        if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || (action == 'hide')) && this.visible){
+        if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || ((action == 'hide') && (this.follower.t > .7))) && this.visible){
             this.GHOST_SPEED = this.GHOST_SPEED * -1;
             // initiate the reverse
             this.zonePath?.getPoint(this.follower.t, this.follower.vec);
