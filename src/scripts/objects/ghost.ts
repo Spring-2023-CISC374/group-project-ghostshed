@@ -83,7 +83,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     }
 
     retreat(action :string){
-        if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || (action == 'hide'))){
+        if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || (action == 'hide')) && this.visible){
             this.GHOST_SPEED = this.GHOST_SPEED * -1;
             // initiate the reverse
             this.zonePath?.getPoint(this.follower.t, this.follower.vec);
