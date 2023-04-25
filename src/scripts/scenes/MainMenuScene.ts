@@ -18,7 +18,8 @@ export default class MainMenuScene extends Phaser.Scene {
     this.trees = this.add.tileSprite(0, 0, 0, 0, 'background').setOrigin(0, 0);
     this.trees.setScale(1, 0.75)
 
-    const button = new Button(centerX, centerY, 'Play', this, () => { this.handlePlay() })
+    new Button(centerX, centerY, 'Play', this, () => { this.handlePlay() })
+    new Button(centerX, centerY + 75, 'Tutorial', this, () => { this.handleTutorial() })
 
     this.add.text(centerX, centerY - 100, 'Ghost Shed')
     .setFontSize(60)
@@ -32,6 +33,10 @@ export default class MainMenuScene extends Phaser.Scene {
 
   handlePlay () {
     this.scene.start('RoomScene')
+  }
+
+  handleTutorial () {
+    this.scene.start('TutorialScene')
   }
 
 }

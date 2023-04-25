@@ -1,17 +1,18 @@
 export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     // https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/
-    private follower: { t: number, vec: Phaser.Math.Vector2};
-    private zonePath?: Phaser.Curves.Path;
-    private zone: number = 0;
-    private isInPlayerZone: boolean = false;
-    private timeInZone: number = 0;
-    private timePaused: number = 0;
+    protected follower: { t: number, vec: Phaser.Math.Vector2};
+    protected zonePath?: Phaser.Curves.Path;
+    protected zone: number = 0;
+    protected isInPlayerZone: boolean = false;
+    protected timeInZone: number = 0;
+    protected timePaused: number = 0;
     public gameOver = false;
+    protected fadedIn = false
 
-    private GHOST_SPEED: number = 1/3500;
-    private PAUSE_TIME: number = 5000;
-    private GAME_OVER_TIME: number = 8000;
+    protected GHOST_SPEED: number = 1/3500;
+    protected PAUSE_TIME: number = 5000;
+    protected GAME_OVER_TIME: number = 8000;
 
 
     constructor(scene: Phaser.Scene, zone: number) {
@@ -21,6 +22,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         // initialize t as -1 so it doesn't move to start
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
+        this.visible = false
 
         if (zone === 2) {
             this.zonePath = scene.add.path(130, 100);
@@ -48,10 +50,26 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         // set the x and y of our enemy to the received from the previous step
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         this.visible = true
+        this.setAlpha(0)
+        this.fadedIn = false
+    }
+
+    handleFadeIn () {
+        const newAlpha = this.alpha += 0.02
+
+        this.setAlpha(newAlpha)
+
+        if (newAlpha === 1) {
+            this.fadedIn = true
+        }
     }
 
     update(_time: any, delta: any)
     {
+        if (!this.fadedIn) {
+            this.handleFadeIn()
+        }
+
         if (this.isInPlayerZone){
             this.timeInZone += delta;
         }

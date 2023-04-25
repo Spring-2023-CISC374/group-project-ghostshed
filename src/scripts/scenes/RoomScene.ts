@@ -1,84 +1,32 @@
 import Phaser from 'phaser'
-import Player from '../objects/playerCharacter';
-import Ghost from '../objects/ghost';
+import BaseLevelScene from './BaseLevelScene'
+import { Sounds } from '../consts'
 
-export default class RoomScene extends Phaser.Scene {
+export default class RoomScene extends BaseLevelScene {
 
-	private map!: Phaser.Tilemaps.Tilemap
-	private tiles!: Phaser.Tilemaps.Tileset 
-	private player!: Player
-	private curZone: number = 1
-	private ghosts: Ghost[] = []
-	private gameOver: boolean = false
+	protected timer!: Phaser.Time.TimerEvent
+	protected timeText: any
+	protected currentTime:number = 0;
 
 	constructor() {
 		super({ key: 'RoomScene' })
 	}
 
-	preload() {
-		this.load.image('tileset_image', 'assets/tilemaps/tileset.png')
-    this.load.tilemapTiledJSON('tilemap', 'assets/tilemaps/main.json')
-		this.load.image('player', 'assets/tilemaps/character.png')
-	}
-
-	updateZone(newZone: number){
-		this.curZone = newZone
-	}
-	
-	hide(){
-		console.log("Trying to Hide")
-		if(this.curZone == 4){
-			console.log("Hiding")
-		}else{
-			console.log("No wheres to hide")
-		}
-	}
-
 	create() {
-  		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
-    	this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
-		// the index of the ghost is zone # - 2
-		this.ghosts.push(new Ghost(this, 2))
-		this.ghosts.push(new Ghost(this, 3))
-		this.ghosts.push(new Ghost(this, 4))
-
-		// the game starts with a zone 2 ghost
-		this.ghosts[0].startOnPath();
-
-
-    	// Render the layers in Phaser
-    	for (const layerName of this.map.getTileLayerNames()) {
-      		this.map.createLayer(layerName, this.tiles, 0, 0)
-    	}
-
-		this.player = new Player(this);
-		this.player.setScale(2,2)
-
-		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
-		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
-		this.physics.add.overlap(this.player, zone2);
-
-		this.map.setTileIndexCallback(486, () => { this.updateZone(1)}, this, "Zone 1");
-		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
-		this.physics.add.overlap(this.player, zone1);
-
-		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");
-		const zone3 = this.map.getLayer("Zone 3").tilemapLayer
-		this.physics.add.overlap(this.player, zone3);
-
-		this.map.setTileIndexCallback(434, () => { this.updateZone(4)}, this, "Zone 4");
-		const zone4 = this.map.getLayer("Zone 4").tilemapLayer
-		this.physics.add.overlap(this.player, zone4);
-
-		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
-		const zone0 = this.map.getLayer("Ground").tilemapLayer
-		this.physics.add.overlap(this.player, zone0);
-
+		super.create()
+		this.timeText = this.add.text(100, 100, "Time: 0:00")
 		const TESTKEY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 		TESTKEY.on('down',  (_key:any, _event:any) => {
 			this.ghosts[0].startOnPath();
 		});
 
+		this.timer = this.time.addEvent({
+			delay:1000,
+			callback : this.countTime,
+			callbackScope: this,
+			loop: true
+		  })
+		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
 		hKey.on('down',  (_key:any, _event:any) => {
@@ -93,12 +41,15 @@ export default class RoomScene extends Phaser.Scene {
 	
 		});
 
+		
+
 		const fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
 		fKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Using Flashlight")
 			if(this.curZone == 2|| this.curZone == 3){
+				this.sound.play(Sounds.FLASHLIGHT)
 				console.log("Shining Bright")
 				this.killGhost("flashlight");
 			}else{
@@ -113,6 +64,7 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Trying to close door")
 			if(this.curZone == 2 || this.curZone == 3){
+				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Door Closed")
 				this.killGhost("door");
 			}else{
@@ -127,6 +79,7 @@ export default class RoomScene extends Phaser.Scene {
 
 			console.log("Trying to Blow out candle")
 			if(this.curZone == 1){
+				this.sound.play(Sounds.BLOW_CANDLES)
 				console.log("Summoning Delayed")
 			}else{
 				console.log("Wasting Breath")
@@ -138,29 +91,38 @@ export default class RoomScene extends Phaser.Scene {
 		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		Zone1Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 1);
+			this.sound.play(Sounds.MOVE)
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 		Zone2Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 2);
+			this.sound.play(Sounds.MOVE)
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 		Zone3Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 3);
+			this.sound.play(Sounds.MOVE)
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 		Zone4Key.on('down',  (_key:any, _event:any) => {
 			this.player.move(this.curZone, 4);
+			this.sound.play(Sounds.MOVE)
 		});
 	}
 	
+	countTime(){
+		this.currentTime += 1;
+		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
+	}
 
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			return
 		}
+
 		for (let ghost of this.ghosts){
 			ghost.update(time, delta);
 			let ghostsWin = ghost.gameOver
@@ -173,13 +135,5 @@ export default class RoomScene extends Phaser.Scene {
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
-	}
-
-	killGhost(action:string){
-		// retreat the current ghost
-		if(this.ghosts[this.curZone - 2].retreat(action)){
-			// make a different ghost start moving again
-			this.ghosts[(this.curZone - 1) % 3].startOnPath();
-		}
 	}
 }
