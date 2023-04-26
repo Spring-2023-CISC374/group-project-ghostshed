@@ -80,8 +80,16 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     }
 
     // This function updates the ghosts position to move to the next position along the path
-    update(_time: any, delta: any)
+    update(time: any, delta: any)
     {
+
+        // Make the ghost pulse when the player is less than 3 seconds from losing
+        if (this.GAME_OVER_TIME - this.timeInZone <= 3000 && time % 500 >= 250){
+            this.setScale(1.2, 1.2)
+        } else {
+            this.setScale(1, 1)
+        }
+
         if (!this.fadedIn) {
             this.handleFadeIn()
         }
