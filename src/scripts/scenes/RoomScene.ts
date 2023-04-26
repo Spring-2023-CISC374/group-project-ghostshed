@@ -115,7 +115,7 @@ export default class RoomScene extends BaseLevelScene {
 	
 	countTime(){
 		if(this.gameOver){
-			return
+			this.timer.destroy()
 		}
 		this.currentTime += 1;
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
