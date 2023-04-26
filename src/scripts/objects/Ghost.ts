@@ -12,8 +12,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     protected fadedIn = false
 
     protected GHOST_SPEED: number = 1/3500;
-    protected PAUSE_TIME: number = 2700;
-    protected GAME_OVER_TIME: number = 4200;
+    protected PAUSE_TIME: number = 2500;
+    protected GAME_OVER_TIME: number = 6000;
 
 
     constructor(scene: Phaser.Scene, zone: number) {

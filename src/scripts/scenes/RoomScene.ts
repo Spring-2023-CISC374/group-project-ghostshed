@@ -133,12 +133,12 @@ export default class RoomScene extends BaseLevelScene {
 		}
 		
 		let dist = this.ghosts[0].getDistance()
-		if (this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
+		if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[1].startOnPath();
 		}
 
 		dist = this.ghosts[1].getDistance()
-		if (this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
+		if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[0].startOnPath();
 		}
 
