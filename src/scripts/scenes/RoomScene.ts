@@ -116,6 +116,9 @@ export default class RoomScene extends BaseLevelScene {
 	}
 	
 	countTime(){
+		if(this.gameOver){
+			this.timer.destroy()
+		}
 		this.currentTime += 1;
 		
 		// Spawn a window ghost every X seconds (if there is no ghost there)
