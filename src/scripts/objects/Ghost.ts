@@ -44,6 +44,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     // This function initiates the movement of the ghost by setting the follower.t variable
     startOnPath()
     {
+        this.playMoveSound();
+
         // make sure the speed is positive
         if (this.GHOST_SPEED < 0) this.GHOST_SPEED *= -1;
         // ghost is moving so timePaused is 0
@@ -114,6 +116,10 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
                     // set delta to 0 so the ghost doesn't move
                     delta = 0;
                 }
+
+                if (this.timePaused >= this.PAUSE_TIME){
+                    this.playMoveSound()
+                }
             }
 
             // increase / decrease t value to move the ghost along the path
@@ -149,6 +155,15 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }else{
             return false
         }
+    }
+
+    playMoveSound(){
+        if (this.zone === 2)
+            this.scene.sound.play('Ghost Move Left')
+        else if (this.zone === 3)
+            this.scene.sound.play('Ghost Move Right')
+        else if (this.zone === 4)
+            this.scene.sound.play('Ghost Move')
     }
 
     isPaused(){
