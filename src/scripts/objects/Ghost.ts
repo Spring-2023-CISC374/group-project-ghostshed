@@ -32,7 +32,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
             this.zonePath = scene.add.path(200, 100);
             this.zonePath.lineTo(320, 100);
             this.zonePath.lineTo(320, 200)
-            this.GHOST_SPEED = 1/10000
+            this.GHOST_SPEED = 1/12000
         } else if (zone === 3) {
             this.zonePath = scene.add.path(510, 100);
             this.zonePath.lineTo(560, 100);
