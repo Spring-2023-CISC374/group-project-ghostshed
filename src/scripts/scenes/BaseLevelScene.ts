@@ -30,10 +30,8 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
   killGhost(action:string){
-		// retreat the current ghost
-		if(this.ghosts[this.curZone - 2].retreat(action)){
-			// make a different ghost start moving again
-			//this.ghosts[(this.curZone - 1) % 3].startOnPath();
+		if (this.ghosts[this.curZone - 2].retreat(action) && action === 'flashlight'){
+			//
 		}
 	}
 
