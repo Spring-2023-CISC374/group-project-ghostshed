@@ -5,8 +5,13 @@ import { Sounds } from '../consts'
 export default class RoomScene extends BaseLevelScene {
 
 	protected timer!: Phaser.Time.TimerEvent
+	protected candleTimer!: Phaser.Time.TimerEvent
 	protected timeText: any
 	protected currentTime:number = 0;
+	protected currentCandleTime: number = 0
+	protected chance!: number
+	protected litCandles: number = 0;
+	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -25,6 +30,17 @@ export default class RoomScene extends BaseLevelScene {
 			callbackScope: this,
 			loop: true
 		  })
+		
+		this.candleTimer = this.time.addEvent({
+			delay:2000,
+			callback : this.countCandleTime,
+			callbackScope: this,
+			loop: true
+		})
+
+		for(let i = 0; i < 4; i++){
+			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+		}
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -80,6 +96,7 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 1){
 				this.sound.play(Sounds.BLOW_CANDLES)
 				console.log("Summoning Delayed")
+				this.candleGhost(-1)
 			}else{
 				console.log("Wasting Breath")
 			}
@@ -127,6 +144,63 @@ export default class RoomScene extends BaseLevelScene {
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
 	}
 
+	candleGhost(lightCandle: number){
+        //let new_candles = this.litCandles += lightCandle
+        if(lightCandle == -1){
+			if(this.litCandles <= 0){
+				console.log("Waste of breath")
+				this.litCandles = 0
+			}
+			else{
+				console.log("A candle was blown out")
+				this.extinguishCandle(this.litCandles)
+				this.litCandles -= 1
+			}
+		}
+        else {
+            console.log("A candle is lit")
+			if(this.litCandles >= 4){
+				console.log("The Ghost is summoned - Game Over")
+				this.candleTimer.destroy()
+				this.gameOver = true
+			} else {
+				this.lightCandle(this.litCandles)
+            	this.litCandles += 1
+			}
+        }
+    }
+
+	countCandleTime(){
+		this.currentCandleTime += 1000
+		//1 in 4 chance for candle to light
+		if(this.currentCandleTime == 2000){
+			this.chance = Math.floor(Math.random() * 4) + 1
+		}
+		//1 in 2 chance for candle to light
+		else if(this.currentCandleTime == 3000){
+			this.chance = Math.floor(Math.random() * 2) + 1
+		}
+		//guarantee chance for candle to light
+		if(this.currentCandleTime == 5000){
+			this.chance = 1
+		}
+		//if chance = 1, reset counter and light candle
+		if(this.chance == 1){
+			this.currentCandleTime = 0
+			this.chance = 0
+			this.candleGhost(1)
+		}
+	}
+
+	extinguishCandle(currentlylit: number){
+		this.candleTiles[currentlylit-1].index = 201
+	}
+
+	lightCandle(currentlylit: number){
+		this.candleTiles[currentlylit].index = 202
+		this.sound.play(Sounds.LIGHTCANDLE)
+	}
+
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			return
@@ -137,6 +211,7 @@ export default class RoomScene extends BaseLevelScene {
 			let ghostsWin = ghost.gameOver
 			if (ghostsWin){
 				this.gameOver = true
+				this.candleTimer.destroy()
 				console.log("THE GAME IS OVER. THE GHOSTS WIN");
 			}
 		}
