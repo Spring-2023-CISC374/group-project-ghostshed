@@ -21,11 +21,8 @@ export default class RoomScene extends BaseLevelScene {
 
 	create() {
 		super.create()
-		this.timeText = this.add.text(100, 100, "Time: 0:00")
-		const TESTKEY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-		TESTKEY.on('down',  (_key:any, _event:any) => {
-			this.ghosts[0].startOnPath();
-		});
+		this.timeText = this.add.text(200, 100, "Time: 0:00")
+		
 
 		this.timer = this.time.addEvent({
 			delay:1000,

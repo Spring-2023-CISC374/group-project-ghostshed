@@ -14,16 +14,18 @@ export default class TutorialGhost extends Ghost {
         this.zone = zone;
 
         if (zone === 2) {
-            this.zonePath = scene.add.path(130, 100);
-            this.zonePath.lineTo(80, 100);
-            this.zonePath.lineTo(80, 350);
+            this.zonePath = scene.add.path(230, 100);
+            this.zonePath.lineTo(180, 100);
+            this.zonePath.lineTo(180, 350);
         } else if (zone === 4) {
-            this.zonePath = scene.add.path(200, 100);
-            this.zonePath.lineTo(320, 100);
+            this.zonePath = scene.add.path(300, 100);
+            this.zonePath.lineTo(420, 100);
+            this.zonePath.lineTo(420, 200)
+            this.GHOST_SPEED = 1/12000
         } else if (zone === 3) {
-            this.zonePath = scene.add.path(510, 100);
-            this.zonePath.lineTo(560, 100);
-            this.zonePath.lineTo(560, 350);
+            this.zonePath = scene.add.path(610, 100);
+            this.zonePath.lineTo(660, 100);
+            this.zonePath.lineTo(660, 350);
         }
     }
 

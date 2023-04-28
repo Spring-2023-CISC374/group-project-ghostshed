@@ -7,8 +7,8 @@ import TutorialScene from './scenes/TutorialScene'
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
 	parent: 'app',
-	width: 800,
-	height: 600,
+	width: 840,
+	height: 640,
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -16,6 +16,16 @@ const config: Phaser.Types.Core.GameConfig = {
 		},
 	},
 	scene: [PreloadScene, MainMenuScene, RoomScene, TutorialScene],
+	scale: {
+		parent: 'app',
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        min: {
+            width: 840,
+            height: 640
+        },
+        zoom: 1.35,  // Size of game canvas = game size * zoom
+    },
 }
 
 export default new Phaser.Game(config)
