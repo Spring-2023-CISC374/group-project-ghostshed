@@ -29,7 +29,7 @@ export default class TutorialScene extends BaseLevelScene {
 	}
 
 	startTimer () {
-		this.timeText = this.add.text(100, 100, "Time Left To Survive: 30s")
+		this.timeText = this.add.text(200, 100, "Time Left To Survive: 30s")
 
 		this.timer = this.time.addEvent({
 				delay: 1000,
@@ -147,22 +147,22 @@ export default class TutorialScene extends BaseLevelScene {
 		zone3Ghost.enableDoorModeOnly()
 
 		this.textBoxText = this.make.text({
-			x: 650,
-			y: 175,
+			x: 450,
+			y: 70,
 			text: 'Hello World',
 			origin: {
 				x: 0.5,
 				y: 0.5
 			},
 			style: {
-				font: '20px Arial',
-				wordWrap: { width: 200, useAdvancedWrap: true }
+				font: '18px Arial',
+				wordWrap: { width: 400, useAdvancedWrap: true }
 			}
 		})
 
 		this.handleTextBox(this.curStep)
 
-		this.finishButton = new Button(650, 400, 'Finish', this, () => { this.handleFinish() }, 18, 10)
+		this.finishButton = new Button(750, 400, 'Finish', this, () => { this.handleFinish() }, 18, 10)
 		this.finishButton.setVisible(false)
 
 		// Inputs

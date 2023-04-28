@@ -41,7 +41,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
   create () {
-    this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
+   		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
@@ -55,7 +55,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {
-				this.map.createLayer(layerName, this.tiles, 0, 0)
+			this.map.createLayer(layerName, this.tiles, 100, 0)
 		}
 
 		this.player = new Player(this);
