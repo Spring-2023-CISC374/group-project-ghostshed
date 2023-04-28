@@ -1,6 +1,7 @@
 export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     // https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/
+    // The follower.t value is the percentage of the path traversed
     protected follower: { t: number, vec: Phaser.Math.Vector2};
     protected zonePath?: Phaser.Curves.Path;
     protected zone: number = 0;
@@ -11,8 +12,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     protected fadedIn = false
 
     protected GHOST_SPEED: number = 1/3500;
-    protected PAUSE_TIME: number = 5000;
-    protected GAME_OVER_TIME: number = 8000;
+    protected PAUSE_TIME: number = 3000;
+    protected GAME_OVER_TIME: number = 6000;
 
 
     constructor(scene: Phaser.Scene, zone: number) {
@@ -40,17 +41,24 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    // This function initiates the movement of the ghost by setting the follower.t variable
     startOnPath()
     {
+        this.playMoveSound();
+
+        // make sure the speed is positive
         if (this.GHOST_SPEED < 0) this.GHOST_SPEED *= -1;
+        // ghost is moving so timePaused is 0
         this.timePaused = 0;
 
-        // set the t parameter at the start of the path
+        // set the t parameter to the start of the path
         this.follower.t = 0;
-        // get x and y of the given t point            
+        // get the point along the path based on the percentage of the path traveled (right now it is the start of the path, 0%)
         this.zonePath?.getPoint(this.follower.t, this.follower.vec);
-        // set the x and y of our enemy to the received from the previous step
+        // set the position of the ghost to the point defined above
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        // show the ghost because they are now moving
         this.visible = true
         this.setAlpha(0)
         this.fadedIn = false
@@ -73,8 +81,17 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    update(_time: any, delta: any)
+    // This function updates the ghosts position to move to the next position along the path
+    update(time: any, delta: any)
     {
+
+        // Make the ghost pulse when the player is less than 3 seconds from losing
+        if (this.GAME_OVER_TIME - this.timeInZone <= 3000 && time % 500 >= 250){
+            this.setScale(1.2, 1.2)
+        } else {
+            this.setScale(1, 1)
+        }
+
         if (!this.fadedIn) {
             this.handleFadeIn()
         }
@@ -90,16 +107,28 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (this.follower.t <= 1 && this.follower.t >= 0){
+            // The ghost will only pause in zone 2 or 3
+            // The ghost will remain paused for PAUSE_TIME ms
             if ((this.zone == 2 || this.zone == 3) && this.timePaused < this.PAUSE_TIME){
+                // The ghost is paused at 45% of the path - about halfway through
                 if (this.follower.t >= 0.45 && this.follower.t <= 0.5){
                     this.timePaused += delta;
                     // set delta to 0 so the ghost doesn't move
                     delta = 0;
                 }
+
+                if (this.timePaused >= this.PAUSE_TIME){
+                    this.playMoveSound()
+                }
             }
-            
+
+            // increase / decrease t value to move the ghost along the path
+            // increase if moving forwards, decrease if moving backwards
+            // depends on GHOST_SPEED >/< 0
             this.follower.t += this.GHOST_SPEED * delta;
+            // get the point along the path based on the percentage of the path traveled
             this.zonePath?.getPoint(this.follower.t, this.follower.vec);
+            // set the position of the ghost to the point defined above
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
 
         } else if (this.follower.t > 1) {
@@ -114,9 +143,10 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     retreat(action :string){
         if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || ((action == 'hide'))) && this.visible){
             this.GHOST_SPEED = this.GHOST_SPEED * -1;
-            // initiate the reverse
+            // initiate the reverse by moving to the next point along the path
             this.zonePath?.getPoint(this.follower.t, this.follower.vec);
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
+            
             this.timeInZone = 0;
             this.visible = false
 
@@ -127,7 +157,24 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    playMoveSound(){
+        if (this.zone === 2)
+            this.scene.sound.play('Ghost Move Left')
+        else if (this.zone === 3)
+            this.scene.sound.play('Ghost Move Right')
+        else if (this.zone === 4)
+            this.scene.sound.play('Ghost Move')
+    }
+
     isPaused(){
         return this.timePaused < this.PAUSE_TIME && this.timePaused > 0;
+    }
+
+    getDistance(){
+        return this.follower.t;
+    }
+
+    isVisible(){
+        return this.visible;
     }
 }

@@ -5,7 +5,7 @@ import { Sounds } from '../consts'
 
 export default class BaseLevelScene extends Phaser.Scene {
 
-  protected map!: Phaser.Tilemaps.Tilemap
+ 	protected map!: Phaser.Tilemaps.Tilemap
 	protected tiles!: Phaser.Tilemaps.Tileset 
 	protected player!: Player
 	protected curZone: number = 1
@@ -16,7 +16,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		super(params)
 	}
 
-  updateZone(newZone: number){
+  	updateZone(newZone: number){
 		this.curZone = newZone
 	}
 	
@@ -29,11 +29,14 @@ export default class BaseLevelScene extends Phaser.Scene {
 		}
 	}
 
-  killGhost(action:string){
-		// retreat the current ghost
-		if(this.ghosts[this.curZone - 2].retreat(action)){
-			// make a different ghost start moving again
-			this.ghosts[(this.curZone - 1) % 3].startOnPath();
+  	killGhost(action:string){
+		let retreated = this.ghosts[this.curZone - 2].retreat(action)
+		// if the side ghosts are killed with a flashlight, spawn the other side ghost
+		if (retreated && action === 'flashlight'){
+			if (this.curZone == 2 && !this.ghosts[1].isVisible())
+				this.ghosts[1].startOnPath();
+			else if (this.curZone == 3 && !this.ghosts[0].isVisible())
+				this.ghosts[0].startOnPath();
 		}
 	}
 

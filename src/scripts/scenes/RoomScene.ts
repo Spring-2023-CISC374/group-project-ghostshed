@@ -14,6 +14,8 @@ export default class RoomScene extends BaseLevelScene {
 	protected chance!: number
 	protected candles: number = 0;
 
+	private WINDOW_INTERVAL: number = 3000;
+
 	constructor() {
 		super({ key: 'RoomScene' })
 	}
@@ -128,7 +130,17 @@ export default class RoomScene extends BaseLevelScene {
 	}
 	
 	countTime(){
+		if(this.gameOver){
+			this.timer.destroy()
+		}
 		this.currentTime += 1;
+		
+		// Spawn a window ghost every X seconds (if there is no ghost there)
+		// current time is in seconds, constant variables are in ms
+		if (!this.ghosts[2].isVisible() && (this.currentTime*1000) % this.WINDOW_INTERVAL === 0){
+			this.ghosts[2].startOnPath()
+		}
+
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
 	}
 
@@ -187,6 +199,16 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		}
 		
+		let dist = this.ghosts[0].getDistance()
+		if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
+			this.ghosts[1].startOnPath();
+		}
+
+		dist = this.ghosts[1].getDistance()
+		if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
+			this.ghosts[0].startOnPath();
+		}
+
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
