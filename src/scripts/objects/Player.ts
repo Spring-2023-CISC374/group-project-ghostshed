@@ -49,7 +49,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.speed > 0) this.speed *= -1;
     }
 
-    update(time: any, delta: any)
+    update(_time: any, delta: any): any
     {
         if (this.moving){
             this.follower.t += this.speed * delta;
