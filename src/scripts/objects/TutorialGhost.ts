@@ -6,7 +6,7 @@ export default class TutorialGhost extends Ghost {
     protected doorMode = false
 
     constructor(scene: Phaser.Scene, zone: number) {
-        super(scene, zone);
+        super(scene, zone, 1);
         scene.add.existing(this);
 
         // initialize t as -1 so it doesn't move to start

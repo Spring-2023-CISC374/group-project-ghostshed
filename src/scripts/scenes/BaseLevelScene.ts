@@ -11,6 +11,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected curZone: number = 1
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
+	protected level: number = 3;
 
 	constructor (params: { key:string }) {
 		super(params)
@@ -45,9 +46,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
-		this.ghosts.push(new Ghost(this, 2))
-		this.ghosts.push(new Ghost(this, 3))
-		this.ghosts.push(new Ghost(this, 4))
+		this.ghosts.push(new Ghost(this, 2, this.level))
+		this.ghosts.push(new Ghost(this, 3, this.level))
+		this.ghosts.push(new Ghost(this, 4, this.level))
 
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();

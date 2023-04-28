@@ -8,7 +8,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private zone3Path?: Phaser.Curves.Path;
     private zone4Path?: Phaser.Curves.Path;
 
-    private speed: number = 1/1000;
+    private speed: number = 1/750;
     private moving: boolean = false;
     private targetZone: number = 0;
     
