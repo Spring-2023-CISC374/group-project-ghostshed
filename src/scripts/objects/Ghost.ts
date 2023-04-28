@@ -193,4 +193,14 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     isVisible(){
         return this.visible;
     }
+
+    reset(){
+        this.follower.t = -1;
+        this.isInPlayerZone = false;
+        this.timeInZone = 0;
+        this.timePaused = 0;
+        this.gameOver = false;
+        this.fadedIn = false;
+        this.GHOST_SPEED = 1/5000;
+    }
 }
