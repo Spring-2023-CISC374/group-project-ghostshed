@@ -1,12 +1,18 @@
 import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
 import { Sounds } from '../consts'
+import candleGhost from '../objects/Ghost'
+import Ghost from '../objects/Ghost'
 
 export default class RoomScene extends BaseLevelScene {
 
 	protected timer!: Phaser.Time.TimerEvent
+	protected candleTimer!: Phaser.Time.TimerEvent
 	protected timeText: any
 	protected currentTime:number = 0;
+	protected currentCandleTime: number = 0
+	protected chance!: number
+	protected candles: number = 0;
 
 	constructor() {
 		super({ key: 'RoomScene' })
@@ -26,6 +32,13 @@ export default class RoomScene extends BaseLevelScene {
 			callbackScope: this,
 			loop: true
 		  })
+		
+		this.candleTimer = this.time.addEvent({
+			delay:15000,
+			callback : this.countCandleTime,
+			callbackScope: this,
+			loop: true
+		})
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -81,6 +94,7 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 1){
 				this.sound.play(Sounds.BLOW_CANDLES)
 				console.log("Summoning Delayed")
+				this.candleGhost(-1)
 			}else{
 				console.log("Wasting Breath")
 			}
@@ -116,6 +130,47 @@ export default class RoomScene extends BaseLevelScene {
 	countTime(){
 		this.currentTime += 1;
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
+	}
+
+	candleGhost(lightCandle: number){
+        let new_candles = this.candles += lightCandle
+        if(lightCandle == -1){
+			console.log("A candle was blown out")
+			this.candles = new_candles
+			if(this.candles < 0){
+				console.log("Waste of breath")
+				this.candles = 0
+			}
+		}
+		else if(new_candles >= 4){
+            console.log("The Ghost is summoned - Game Over")
+            this.gameOver = true
+        } 
+        else {
+            console.log("A candle is lit")
+            this.candles = new_candles
+        }
+    }
+
+	countCandleTime(){
+		this.currentCandleTime += 1
+		//1 in 4 chance for candle to light
+		if(this.currentCandleTime == 10000){
+			this.chance = Math.floor(Math.random() * 4) + 1
+		}
+		//1 in 2 chance for candle to light
+		else if(this.currentCandleTime == 15000){
+			this.chance = Math.floor(Math.random() * 2) + 1
+		}
+		//guarantee chance for candle to light
+		else if(this.currentCandleTime == 20000){
+			this.chance = 1
+		}
+		//if chance = 1, reset counter and light candle
+		if(this.chance == 1){
+			this.currentCandleTime = 0
+			
+		}
 	}
 
 	update(time: any, delta: any) {
