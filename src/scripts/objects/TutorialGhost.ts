@@ -32,14 +32,14 @@ export default class TutorialGhost extends Ghost {
     /**
      * Toggles whether this tutorial ghost should stop at the halfway point instead of proceeding after the pauseTime
      */
-    public enableFlashlightModeOnly() {
+    public toggleFlashlightModeOnly() {
         this.flashLightMode = !this.flashLightMode
     }
 
     /**
      * Toggles whether this tutorial ghost should go straight to the door instead or waiting for the pauseTime
      */
-    public enableDoorModeOnly() {
+    public toggleDoorModeOnly() {
         this.doorMode = !this.doorMode
     }
 

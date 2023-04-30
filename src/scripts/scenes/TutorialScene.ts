@@ -181,7 +181,16 @@ export default class TutorialScene extends BaseLevelScene {
 				if (this.usedCandle) {
 					this.startCandleTimer()
 					this.startTimer()
-					this.ghosts[1].startOnPath();
+
+					// Reset the ghosts to work like the real things
+					const zone2Ghost = this.ghosts[0] as TutorialGhost
+					const zone3Ghost = this.ghosts[1] as TutorialGhost
+			
+					zone2Ghost.toggleFlashlightModeOnly()
+					zone3Ghost.toggleDoorModeOnly()
+
+					zone2Ghost.startOnPath()
+
 					this.incrementStep()
 				}
 				break
@@ -218,9 +227,9 @@ export default class TutorialScene extends BaseLevelScene {
 		const zone2Ghost = this.ghosts[0] as TutorialGhost
 		const zone3Ghost = this.ghosts[1] as TutorialGhost
 
-		zone2Ghost.enableFlashlightModeOnly()
+		zone2Ghost.toggleFlashlightModeOnly()
 		zone2Ghost.startOnPath()
-		zone3Ghost.enableDoorModeOnly()
+		zone3Ghost.toggleDoorModeOnly()
 
 		this.textBoxText = this.make.text({
 			x: 450,
