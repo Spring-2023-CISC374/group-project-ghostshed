@@ -33,10 +33,6 @@ export default class RoomScene extends BaseLevelScene {
 			callbackScope: this,
 			loop: true
 		})
-
-		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
-		}
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 

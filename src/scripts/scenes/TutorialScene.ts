@@ -11,11 +11,14 @@ export default class TutorialScene extends BaseLevelScene {
 	usedFlashlight = false
 	usedDoor = false
 	usedHide = false
+	usedCandle = false
 	curStep = 0
 
 	timer!: Phaser.Time.TimerEvent
 	timeText!: Phaser.GameObjects.Text
 	timeCount = 0
+
+	candleTimer!: Phaser.Time.TimerEvent
 
 	textBoxText!: Phaser.GameObjects.Text
 
@@ -37,6 +40,15 @@ export default class TutorialScene extends BaseLevelScene {
 				callbackScope: this,
 				loop: true
 		  })
+	}
+
+	startCandleTimer () {
+		this.candleTimer = this.time.addEvent({
+			delay: 2000,
+			callback : this.countCandleTime,
+			callbackScope: this,
+			loop: true
+		})
 	}
 
 	countTime(){
@@ -68,6 +80,49 @@ export default class TutorialScene extends BaseLevelScene {
 
 		if (this.curStep === 4 && action === 'hide') {
 			this.usedHide = true
+		}
+	}
+
+	candleGhost(lightCandle: number){
+		//let new_candles = this.litCandles += lightCandle
+		if(lightCandle == -1){
+			if(this.litCandles <= 0){
+				console.log("Waste of breath")
+				this.litCandles = 0
+			}
+			else{
+				console.log("A candle was blown out")
+				this.extinguishCandle(this.litCandles)
+				this.litCandles -= 1
+			}
+		}
+		else {
+			if(this.litCandles < 4){
+				this.lightCandle(this.litCandles)
+				this.litCandles += 1
+			}
+		}
+	}
+
+	countCandleTime() {
+		this.currentCandleTime += 1000
+		//1 in 4 chance for candle to light
+		if(this.currentCandleTime == 2000){
+			this.chance = Math.floor(Math.random() * 4) + 1
+		}
+		//1 in 2 chance for candle to light
+		else if(this.currentCandleTime == 3000){
+			this.chance = Math.floor(Math.random() * 2) + 1
+		}
+		//guarantee chance for candle to light
+		if(this.currentCandleTime == 5000){
+			this.chance = 1
+		}
+		//if chance = 1, reset counter and light candle
+		if(this.chance == 1){
+			this.currentCandleTime = 0
+			this.chance = 0
+			this.candleGhost(1)
 		}
 	}
 
@@ -105,11 +160,22 @@ export default class TutorialScene extends BaseLevelScene {
 				break
 			case 4:
 				if (this.usedHide) {
-					this.startTimer()
+					// Force light a candle to start
+					this.lightCandle(this.litCandles)
+					this.lightCandle(this.litCandles)
+					this.litCandles += 2
+
 					this.incrementStep()
 				}
 				break
 			case 5:
+				if (this.usedCandle) {
+					this.startCandleTimer()
+					this.startTimer()
+					this.incrementStep()
+				}
+				break
+			case 6:
 				if (this.timeCount === 30) {
 					this.incrementStep()
 					this.timeText.setVisible(false)
@@ -118,7 +184,7 @@ export default class TutorialScene extends BaseLevelScene {
 					this.gameOver = true
 				}
 				break
-			case 6:
+			case 7:
 				// Empty end step to wait for complete
 				break
 			default:
@@ -218,6 +284,8 @@ export default class TutorialScene extends BaseLevelScene {
 			console.log("Trying to Blow out candle")
 			if(this.curZone == 1){
 				this.sound.play(Sounds.BLOW_CANDLES)
+				this.candleGhost(-1)
+				this.usedCandle = true
 				console.log("Summoning Delayed")
 			}else{
 				console.log("Wasting Breath")

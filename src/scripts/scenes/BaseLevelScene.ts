@@ -66,6 +66,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
 
+		for(let i = 0; i < 4; i++){
+			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+		}
 
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {
