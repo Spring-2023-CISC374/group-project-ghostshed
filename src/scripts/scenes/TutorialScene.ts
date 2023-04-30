@@ -24,6 +24,8 @@ export default class TutorialScene extends BaseLevelScene {
 
 	finishButton!: Button
 
+	private WINDOW_INTERVAL: number = 3000;
+
 	constructor() {
 		super({ key: 'TutorialScene' })
 		this.paused = false
@@ -54,6 +56,13 @@ export default class TutorialScene extends BaseLevelScene {
 	countTime(){
 		this.timeCount += 1
 		this.timeText.setText(`Time Left To Survive: ${Math.floor(30 - this.timeCount)}s`);
+
+		// Spawn a window ghost every X seconds (if there is no ghost there)
+		// current time is in seconds, constant variables are in ms
+		if (!this.ghosts[2].isVisible() && (this.timeCount*1000) % this.WINDOW_INTERVAL === 0){
+			this.ghosts[2].startOnPath()
+		}
+
 	}
 
 	handleTextBox (step: number) {
@@ -155,6 +164,7 @@ export default class TutorialScene extends BaseLevelScene {
 				break
 			case 3:
 				if (this.usedDoor) {
+					this.ghosts[2].startOnPath()
 					this.incrementStep()
 				}
 				break
@@ -162,8 +172,7 @@ export default class TutorialScene extends BaseLevelScene {
 				if (this.usedHide) {
 					// Force light a candle to start
 					this.lightCandle(this.litCandles)
-					this.lightCandle(this.litCandles)
-					this.litCandles += 2
+					this.litCandles += 1
 
 					this.incrementStep()
 				}
@@ -172,6 +181,7 @@ export default class TutorialScene extends BaseLevelScene {
 				if (this.usedCandle) {
 					this.startCandleTimer()
 					this.startTimer()
+					this.ghosts[1].startOnPath();
 					this.incrementStep()
 				}
 				break
@@ -339,6 +349,18 @@ export default class TutorialScene extends BaseLevelScene {
 					this.gameOver = true
 					console.log("THE GAME IS OVER. THE GHOSTS WIN");
 				}
+			}
+		}
+
+		if (this.curStep > 5) {
+			let dist = this.ghosts[0].getDistance()
+			if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
+				this.ghosts[1].startOnPath();
+			}
+
+			dist = this.ghosts[1].getDistance()
+			if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
+				this.ghosts[0].startOnPath();
 			}
 		}
 

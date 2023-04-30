@@ -43,10 +43,17 @@ export default class TutorialGhost extends Ghost {
         this.doorMode = !this.doorMode
     }
 
-    update(_time: any, delta: any)
+    update(time: any, delta: any)
     {
         if (!this.fadedIn) {
             this.handleFadeIn()
+        }
+
+        // Make the ghost pulse when the player is less than 3 seconds from losing
+        if (this.GAME_OVER_TIME - this.timeInZone <= 3000 && time % 500 >= 250){
+            this.setScale(1.2, 1.2)
+        } else {
+            this.setScale(1, 1)
         }
 
         if (this.isInPlayerZone){
@@ -82,25 +89,5 @@ export default class TutorialGhost extends Ghost {
         } 
         
         this.isInPlayerZone = this.follower.t >= 1;
-    }
-
-    retreat(action :string){
-        if ((((action == 'door') == (this.follower.t >= 1)) && ((action == 'flashlight') == (this.follower.t < 1)) || (action == 'hide'))){
-            this.GHOST_SPEED = this.GHOST_SPEED * -1;
-            // initiate the reverse
-            this.zonePath?.getPoint(this.follower.t, this.follower.vec);
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);
-            this.timeInZone = 0;
-            this.visible = false
-
-            if (this.isPaused()) this.timePaused = this.PAUSE_TIME;
-            return true
-        }else{
-            return false
-        }
-    }
-
-    isPaused(){
-        return this.timePaused < this.PAUSE_TIME && this.timePaused > 0;
     }
 }
