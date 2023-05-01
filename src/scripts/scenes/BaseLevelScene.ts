@@ -18,6 +18,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
   	updateZone(newZone: number){
+		console.log(newZone)
 		this.curZone = newZone
 	}
 	
@@ -66,8 +67,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
 
-		this.map.setTileIndexCallback(486, () => { this.updateZone(1)}, this, "Zone 1");
-		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
+		this.map.setTileIndexCallback(201, () => { this.updateZone(1)}, this, "Decorations Ground");
+		this.map.setTileIndexCallback(202, () => { this.updateZone(1)}, this, "Decorations Ground");
+		const zone1 = this.map.getLayer("Decorations Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone1);
 
 		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");
