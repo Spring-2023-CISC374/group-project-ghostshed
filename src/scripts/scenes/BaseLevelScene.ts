@@ -11,6 +11,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected curZone: number = 1
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
+	protected level: number = 3;
 
 	protected currentCandleTime: number = 0
 	protected chance!: number
@@ -23,6 +24,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 	updateZone(newZone: number){
 		this.curZone = newZone
+		console.log(newZone)
 	}
 	
 	hide() {
@@ -59,9 +61,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
-		this.ghosts.push(new Ghost(this, 2))
-		this.ghosts.push(new Ghost(this, 3))
-		this.ghosts.push(new Ghost(this, 4))
+		this.ghosts.push(new Ghost(this, 2, this.level))
+		this.ghosts.push(new Ghost(this, 3, this.level))
+		this.ghosts.push(new Ghost(this, 4, this.level))
 
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
@@ -82,8 +84,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
 
-		this.map.setTileIndexCallback(486, () => { this.updateZone(1)}, this, "Zone 1");
-		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
+		this.map.setTileIndexCallback(201, () => { this.updateZone(1)}, this, "Decorations Ground");
+		this.map.setTileIndexCallback(202, () => { this.updateZone(1)}, this, "Decorations Ground");
+		const zone1 = this.map.getLayer("Decorations Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone1);
 
 		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");

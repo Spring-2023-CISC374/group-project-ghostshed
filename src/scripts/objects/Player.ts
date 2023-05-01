@@ -8,13 +8,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private zone3Path?: Phaser.Curves.Path;
     private zone4Path?: Phaser.Curves.Path;
 
-    private speed: number = 1/1000;
+    private speed: number = 1/750;
     private moving: boolean = false;
     private targetZone: number = 0;
     
 
     constructor(scene: Phaser.Scene) {
         super(scene, 415, 500, 'player');
+        scene.physics.world.enable(this);
         scene.add.existing(this);
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
@@ -79,6 +80,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.zonePath = this.zone3Path;
         } else if (zone === 4){
             this.zonePath = this.zone4Path;
-        } 
+        } else {
+            this.zonePath = this.zone1Path;
+        }
+    }
+
+    reset(){
+        this.moving = false
+        this.follower.t = 0
+        this.setPosition(415, 500)
     }
 }

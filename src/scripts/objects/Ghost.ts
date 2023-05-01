@@ -12,12 +12,12 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     public gameOver = false;
     protected fadedIn = false
 
-    protected GHOST_SPEED: number = 1/3500;
-    protected PAUSE_TIME: number = 3000;
+    protected GHOST_SPEED: number = 1/5000;
+    protected PAUSE_TIME: number = 2000;
     protected GAME_OVER_TIME: number = 6000;
 
 
-    constructor(scene: Phaser.Scene, zone: number) {
+    constructor(scene: Phaser.Scene, zone: number, level: number) {
         super(scene, 0, 0, 'ghost');
         scene.add.existing(this);
         this.setDepth(1)
@@ -39,6 +39,21 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
             this.zonePath = scene.add.path(610, 100);
             this.zonePath.lineTo(660, 100);
             this.zonePath.lineTo(660, 350);
+        }
+
+        switch(level){
+            case 1:
+                this.GHOST_SPEED *= 1;
+                break;
+            case 2:
+                this.GHOST_SPEED *= 1.5;
+                break;
+            case 3: 
+                this.GHOST_SPEED *= 2;
+                break;
+            default:
+                this.GHOST_SPEED *= 1;
+                break;
         }
     }
 
@@ -87,7 +102,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     {
 
         // Make the ghost pulse when the player is less than 3 seconds from losing
-        if (this.GAME_OVER_TIME - this.timeInZone <= 3000 && time % 500 >= 250){
+        if ((this.GAME_OVER_TIME - this.timeInZone <= 3000 || this.zone == 4 && this.follower.t >= 0.7) && time % 500 >= 250){
             this.setScale(1.2, 1.2)
         } else {
             this.setScale(1, 1)
@@ -178,5 +193,22 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     isVisible(){
         return this.visible;
+    }
+
+    reset(){
+        // reset the position of the ghost
+        this.follower.t = 0;
+        this.zonePath?.getPoint(this.follower.t, this.follower.vec);
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        // set follower.t to -1 so the ghost doesn't move
+        this.follower.t = -1;
+        // reset all fields
+        this.isInPlayerZone = false;
+        this.timeInZone = 0;
+        this.timePaused = 0;
+        this.gameOver = false;
+        this.fadedIn = false;
+        this.visible = false;
+        this.GHOST_SPEED = 1/5000;
     }
 }
