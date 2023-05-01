@@ -103,6 +103,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         if (this.timeInZone >= this.GAME_OVER_TIME){
             this.gameOver = true
         }
+        
         if((this.zone === 4) && this.follower.t >= 1){
             this.gameOver = true
         }

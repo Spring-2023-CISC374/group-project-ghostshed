@@ -12,15 +12,20 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
 
+	protected currentCandleTime: number = 0
+	protected chance!: number
+	protected litCandles: number = 0;
+	protected candleTiles: Phaser.Tilemaps.Tile[] = []
+
 	constructor (params: { key:string }) {
 		super(params)
 	}
 
-  	updateZone(newZone: number){
+	updateZone(newZone: number){
 		this.curZone = newZone
 	}
 	
-	hide(){
+	hide() {
 		console.log("Trying to Hide")
 		if(this.curZone == 4){
 			console.log("Hiding")
@@ -29,7 +34,16 @@ export default class BaseLevelScene extends Phaser.Scene {
 		}
 	}
 
-  	killGhost(action:string){
+	extinguishCandle(currentlylit: number){
+		this.candleTiles[currentlylit-1].index = 201
+	}
+
+	lightCandle(currentlylit: number){
+		this.candleTiles[currentlylit].index = 202
+		this.sound.play(Sounds.LIGHTCANDLE)
+	}
+
+	killGhost(action:string) {
 		let retreated = this.ghosts[this.curZone - 2].retreat(action)
 		// if the side ghosts are killed with a flashlight, spawn the other side ghost
 		if (retreated && action === 'flashlight'){
@@ -41,7 +55,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
   create () {
-   		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
+		this.map = this.make.tilemap({ key: 'tilemap', tileHeight: 32, tileWidth: 32 })
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
@@ -52,6 +66,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
 
+		for(let i = 0; i < 4; i++){
+			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+		}
 
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {

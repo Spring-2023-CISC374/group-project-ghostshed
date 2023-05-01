@@ -8,10 +8,6 @@ export default class RoomScene extends BaseLevelScene {
 	protected candleTimer!: Phaser.Time.TimerEvent
 	protected timeText: any
 	protected currentTime:number = 0;
-	protected currentCandleTime: number = 0
-	protected chance!: number
-	protected litCandles: number = 0;
-	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -37,10 +33,6 @@ export default class RoomScene extends BaseLevelScene {
 			callbackScope: this,
 			loop: true
 		})
-
-		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
-		}
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -145,8 +137,8 @@ export default class RoomScene extends BaseLevelScene {
 	}
 
 	candleGhost(lightCandle: number){
-        //let new_candles = this.litCandles += lightCandle
-        if(lightCandle == -1){
+		//let new_candles = this.litCandles += lightCandle
+		if(lightCandle == -1){
 			if(this.litCandles <= 0){
 				console.log("Waste of breath")
 				this.litCandles = 0
@@ -157,18 +149,18 @@ export default class RoomScene extends BaseLevelScene {
 				this.litCandles -= 1
 			}
 		}
-        else {
-            console.log("A candle is lit")
+		else {
+			console.log("A candle is lit")
 			if(this.litCandles >= 4){
 				console.log("The Ghost is summoned - Game Over")
 				this.candleTimer.destroy()
 				this.gameOver = true
 			} else {
 				this.lightCandle(this.litCandles)
-            	this.litCandles += 1
+				this.litCandles += 1
 			}
-        }
-    }
+		}
+	}
 
 	countCandleTime(){
 		this.currentCandleTime += 1000
@@ -190,15 +182,6 @@ export default class RoomScene extends BaseLevelScene {
 			this.chance = 0
 			this.candleGhost(1)
 		}
-	}
-
-	extinguishCandle(currentlylit: number){
-		this.candleTiles[currentlylit-1].index = 201
-	}
-
-	lightCandle(currentlylit: number){
-		this.candleTiles[currentlylit].index = 202
-		this.sound.play(Sounds.LIGHTCANDLE)
 	}
 
 	update(time: any, delta: any) {
