@@ -24,6 +24,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 	updateZone(newZone: number){
 		this.curZone = newZone
+		console.log(newZone)
 	}
 	
 	hide() {
