@@ -69,7 +69,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.ghosts[0].startOnPath();
 
 		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
 		}
 
 		// Render the layers in Phaser
@@ -84,9 +84,9 @@ export default class BaseLevelScene extends Phaser.Scene {
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
 
-		this.map.setTileIndexCallback(201, () => { this.updateZone(1)}, this, "Decorations Ground");
-		this.map.setTileIndexCallback(202, () => { this.updateZone(1)}, this, "Decorations Ground");
-		const zone1 = this.map.getLayer("Decorations Ground").tilemapLayer
+		this.map.setTileIndexCallback(201, () => { this.updateZone(1)}, this, "Zone 1");
+		this.map.setTileIndexCallback(202, () => { this.updateZone(1)}, this, "Zone 1");
+		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
 		this.physics.add.overlap(this.player, zone1);
 
 		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");

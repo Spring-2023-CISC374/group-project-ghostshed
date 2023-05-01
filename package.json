@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"homepage":"https://github.com/Spring-2023-CISC374/group-project-ghostshed/",
+	"homepage": "https://github.com/Spring-2023-CISC374/group-project-ghostshed/",
 	"scripts": {
 		"start": "vite",
 		"build": "tsc && vite build",
