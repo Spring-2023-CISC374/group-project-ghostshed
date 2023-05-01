@@ -3,6 +3,10 @@ A game about ghosts and haunted interior design
 
 *Developed by Collective Games*
 
+## Try It
+
+Latest stable build is live at https://spring-2023-cisc374.github.io/group-project-ghostshed/
+
 ## Contributions
 
 #### Jaydon 
