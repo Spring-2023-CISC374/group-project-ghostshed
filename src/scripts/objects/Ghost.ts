@@ -195,12 +195,19 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     }
 
     reset(){
+        // reset the position of the ghost
+        this.follower.t = 0;
+        this.zonePath?.getPoint(this.follower.t, this.follower.vec);
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        // set follower.t to -1 so the ghost doesn't move
         this.follower.t = -1;
+        // reset all fields
         this.isInPlayerZone = false;
         this.timeInZone = 0;
         this.timePaused = 0;
         this.gameOver = false;
         this.fadedIn = false;
+        this.visible = false;
         this.GHOST_SPEED = 1/5000;
     }
 }

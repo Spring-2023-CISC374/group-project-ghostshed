@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import BaseLevelScene from './BaseLevelScene'
 import { Sounds } from '../consts'
+import Button from '../objects/Button'
 
 export default class RoomScene extends BaseLevelScene {
 
@@ -12,6 +13,7 @@ export default class RoomScene extends BaseLevelScene {
 	protected chance!: number
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
+	protected resetButton!: Button;
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -23,20 +25,10 @@ export default class RoomScene extends BaseLevelScene {
 		super.create()
 		this.timeText = this.add.text(200, 100, "Time: 0:00")
 		
+		this.resetButton = new Button(750, 400, 'Restart', this, () => { this.resetLevel() }, 18, 10)
+		this.resetButton.setVisible(false)
 
-		this.timer = this.time.addEvent({
-			delay:1000,
-			callback : this.countTime,
-			callbackScope: this,
-			loop: true
-		  })
-		
-		this.candleTimer = this.time.addEvent({
-			delay:2000,
-			callback : this.countCandleTime,
-			callbackScope: this,
-			loop: true
-		})
+		this.createTimers()
 
 		for(let i = 0; i < 4; i++){
 			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
@@ -61,7 +53,6 @@ export default class RoomScene extends BaseLevelScene {
 		const fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
 		fKey.on('down',  (_key:any, _event:any) => {
-
 			console.log("Using Flashlight")
 			if(this.curZone == 2|| this.curZone == 3){
 				this.sound.play(Sounds.FLASHLIGHT)
@@ -106,26 +97,34 @@ export default class RoomScene extends BaseLevelScene {
 
 		const Zone1Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		Zone1Key.on('down',  (_key:any, _event:any) => {
-			this.player.move(this.curZone, 1);
-			this.sound.play(Sounds.MOVE)
+			if (!this.gameOver){
+				this.player.move(this.curZone, 1);
+				this.sound.play(Sounds.MOVE)
+			}
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 		Zone2Key.on('down',  (_key:any, _event:any) => {
-			this.player.move(this.curZone, 2);
-			this.sound.play(Sounds.MOVE)
+			if (!this.gameOver){
+				this.player.move(this.curZone, 2);
+				this.sound.play(Sounds.MOVE)
+			}
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 		Zone3Key.on('down',  (_key:any, _event:any) => {
-			this.player.move(this.curZone, 3);
-			this.sound.play(Sounds.MOVE)
+			if (!this.gameOver){
+				this.player.move(this.curZone, 3);
+				this.sound.play(Sounds.MOVE)
+			}
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 		Zone4Key.on('down',  (_key:any, _event:any) => {
-			this.player.move(this.curZone, 4);
-			this.sound.play(Sounds.MOVE)
+			if (!this.gameOver){
+				this.player.move(this.curZone, 4);
+				this.sound.play(Sounds.MOVE)
+			}
 		});
 	}
 	
@@ -203,6 +202,7 @@ export default class RoomScene extends BaseLevelScene {
 
 	update(time: any, delta: any) {
 		if(this.gameOver){
+			this.resetButton.setVisible(true)
 			return
 		}
 
@@ -229,5 +229,49 @@ export default class RoomScene extends BaseLevelScene {
 		let zone = this.player.update(time, delta);
 		if (zone)
 			this.curZone = zone;
+	}
+
+	createTimers(){
+		this.timer = this.time.addEvent({
+			delay:1000,
+			callback : this.countTime,
+			callbackScope: this,
+			loop: true
+		  })
+		
+		this.candleTimer = this.time.addEvent({
+			delay:2000,
+			callback : this.countCandleTime,
+			callbackScope: this,
+			loop: true
+		})
+	}
+
+	resetCandles(){
+		this.currentCandleTime = 0
+		console.log(this.litCandles)
+		console.log(this.candleTiles)
+		for(let i = 1; i <= this.litCandles; i++){
+			this.extinguishCandle(i)
+		} 
+		this.litCandles = 0
+	}
+
+	resetLevel() {
+		this.createTimers()
+		this.resetCandles()
+		this.currentTime = 0
+		this.curZone = 1
+		this.timeText.setText(`Time: 0:00`)
+
+		
+		for (let ghost of this.ghosts){
+			ghost.reset()
+		}
+		this.player.reset()
+		this.ghosts[0].startOnPath()
+
+		this.gameOver = false
+		this.resetButton.setVisible(false)
 	}
 }

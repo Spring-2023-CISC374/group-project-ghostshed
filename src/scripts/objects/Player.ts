@@ -81,4 +81,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.zonePath = this.zone4Path;
         } 
     }
+
+    reset(){
+        this.moving = false
+        this.follower.t = 0
+        this.setPosition(415, 500)
+    }
 }
