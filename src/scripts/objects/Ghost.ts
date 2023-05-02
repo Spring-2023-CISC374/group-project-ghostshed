@@ -83,11 +83,10 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         //this.setAlpha(0)
     }
 
-    initiateFadeIn(alpha: number){
+    initiateFadeIn(alpha:  number){
         this.toFadeIn = true;
-        this.toFadeOut = false;
+        this.toFadeOut = false;        
         this.fadeInBound = alpha > 1 ? 1 : alpha
-        console.log(this.fadeInBound)
     }
 
     initiateFadeOut() {
@@ -96,36 +95,38 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     }
 
     fadeIn () {
-        let newAlpha = this.fadeOutBound
-        if(this.zone === 4){
-            newAlpha = this.alpha += 0.01
-            this.setAlpha(newAlpha)   
-        }else{
-            newAlpha = this.alpha += 0.02
-            this.setAlpha(newAlpha)    
-        }
-       
-        if (newAlpha >= this.fadeInBound) {
-            this.toFadeIn = false
-        } else {
-            this.toFadeIn = true
+        if (this.alpha <= this.fadeInBound){
+            if(this.zone === 4){
+                this.alpha += 0.01
+                this.setAlpha(this.alpha)   
+            }else{
+                this.alpha += 0.02
+                this.setAlpha(this.alpha)    
+            }
+
+            if (this.alpha >= this.fadeInBound) {
+                this.toFadeIn = false
+            } else {
+                this.toFadeIn = true
+            }
         }
     }
 
     fadeOut () {
-        let newAlpha = 1
-        if(this.zone === 4){
-            newAlpha = this.alpha -= 0.01
-            this.setAlpha(newAlpha)   
-        }else{
-            newAlpha = this.alpha -= 0.02
-            this.setAlpha(newAlpha)    
-        }
-       
-        if (newAlpha <= 0.3) {
-            this.toFadeOut = false
-        } else {
-            this.toFadeOut = true
+        if (this.alpha >= this.fadeOutBound){
+            if(this.zone === 4){
+                this.alpha -= 0.01
+                this.setAlpha(this.alpha)   
+            }else{
+                this.alpha -= 0.02
+                this.setAlpha(this.alpha)    
+            }
+
+            if (this.alpha <= this.fadeOutBound) {
+                this.toFadeOut = false
+            } else {
+                this.toFadeOut = true
+            }
         }
     }
 
@@ -143,10 +144,8 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
        
         if (this.toFadeIn){
             this.fadeIn()
-            console.log("fading in" + this.zone)
         } else if (this.toFadeOut) {
             this.fadeOut()
-            console.log("fading out" + this.zone)
         }
         
 
@@ -228,6 +227,10 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     getDistance(){
         return this.follower.t;
+    }
+
+    getZone(){
+        return this.zone
     }
 
     isVisible(){
