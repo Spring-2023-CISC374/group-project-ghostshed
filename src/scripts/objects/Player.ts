@@ -95,5 +95,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.moving = false
         this.follower.t = 0
         this.setPosition(415, 500)
+        this.light.x = this.x
+        this.light.y = this.y
     }
 }

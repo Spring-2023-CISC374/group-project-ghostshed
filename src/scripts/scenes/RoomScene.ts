@@ -199,7 +199,7 @@ export default class RoomScene extends BaseLevelScene {
 		for (let ghost of this.ghosts){
 			// calculate distance from player and set the fade in bound
 			if (this.curZone === ghost.getZone()){
-				let alpha = 60/this.calculateDistance(this.player.x, this.player.y, ghost.x, ghost.y)
+				let alpha = 75 / this.calculateDistance(this.player.x, this.player.y, ghost.x, ghost.y)
 				ghost.initiateFadeIn(alpha)
 			}
 
