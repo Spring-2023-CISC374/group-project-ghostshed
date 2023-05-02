@@ -74,12 +74,23 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {
-			this.map.createLayer(layerName, this.tiles, 100, 0)
+			this.map.createLayer(layerName, this.tiles, 100, 0).setPipeline('Light2D');
 		}
 
 		this.player = new Player(this);
 		this.player.setScale(2,2)
 
+		this.initializeLighting()
+
+		this.initializeZones()
+    this.initializeAudio()
+  }
+
+	initializeLighting () {
+		this.lights.enable().setAmbientColor(0x555555);
+	}
+
+	initializeZones () {
 		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
@@ -100,9 +111,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
-
-    this.initializeAudio()
-  }
+	}
 
   initializeAudio () {
     // Get every registered sound in the enum, load them with the corresponding key here
