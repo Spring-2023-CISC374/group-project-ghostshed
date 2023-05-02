@@ -28,7 +28,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	updateZone(newZone: number){
 		if (this.curZone != newZone && newZone > 1){
 			let ghostIndex = (newZone + 1) % 3
-			let alpha = this.calculateDistance(this.player.x, this.player.y, this.ghosts[ghostIndex].x, this.ghosts[ghostIndex].y) / 200
+			let alpha = 60/this.calculateDistance(this.player.x, this.player.y, this.ghosts[ghostIndex].x, this.ghosts[ghostIndex].y)
 			this.ghosts[ghostIndex].initiateFadeIn(alpha)
 
 			// a distance of 60 is when the player and ghost are both at the door

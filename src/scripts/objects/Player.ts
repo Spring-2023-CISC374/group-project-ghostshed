@@ -19,7 +19,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.world.enable(this);
         scene.add.existing(this);
 
-        this.light = scene.lights.addLight(this.x, this.y, 150).setScrollFactor(0.0);
+        this.light = scene.lights.addLight(this.x, this.y, 100).setScrollFactor(0.0);
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
 
