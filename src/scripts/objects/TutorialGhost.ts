@@ -46,7 +46,7 @@ export default class TutorialGhost extends Ghost {
     update(time: any, delta: any)
     {
         if (!this.fadedIn) {
-            this.handleFadeIn()
+            this.fadeIn()
         }
 
         // Make the ghost pulse when the player is less than 3 seconds from losing
