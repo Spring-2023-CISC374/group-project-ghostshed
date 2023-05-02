@@ -26,7 +26,7 @@ export default class TutorialScene extends BaseLevelScene {
 
 	private WINDOW_INTERVAL: number = 3000;
 
-	constructor() {
+	constructor () {
 		super({ key: 'TutorialScene' })
 		this.paused = false
 		this.visitedZones = [false, false, false, false]
@@ -345,7 +345,7 @@ export default class TutorialScene extends BaseLevelScene {
 	}
 
 	update(time: any, delta: any) {
-		if(this.gameOver){
+		if (this.gameOver) {
 			return
 		}
 

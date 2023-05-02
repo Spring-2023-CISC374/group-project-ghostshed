@@ -3,6 +3,7 @@ import Player from '../objects/Player'
 import Ghost from '../objects/Ghost'
 import { Sounds } from '../consts'
 
+
 export default class BaseLevelScene extends Phaser.Scene {
 
  	protected map!: Phaser.Tilemaps.Tilemap
@@ -17,6 +18,8 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected chance!: number
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
+
+	protected pointLights: Phaser.GameObjects.Light[] = []
 
 	constructor (params: { key:string }) {
 		super(params)
@@ -38,11 +41,14 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 	extinguishCandle(currentlylit: number){
 		this.candleTiles[currentlylit-1].index = 201
+		this.pointLights[currentlylit-1].visible = false
 	}
 
 	lightCandle(currentlylit: number){
-		this.candleTiles[currentlylit].index = 202
+		const tile = this.candleTiles[currentlylit]
+		tile.index = 202
 		this.sound.play(Sounds.LIGHTCANDLE)
+		this.pointLights[currentlylit].visible = true
 	}
 
 	killGhost(action:string) {
@@ -68,26 +74,31 @@ export default class BaseLevelScene extends Phaser.Scene {
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
 
-		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
-		}
-
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {
 			this.map.createLayer(layerName, this.tiles, 100, 0).setPipeline('Light2D');
+		}
+
+		// Initialize candles and their lights
+		for(let i = 0; i < 4; i++){
+			const tile = this.map.getLayer('Zone 1').data[15][8 + i]
+			const x = this.map.tileToWorldX(tile.x) + 16 // Offset to the half to get the middle
+			const y = this.map.tileToWorldY(tile.y) + 16 // Offset to the half to get the middle
+			this.candleTiles.push(tile)
+			this.pointLights.push(this.lights.addLight(x, y, 100, undefined, 0.65))
+			this.pointLights[i].visible = false
 		}
 
 		this.player = new Player(this);
 		this.player.setScale(2,2)
 
 		this.initializeLighting()
-
 		this.initializeZones()
     this.initializeAudio()
   }
 
 	initializeLighting () {
-		this.lights.enable().setAmbientColor(0x555555);
+		this.lights.enable().setAmbientColor(0x171717);
 	}
 
 	initializeZones () {
