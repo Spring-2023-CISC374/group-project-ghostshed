@@ -15,20 +15,25 @@ export default class MainMenuScene extends Phaser.Scene {
     const centerX = width / 2
     const centerY = height / 2
 
-    this.trees = this.add.tileSprite(0, 0, 0, 0, 'background').setOrigin(0, 0);
-    this.trees.setScale(1, 0.75)
+    //this.trees = this.add.tileSprite(0, 0, 0, 0, 'background').setOrigin(0, 0);
+    
+    this.add.video(400, 250, "Start-Animation").play(true)
 
-    new Button(centerX, centerY, 'Play', this, () => { this.handlePlay() })
-    new Button(centerX, centerY + 75, 'Tutorial', this, () => { this.handleTutorial() })
+    
+    //this.trees.setScale(1, 0.75)
 
-    this.add.text(centerX, centerY - 100, 'Ghost Shed')
+    new Button(200, 225, 'Play', this, () => { this.handlePlay() })
+    new Button(325, 225, 'Tutorial', this, () => { this.handleTutorial() })
+
+    this.add.text(300, 50, 'Ghost Shed')
     .setFontSize(60)
     .setOrigin(0.5, 0.5)
+    .setColor("Red")
 
   }
 
   update () {
-    this.trees.tilePositionX -= 1;
+    //this.trees.tilePositionX -= 1;
   }
 
   handlePlay () {
