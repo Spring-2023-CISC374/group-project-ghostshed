@@ -153,6 +153,7 @@ export default class TutorialScene extends BaseLevelScene {
 				}
 
 				if (valid) {
+					this.ghosts[0].startOnPath()
 					this.incrementStep()
 				}
 
@@ -228,7 +229,6 @@ export default class TutorialScene extends BaseLevelScene {
 		const zone3Ghost = this.ghosts[1] as TutorialGhost
 
 		zone2Ghost.toggleFlashlightModeOnly()
-		zone2Ghost.startOnPath()
 		zone3Ghost.toggleDoorModeOnly()
 
 		this.textBoxText = this.make.text({
@@ -352,6 +352,13 @@ export default class TutorialScene extends BaseLevelScene {
 		// Enable ghosts only for the 
 		if (this.curStep !== 1) {
 			for (let ghost of this.ghosts){
+
+				// calculate distance from player and set the fade in bound
+				if (this.curZone === ghost.getZone()){
+					let alpha = 75 / this.calculateDistance(this.player.x, this.player.y, ghost.x, ghost.y)
+					ghost.initiateFadeIn(alpha)
+				}
+
 				ghost.update(time, delta);
 				let ghostsWin = ghost.gameOver
 				if (ghostsWin){

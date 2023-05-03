@@ -12,7 +12,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected curZone: number = 1
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
-	protected level: number = 2;
+	protected level: number = 1;
 
 	protected currentCandleTime: number = 0
 	protected chance!: number

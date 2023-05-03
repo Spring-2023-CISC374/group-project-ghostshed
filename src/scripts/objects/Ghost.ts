@@ -11,10 +11,10 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
     protected timePaused: number = 0;
     public gameOver = false;
 
-    private toFadeIn = false;
-    private toFadeOut = false;
-    private fadeInBound = 1;
-    private fadeOutBound = 0.3;
+    protected toFadeIn = false;
+    protected toFadeOut = false;
+    protected fadeInBound = 1;
+    protected fadeOutBound = 0.3;
 
     protected GHOST_SPEED: number = 1/5000;
     protected PAUSE_TIME: number = 2000;
@@ -29,6 +29,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
         this.visible = false
+        this.setAlpha(0)
 
         if (zone === 2) {
             this.zonePath = scene.add.path(230, 100);
@@ -80,7 +81,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         // show the ghost because they are now moving
         this.visible = true
-        //this.setAlpha(0)
+        this.setAlpha(0) // Make this undiscovered until it's seen once
     }
 
     initiateFadeIn(alpha:  number){
