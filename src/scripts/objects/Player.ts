@@ -30,7 +30,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.zone3Path.lineTo(615, 350);
 
         this.zone4Path = scene.add.path(415, 350);
-        this.zone4Path.lineTo(415, 200);        
+        this.zone4Path.lineTo(415, 225);        
     }
 
     move(currentZone: number, targetZone: number){
