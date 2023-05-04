@@ -3,6 +3,8 @@ import Button from '../objects/Button'
 
 export default class MainMenuScene extends Phaser.Scene {
 
+backgroundMusic:any
+
 	constructor () {
 		super({ key: 'MainMenu' })
 	}
@@ -15,6 +17,15 @@ export default class MainMenuScene extends Phaser.Scene {
     
     this.add.video(centerX, centerY, "Start-Animation").play(true)
 
+    this.backgroundMusic = this.sound.add("audio2", {
+      volume:1,
+      loop:true
+    })
+
+
+    this.backgroundMusic.play()
+
+
     new Button(centerX - 75, centerY - 25, 'Play', this, () => { this.handlePlay() })
     new Button(centerX- 75, centerY - 100, 'Tutorial', this, () => { this.handleTutorial() })
 
@@ -26,10 +37,12 @@ export default class MainMenuScene extends Phaser.Scene {
   }
 
   handlePlay () {
+    this.backgroundMusic.destroy()
     this.scene.start('RoomScene')
   }
 
   handleTutorial () {
+    this.backgroundMusic.destroy()
     this.scene.start('TutorialScene')
   }
 
