@@ -12,7 +12,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected curZone: number = 1
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
-	protected level: number = 3;
+	protected level: number = 1;
 
 	protected currentCandleTime: number = 0
 	protected chance!: number
@@ -26,8 +26,25 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
 	updateZone(newZone: number){
+		if (this.curZone != newZone && newZone > 1){
+			let ghostIndex = (newZone + 1) % 3
+			let alpha = 75 / this.calculateDistance(this.player.x, this.player.y, this.ghosts[ghostIndex].x, this.ghosts[ghostIndex].y)
+			this.ghosts[ghostIndex].initiateFadeIn(alpha)
+
+			// a distance of 60 is when the player and ghost are both at the door
+			// a distance of 250ish is when the ghost spawns
+		} 
+		
+		if (this.curZone != newZone && newZone === 0){
+			let ghostIndex = (this.curZone + 1) % 3
+			this.ghosts[ghostIndex].initiateFadeOut()
+		}
+
 		this.curZone = newZone
-		console.log(newZone)
+	}
+
+	calculateDistance(xA: number, yA: number, xB: number, yB: number){
+		return Math.sqrt((xB - xA)*(xB-xA) + (yB-yA)*(yB-yA))
 	}
 	
 	hide() {
@@ -70,6 +87,10 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.ghosts.push(new Ghost(this, 2, this.level))
 		this.ghosts.push(new Ghost(this, 3, this.level))
 		this.ghosts.push(new Ghost(this, 4, this.level))
+
+		for(let ghost of this.ghosts){
+			ghost.alpha = 0.3;
+		}
 
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
