@@ -3,7 +3,6 @@ import Player from '../objects/Player'
 import Ghost from '../objects/Ghost'
 import { Sounds } from '../consts'
 
-
 export default class BaseLevelScene extends Phaser.Scene {
 
  	protected map!: Phaser.Tilemaps.Tilemap
