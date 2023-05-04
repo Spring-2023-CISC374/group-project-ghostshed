@@ -29,10 +29,12 @@ backgroundMusic:any
     new Button(centerX - 75, centerY - 25, 'Play', this, () => { this.handlePlay() })
     new Button(centerX- 75, centerY - 100, 'Tutorial', this, () => { this.handleTutorial() })
 
-    this.add.text(centerX-100, centerY/2, 'Ghost Shed')
-    .setFontSize(60)
-    .setOrigin(0.5, 0.5)
-    .setColor("Red")
+    this.add.text(centerX-100, centerY/2, 'Ghost Shed', {
+      fontFamily:"CustomFont",
+    })
+     .setFontSize(60)
+     .setOrigin(0.5, 0.5)
+     .setColor("Red")
 
   }
 
