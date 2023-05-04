@@ -33,8 +33,10 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('Window Knock 1', 'audio/WindowKnock1.mp3');
 		this.load.audio('Window Knock 2', 'audio/WindowKnock2.mp3');
 		this.load.audio('Window Knock 3', 'audio/WindowKnock3.mp3');
-		this.load.audio("audio1", 'audio/audio1.mp3')
-		this.load.audio("audio2", 'audio/audio2.mp3')
+
+		//Background Music
+		let temp = Math.floor(Math.random() * 5)
+		this.load.audio("audio", `audio/audio${temp}.mp3`)
 
 		//VIDEO
 		this.load.video("Start-Animation", 'audio/Start-Animation.mp4')

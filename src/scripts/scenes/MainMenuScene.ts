@@ -17,7 +17,7 @@ backgroundMusic:any
     
     this.add.video(centerX, centerY, "Start-Animation").play(true)
 
-    this.backgroundMusic = this.sound.add("audio2", {
+    this.backgroundMusic = this.sound.add(`audio`, {
       volume:1,
       loop:true
     })
