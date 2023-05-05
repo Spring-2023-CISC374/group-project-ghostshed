@@ -17,7 +17,7 @@ backgroundMusic:any
     
     this.add.video(centerX, centerY, "Start-Animation").play(true)
 
-    this.backgroundMusic = this.sound.add(`audio`, {
+    this.backgroundMusic = this.sound.add('menu-audio', {
       volume:.5,
       loop:true
     })
@@ -26,8 +26,8 @@ backgroundMusic:any
     this.backgroundMusic.play()
 
 
-    new Button(centerX - 75, centerY - 25, 'Play', this, () => { this.handlePlay() })
-    new Button(centerX- 75, centerY - 100, 'Tutorial', this, () => { this.handleTutorial() })
+    new Button(centerX - 100, centerY - 85, 'Play', this, () => { this.handlePlay() })
+    new Button(centerX- 100, centerY - 10, 'Tutorial', this, () => { this.handleTutorial() })
 
     this.add.text(centerX-100, centerY/2, 'Ghost Shed', {
       fontFamily:"CustomFont",
