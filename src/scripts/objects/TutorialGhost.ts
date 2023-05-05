@@ -12,6 +12,8 @@ export default class TutorialGhost extends Ghost {
         // initialize t as -1 so it doesn't move to start
         this.follower = { t: -1, vec: new Phaser.Math.Vector2() };
         this.zone = zone;
+        this.visible = false
+        this.alpha = 0
 
         if (zone === 2) {
             this.zonePath = scene.add.path(230, 100);
@@ -45,15 +47,22 @@ export default class TutorialGhost extends Ghost {
 
     update(time: any, delta: any)
     {
-        if (!this.fadedIn) {
-            this.handleFadeIn()
+        if (this.toFadeIn){
+            this.fadeIn()
+        } else if (this.toFadeOut) {
+            this.fadeOut()
         }
 
-        // Make the ghost pulse when the player is less than 3 seconds from losing
-        if (this.GAME_OVER_TIME - this.timeInZone <= 3000 && time % 500 >= 250){
-            this.setScale(1.2, 1.2)
-        } else {
-            this.setScale(1, 1)
+        
+        // Make the ghost pulse when the player is less than 4 seconds from losing
+        if (this.GAME_OVER_TIME - this.timeInZone <= 4000 || this.zone == 4 && this.follower.t >= 0.7) {
+            if (time % 500 >= 250) {
+                this.setAlpha(1)
+                this.setScale(1.2, 1.2)
+            } else {
+                this.setAlpha(0.5)
+                this.setScale(1, 1)
+            }
         }
 
         if (this.isInPlayerZone){

@@ -11,20 +11,39 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected curZone: number = 1
 	protected ghosts: Ghost[] = []
 	protected gameOver: boolean = false
-	protected level: number = 3;
+	protected level: number = 1;
 
 	protected currentCandleTime: number = 0
 	protected chance!: number
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 
+	protected pointLights: Phaser.GameObjects.Light[] = []
+
 	constructor (params: { key:string }) {
 		super(params)
 	}
 
 	updateZone(newZone: number){
+		if (this.curZone != newZone && newZone > 1){
+			let ghostIndex = (newZone + 1) % 3
+			let alpha = 75 / this.calculateDistance(this.player.x, this.player.y, this.ghosts[ghostIndex].x, this.ghosts[ghostIndex].y)
+			this.ghosts[ghostIndex].initiateFadeIn(alpha)
+
+			// a distance of 60 is when the player and ghost are both at the door
+			// a distance of 250ish is when the ghost spawns
+		} 
+		
+		if (this.curZone != newZone && newZone === 0){
+			let ghostIndex = (this.curZone + 1) % 3
+			this.ghosts[ghostIndex].initiateFadeOut()
+		}
+
 		this.curZone = newZone
-		console.log(newZone)
+	}
+
+	calculateDistance(xA: number, yA: number, xB: number, yB: number){
+		return Math.sqrt((xB - xA)*(xB-xA) + (yB-yA)*(yB-yA))
 	}
 	
 	hide() {
@@ -38,11 +57,14 @@ export default class BaseLevelScene extends Phaser.Scene {
 
 	extinguishCandle(currentlylit: number){
 		this.candleTiles[currentlylit-1].index = 201
+		this.pointLights[currentlylit-1].visible = false
 	}
 
 	lightCandle(currentlylit: number){
-		this.candleTiles[currentlylit].index = 202
+		const tile = this.candleTiles[currentlylit]
+		tile.index = 202
 		this.sound.play(Sounds.LIGHTCANDLE)
+		this.pointLights[currentlylit].visible = true
 	}
 
 	killGhost(action:string) {
@@ -65,21 +87,41 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.ghosts.push(new Ghost(this, 3, this.level))
 		this.ghosts.push(new Ghost(this, 4, this.level))
 
+		for(let ghost of this.ghosts){
+			ghost.alpha = 0.3;
+		}
+
 		// the game starts with a zone 2 ghost
 		this.ghosts[0].startOnPath();
 
-		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
-		}
-
 		// Render the layers in Phaser
 		for (const layerName of this.map.getTileLayerNames()) {
-			this.map.createLayer(layerName, this.tiles, 100, 0)
+			this.map.createLayer(layerName, this.tiles, 100, 0).setPipeline('Light2D');
+		}
+
+		// Initialize candles and their lights
+		for(let i = 0; i < 4; i++){
+			const tile = this.map.getLayer('Zone 1').data[15][8 + i]
+			const x = this.map.tileToWorldX(tile.x) + 16 // Offset to the half to get the middle
+			const y = this.map.tileToWorldY(tile.y) + 16 // Offset to the half to get the middle
+			this.candleTiles.push(tile)
+			this.pointLights.push(this.lights.addLight(x, y, 100, undefined, 0.65))
+			this.pointLights[i].visible = false
 		}
 
 		this.player = new Player(this);
 		this.player.setScale(2,2)
 
+		this.initializeLighting()
+		this.initializeZones()
+    this.initializeAudio()
+  }
+
+	initializeLighting () {
+		this.lights.enable().setAmbientColor(0x171717);
+	}
+
+	initializeZones () {
 		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
@@ -100,9 +142,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
-
-    this.initializeAudio()
-  }
+	}
 
   initializeAudio () {
     // Get every registered sound in the enum, load them with the corresponding key here

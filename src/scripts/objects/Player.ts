@@ -11,12 +11,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private speed: number = 1/750;
     private moving: boolean = false;
     private targetZone: number = 0;
-    
+
+    private light: Phaser.GameObjects.Light
 
     constructor(scene: Phaser.Scene) {
         super(scene, 415, 475, 'player');
         scene.physics.world.enable(this);
         scene.add.existing(this);
+
+        this.light = scene.lights.addLight(this.x, this.y, 100).setScrollFactor(0.0);
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
 
@@ -57,6 +60,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.zonePath?.getPoint(this.follower.t, this.follower.vec);
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
 
+            this.light.x = this.x
+            this.light.y = this.y
+
             if (this.follower.t <= 0){
                 this.follower.t = 0;
                 this.speed *= -1;
@@ -89,5 +95,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.moving = false
         this.follower.t = 0
         this.setPosition(415, 475)
+        this.light.x = this.x
+        this.light.y = this.y
     }
 }

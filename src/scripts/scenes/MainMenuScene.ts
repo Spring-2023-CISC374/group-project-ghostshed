@@ -3,7 +3,7 @@ import Button from '../objects/Button'
 
 export default class MainMenuScene extends Phaser.Scene {
 
-  trees!: Phaser.GameObjects.TileSprite
+backgroundMusic:any
 
 	constructor () {
 		super({ key: 'MainMenu' })
@@ -14,28 +14,37 @@ export default class MainMenuScene extends Phaser.Scene {
     const { width, height } = this.scale // width and height of the current view
     const centerX = width / 2
     const centerY = height / 2
+    
+    this.add.video(centerX, centerY, "Start-Animation").play(true)
 
-    this.trees = this.add.tileSprite(0, 0, 0, 0, 'background').setOrigin(0, 0);
-    this.trees.setScale(1, 0.75)
+    this.backgroundMusic = this.sound.add('menu-audio', {
+      volume:.5,
+      loop:true
+    })
 
-    new Button(centerX, centerY, 'Play', this, () => { this.handlePlay() })
-    new Button(centerX, centerY + 75, 'Tutorial', this, () => { this.handleTutorial() })
 
-    this.add.text(centerX, centerY - 100, 'Ghost Shed')
-    .setFontSize(60)
-    .setOrigin(0.5, 0.5)
+    this.backgroundMusic.play()
 
-  }
 
-  update () {
-    this.trees.tilePositionX -= 1;
+    new Button(centerX - 100, centerY - 85, 'Play', this, () => { this.handlePlay() })
+    new Button(centerX- 100, centerY - 10, 'Tutorial', this, () => { this.handleTutorial() })
+
+    this.add.text(centerX-100, centerY/2, 'Ghost Shed', {
+      fontFamily:"CustomFont",
+    })
+     .setFontSize(60)
+     .setOrigin(0.5, 0.5)
+     .setColor("Red")
+
   }
 
   handlePlay () {
+    this.backgroundMusic.destroy()
     this.scene.start('RoomScene')
   }
 
   handleTutorial () {
+    this.backgroundMusic.destroy()
     this.scene.start('TutorialScene')
   }
 

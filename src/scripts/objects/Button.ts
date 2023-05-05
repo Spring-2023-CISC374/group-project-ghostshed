@@ -9,7 +9,8 @@ export default class Button {
           .setFontSize(fontSize)
           .setStyle({ 
             backgroundColor: '#852c09',
-            color: '#000000'
+            color: '#000000',
+            fontFamily: "CustomFont"
           })
           .setInteractive({ useHandCursor: true })
           .on('pointerdown', action)
