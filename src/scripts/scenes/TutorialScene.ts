@@ -30,6 +30,10 @@ export default class TutorialScene extends BaseLevelScene {
 	rightArrowKey!: Phaser.GameObjects.Image[]
 	upArrowKey!: Phaser.GameObjects.Image[]
 	downArrowKey!: Phaser.GameObjects.Image[]
+	fKey!: Phaser.GameObjects.Image[]
+	dKey!: Phaser.GameObjects.Image[]
+	hKey!: Phaser.GameObjects.Image[]
+	cKey!: Phaser.GameObjects.Image[]
 	animatedKeys: Phaser.GameObjects.Image[][] = []
 	animatedKeysTimer!: Phaser.Time.TimerEvent
 	animatedKeysIndex = 0
@@ -41,11 +45,11 @@ export default class TutorialScene extends BaseLevelScene {
 		this.incrementStep()
 	}
 
-	loadSpriteSheetImagePair (x: number, y: number, asset: string, index: number) {
+	loadSpriteSheetImagePair (x: number, y: number, asset: string, index: number, startShown: boolean = false) {
 		const images = [this.add.image(x, y, asset, index), this.add.image(x, y, asset, index + 56)]
 
 		images[0].setScale(2.75, 2.75)
-		images[0].setVisible(true)
+		images[0].setVisible(startShown)
 		images[1].setScale(2.75, 2.75)
 		images[1].setVisible(false)
 		return images
@@ -61,6 +65,17 @@ export default class TutorialScene extends BaseLevelScene {
 		for (const image of images) {
 			image.setVisible(!image.visible)
 		}
+	}
+
+	restartSpriteSheetImagePairAnimations () {
+
+		for (const keyImage of this.animatedKeys) {
+			keyImage[0].setVisible(false)
+			keyImage[1].setVisible(false)
+		}
+
+		this.animatedKeysIndex = 0
+		this.animatedKeys = []
 	}
 
 	animateSpriteSheetImagePair () {
@@ -201,18 +216,44 @@ export default class TutorialScene extends BaseLevelScene {
 
 				if (valid) {
 					this.ghosts[0].startOnPath()
+
+					this.restartSpriteSheetImagePairAnimations()
+					this.animatedKeys = [this.leftArrowKey, this.fKey]
+
+					this.leftArrowKey[0].setVisible(true)
+					this.fKey[1].setVisible(true) // Start this key as pressed
+					this.changeSpriteSheetImagePairLocation(145, 485, this.leftArrowKey)
+
 					this.incrementStep()
 				}
 
 				break
 			case 2:
 				if (this.usedFlashlight) {
+					const ghost3 = this.ghosts[1] as TutorialGhost
+					ghost3.overrideTValue(0.95) // Put it right next to the door
+
+					this.restartSpriteSheetImagePairAnimations()
+					this.animatedKeys = [this.rightArrowKey, this.dKey]
+
+					this.rightArrowKey[0].setVisible(true)
+					this.dKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.changeSpriteSheetImagePairLocation(145, 485, this.rightArrowKey)
+
 					this.incrementStep()
 				}
 				break
 			case 3:
 				if (this.usedDoor) {
 					this.ghosts[2].startOnPath()
+
+					this.restartSpriteSheetImagePairAnimations()
+					this.animatedKeys = [this.upArrowKey, this.hKey]
+
+					this.upArrowKey[0].setVisible(true)
+					this.hKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.changeSpriteSheetImagePairLocation(145, 485, this.upArrowKey)
+
 					this.incrementStep()
 				}
 				break
@@ -222,6 +263,13 @@ export default class TutorialScene extends BaseLevelScene {
 					this.lightCandle(this.litCandles)
 					this.litCandles += 1
 
+					this.restartSpriteSheetImagePairAnimations()
+					this.animatedKeys = [this.downArrowKey, this.cKey]
+
+					this.downArrowKey[0].setVisible(true)
+					this.cKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.changeSpriteSheetImagePairLocation(145, 485, this.downArrowKey)
+
 					this.incrementStep()
 				}
 				break
@@ -229,6 +277,10 @@ export default class TutorialScene extends BaseLevelScene {
 				if (this.usedCandle) {
 					this.startCandleTimer()
 					this.startTimer()
+
+					// Clear the helper keys
+					this.restartSpriteSheetImagePairAnimations()
+					this.animatedKeysTimer.destroy()
 
 					// Reset the ghosts to work like the real things
 					const zone2Ghost = this.ghosts[0] as TutorialGhost
@@ -263,11 +315,16 @@ export default class TutorialScene extends BaseLevelScene {
 		super.create()
 
 		// Setup the keyboard images
-		this.upArrowKey = this.loadSpriteSheetImagePair(125, 450, 'keyboard', 0)
+		this.upArrowKey = this.loadSpriteSheetImagePair(125, 450, 'keyboard', 0, true)
 		this.toggleSpriteSheetImagePair(this.upArrowKey)
-		this.downArrowKey = this.loadSpriteSheetImagePair(125, 485, 'keyboard', 1)
-		this.leftArrowKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 2)
-		this.rightArrowKey = this.loadSpriteSheetImagePair(165, 485, 'keyboard', 3)
+		this.downArrowKey = this.loadSpriteSheetImagePair(125, 485, 'keyboard', 1, true)
+		this.leftArrowKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 2, true)
+		this.rightArrowKey = this.loadSpriteSheetImagePair(165, 485, 'keyboard', 3, true)
+
+		this.fKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 21)
+		this.dKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 19)
+		this.hKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 23)
+		this.cKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 18)
 
 		this.animatedKeys = [this.upArrowKey, this.leftArrowKey, this.downArrowKey, this.rightArrowKey]
 
