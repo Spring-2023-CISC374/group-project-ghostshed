@@ -21,6 +21,9 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('player', 'assets/tilemaps/character.png')
 		this.load.image('ghost', 'assets/tilemaps/ghost.png');
 
+		// Keyboard sprites
+		this.load.spritesheet('keyboard', 'assets/tutorial/Keyboard.png', { frameWidth: 16, frameHeight: 16})
+
 		// AUDIO
 		this.load.audio('Blow Candles', 'audio/BlowOutCandle.mp3');
 		this.load.audio('Light Candle 1', 'audio/Candle1.mp3');

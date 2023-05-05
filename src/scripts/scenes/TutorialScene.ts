@@ -26,11 +26,49 @@ export default class TutorialScene extends BaseLevelScene {
 
 	private WINDOW_INTERVAL: number = 3000;
 
+	leftArrowKey!: Phaser.GameObjects.Image[]
+	rightArrowKey!: Phaser.GameObjects.Image[]
+	upArrowKey!: Phaser.GameObjects.Image[]
+	downArrowKey!: Phaser.GameObjects.Image[]
+	animatedKeys: Phaser.GameObjects.Image[][] = []
+	animatedKeysTimer!: Phaser.Time.TimerEvent
+	animatedKeysIndex = 0
+
 	constructor () {
 		super({ key: 'TutorialScene' })
 		this.paused = false
 		this.visitedZones = [false, false, false, false]
 		this.incrementStep()
+	}
+
+	loadSpriteSheetImagePair (x: number, y: number, asset: string, index: number) {
+		const images = [this.add.image(x, y, asset, index), this.add.image(x, y, asset, index + 56)]
+
+		images[0].setScale(2.75, 2.75)
+		images[0].setVisible(true)
+		images[1].setScale(2.75, 2.75)
+		images[1].setVisible(false)
+		return images
+	}
+
+	changeSpriteSheetImagePairLocation(x:number, y:number, images: Phaser.GameObjects.Image[]) {
+		for (const image of images) {
+			image.setPosition(x, y)
+		}
+	}
+
+	toggleSpriteSheetImagePair (images: Phaser.GameObjects.Image[]) {
+		for (const image of images) {
+			image.setVisible(!image.visible)
+		}
+	}
+
+	animateSpriteSheetImagePair () {
+		const prevImages = this.animatedKeys[this.animatedKeysIndex]
+
+		this.toggleSpriteSheetImagePair(prevImages)
+		this.animatedKeysIndex = (this.animatedKeysIndex + 1) % this.animatedKeys.length
+		this.toggleSpriteSheetImagePair(this.animatedKeys[this.animatedKeysIndex])
 	}
 
 	startTimer () {
@@ -42,6 +80,15 @@ export default class TutorialScene extends BaseLevelScene {
 				callbackScope: this,
 				loop: true
 		  })
+	}
+
+	startAnimatedKeysTimer () {
+		this.animatedKeysTimer = this.time.addEvent({
+			delay: 1000,
+			callback : this.animateSpriteSheetImagePair,
+			callbackScope: this,
+			loop: true
+		})
 	}
 
 	startCandleTimer () {
@@ -214,6 +261,17 @@ export default class TutorialScene extends BaseLevelScene {
 
 	create() {
 		super.create()
+
+		// Setup the keyboard images
+		this.upArrowKey = this.loadSpriteSheetImagePair(125, 450, 'keyboard', 0)
+		this.toggleSpriteSheetImagePair(this.upArrowKey)
+		this.downArrowKey = this.loadSpriteSheetImagePair(125, 485, 'keyboard', 1)
+		this.leftArrowKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 2)
+		this.rightArrowKey = this.loadSpriteSheetImagePair(165, 485, 'keyboard', 3)
+
+		this.animatedKeys = [this.upArrowKey, this.leftArrowKey, this.downArrowKey, this.rightArrowKey]
+
+		this.startAnimatedKeysTimer()
 
 		// Override the ghosts and set them as Tutorial ghosts
 		for (const ghost of this.ghosts) {
