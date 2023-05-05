@@ -220,9 +220,9 @@ export default class TutorialScene extends BaseLevelScene {
 					this.restartSpriteSheetImagePairAnimations()
 					this.animatedKeys = [this.leftArrowKey, this.fKey]
 
-					this.leftArrowKey[0].setVisible(true)
-					this.fKey[1].setVisible(true) // Start this key as pressed
-					this.changeSpriteSheetImagePairLocation(145, 485, this.leftArrowKey)
+					this.leftArrowKey[1].setVisible(true)  // Start this key as pressed
+					this.fKey[0].setVisible(true)
+					this.changeSpriteSheetImagePairLocation(85, 485, this.leftArrowKey)
 
 					this.incrementStep()
 				}
@@ -236,9 +236,9 @@ export default class TutorialScene extends BaseLevelScene {
 					this.restartSpriteSheetImagePairAnimations()
 					this.animatedKeys = [this.rightArrowKey, this.dKey]
 
-					this.rightArrowKey[0].setVisible(true)
-					this.dKey[1].setVisible(true) // Start this key as pressed (at index 1)
-					this.changeSpriteSheetImagePairLocation(145, 485, this.rightArrowKey)
+					this.rightArrowKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.dKey[0].setVisible(true)
+					this.changeSpriteSheetImagePairLocation(85, 485, this.rightArrowKey)
 
 					this.incrementStep()
 				}
@@ -250,9 +250,9 @@ export default class TutorialScene extends BaseLevelScene {
 					this.restartSpriteSheetImagePairAnimations()
 					this.animatedKeys = [this.upArrowKey, this.hKey]
 
-					this.upArrowKey[0].setVisible(true)
-					this.hKey[1].setVisible(true) // Start this key as pressed (at index 1)
-					this.changeSpriteSheetImagePairLocation(145, 485, this.upArrowKey)
+					this.upArrowKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.hKey[0].setVisible(true)
+					this.changeSpriteSheetImagePairLocation(85, 485, this.upArrowKey)
 
 					this.incrementStep()
 				}
@@ -266,9 +266,9 @@ export default class TutorialScene extends BaseLevelScene {
 					this.restartSpriteSheetImagePairAnimations()
 					this.animatedKeys = [this.downArrowKey, this.cKey]
 
-					this.downArrowKey[0].setVisible(true)
-					this.cKey[1].setVisible(true) // Start this key as pressed (at index 1)
-					this.changeSpriteSheetImagePairLocation(145, 485, this.downArrowKey)
+					this.downArrowKey[1].setVisible(true) // Start this key as pressed (at index 1)
+					this.cKey[0].setVisible(true)
+					this.changeSpriteSheetImagePairLocation(85, 485, this.downArrowKey)
 
 					this.incrementStep()
 				}
@@ -321,10 +321,10 @@ export default class TutorialScene extends BaseLevelScene {
 		this.leftArrowKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 2, true)
 		this.rightArrowKey = this.loadSpriteSheetImagePair(165, 485, 'keyboard', 3, true)
 
-		this.fKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 21)
-		this.dKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 19)
-		this.hKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 23)
-		this.cKey = this.loadSpriteSheetImagePair(85, 485, 'keyboard', 18)
+		this.fKey = this.loadSpriteSheetImagePair(145, 485, 'keyboard', 21)
+		this.dKey = this.loadSpriteSheetImagePair(145, 485, 'keyboard', 19)
+		this.hKey = this.loadSpriteSheetImagePair(145, 485, 'keyboard', 23)
+		this.cKey = this.loadSpriteSheetImagePair(145, 485, 'keyboard', 18)
 
 		this.animatedKeys = [this.upArrowKey, this.leftArrowKey, this.downArrowKey, this.rightArrowKey]
 
