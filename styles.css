@@ -8,3 +8,10 @@ body {
   align-items: center;
   min-height: 100vh;
 }
+
+@font-face {
+  font-family:CustomFont;
+  src: url('./OctoberCrow.ttf');
+  font-weight: 400;
+  font-weight: normal;
+}
