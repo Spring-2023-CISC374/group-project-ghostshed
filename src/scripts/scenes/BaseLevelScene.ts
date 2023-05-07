@@ -122,24 +122,23 @@ export default class BaseLevelScene extends Phaser.Scene {
 	}
 
 	initializeZones () {
-		this.map.setTileIndexCallback(435, () => { this.updateZone(2)}, this, "Zone 2");
+		this.map.setTileIndexCallback(433, () => { this.updateZone(2)}, this, "Zone 2");
 		const zone2 = this.map.getLayer("Zone 2").tilemapLayer
 		this.physics.add.overlap(this.player, zone2);
 
-		this.map.setTileIndexCallback(201, () => { this.updateZone(1)}, this, "Zone 1");
-		this.map.setTileIndexCallback(202, () => { this.updateZone(1)}, this, "Zone 1");
+		this.map.setTileIndexCallback([201, 202], () => { this.updateZone(1)}, this, "Zone 1");
 		const zone1 = this.map.getLayer("Zone 1").tilemapLayer
 		this.physics.add.overlap(this.player, zone1);
 
-		this.map.setTileIndexCallback(436, () => { this.updateZone(3)}, this, "Zone 3");
+		this.map.setTileIndexCallback(481, () => { this.updateZone(3)}, this, "Zone 3");
 		const zone3 = this.map.getLayer("Zone 3").tilemapLayer
 		this.physics.add.overlap(this.player, zone3);
 
-		this.map.setTileIndexCallback(434, () => { this.updateZone(4)}, this, "Zone 4");
+		this.map.setTileIndexCallback([487, 439], () => { this.updateZone(4)}, this, "Zone 4");
 		const zone4 = this.map.getLayer("Zone 4").tilemapLayer
 		this.physics.add.overlap(this.player, zone4);
 
-		this.map.setTileIndexCallback(338, () => { this.updateZone(0)}, this, "Ground");
+		this.map.setTileIndexCallback([385, 386, 387, 388], () => { this.updateZone(0)}, this, "Ground");
 		const zone0 = this.map.getLayer("Ground").tilemapLayer
 		this.physics.add.overlap(this.player, zone0);
 	}
