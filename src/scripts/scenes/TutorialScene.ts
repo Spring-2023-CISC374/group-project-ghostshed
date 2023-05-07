@@ -87,7 +87,9 @@ export default class TutorialScene extends BaseLevelScene {
 	}
 
 	startTimer () {
-		this.timeText = this.add.text(200, 100, "Time Left To Survive: 30s")
+		this.timeText = this.add.text(200, 100, "Time Left To Survive: 30s", {
+			font: '18px Arial'
+		})
 
 		this.timer = this.time.addEvent({
 				delay: 1000,
