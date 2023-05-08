@@ -212,11 +212,13 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		}
 		
+		// spawn the ghost in zone 3 when the ghost in zone 2 reaches a specific distance in the path
 		let dist = this.ghosts[0].getDistance()
 		if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[1].startOnPath();
 		}
 
+		// spawn the ghost in zone 2 when the ghost in zone 3 reaches a specific distance in the path
 		dist = this.ghosts[1].getDistance()
 		if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[0].startOnPath();

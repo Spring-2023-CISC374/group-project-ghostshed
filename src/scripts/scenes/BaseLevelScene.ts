@@ -76,6 +76,14 @@ export default class BaseLevelScene extends Phaser.Scene {
 			else if (this.curZone == 3 && !this.ghosts[0].isVisible())
 				this.ghosts[0].startOnPath();
 		}
+
+		// if the side ghosts are killed with the door, if the other ghost is at the door already, spawn the dead ghost again
+		if (retreated && action === 'door'){
+			if (this.curZone == 2 && this.ghosts[1].getPlayerZoneStatus())
+				this.ghosts[0].startOnPath();
+			else if (this.curZone == 3 && this.ghosts[0].getPlayerZoneStatus())
+				this.ghosts[1].startOnPath();
+		}
 	}
 
   create () {
