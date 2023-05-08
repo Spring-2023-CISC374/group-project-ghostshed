@@ -3,7 +3,14 @@ import Button from '../objects/Button'
 
 export default class MainMenuScene extends Phaser.Scene {
 
-backgroundMusic:any
+protected backgroundMusic:any
+protected playButton?:Button
+protected tutorialButton?:Button
+protected creditButton?:Button
+protected Level1Button?:Button
+protected Level2Button?:Button
+protected Level3Button?:Button
+protected backButton?:Button
 
 	constructor () {
 		super({ key: 'MainMenu' })
@@ -21,12 +28,20 @@ backgroundMusic:any
       loop:true
     })
 
-
     this.backgroundMusic.play()
 
+    this.playButton = new Button(centerX - 100, centerY - 90, 'PLAY', this, () => { this.showButtons(false) })
+    this.tutorialButton = new Button(centerX- 100, centerY - 30, 'TUTORIAL', this, () => { this.handleTutorial() })
+    this.creditButton = new Button(centerX- 100, centerY + 30, 'CREDIT', this, () => { this.handleCredits() })
+    this.Level1Button = new Button(centerX - 100, centerY - 90, 'EASY', this, () => { this.handlePlay(1) })
+    this.Level1Button.setVisible(false)
+    this.Level2Button= new Button(centerX- 100, centerY - 30, 'MEDIUM', this, () => { this.handlePlay(2) })
+    this.Level2Button.setVisible(false)
+    this.Level3Button = new Button(centerX- 100, centerY + 30, 'DIFICULT', this, () => { this.handlePlay(3) })
+    this.Level3Button.setVisible(false)
+    this.backButton = new Button(centerX- 100, centerY + 90, 'BACK', this, () => { this.showButtons(true) })
+    this.backButton.setVisible(false)
 
-    new Button(centerX - 100, centerY - 85, 'PLAY', this, () => { this.handlePlay() })
-    new Button(centerX- 100, centerY - 10, 'TUTORIAL', this, () => { this.handleTutorial() })
 
     this.add.text(centerX-100, centerY/2, 'GHOST SHED', {
       fontFamily:"CustomFont",
@@ -37,10 +52,24 @@ backgroundMusic:any
 
   }
 
-  handlePlay () {
+  showButtons(firstSet:boolean){
+    this.playButton?.setVisible(firstSet)
+    this.tutorialButton?.setVisible(firstSet)
+    this.creditButton?.setVisible(firstSet)
+    this.Level1Button?.setVisible(!firstSet)
+    this.Level2Button?.setVisible(!firstSet)
+    this.Level3Button?.setVisible(!firstSet)
+    this.backButton?.setVisible(!firstSet)
+  }
+
+  handleCredits(){
+
+  }
+
+  handlePlay (level:number) {
     this.backgroundMusic.destroy()
     this.sound.play('Button-sound')
-    this.scene.start('RoomScene')
+    this.scene.start('RoomScene', {level: level})
   }
 
   handleTutorial () {

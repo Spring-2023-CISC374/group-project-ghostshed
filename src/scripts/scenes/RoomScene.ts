@@ -13,6 +13,7 @@ export default class RoomScene extends BaseLevelScene {
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
+	protected backButton!: Button;
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -20,12 +21,19 @@ export default class RoomScene extends BaseLevelScene {
 		super({ key: 'RoomScene' })
 	}
 
+	init(data: {level:number}){
+		this.level = data.level;
+	}
+
 	create() {
 		super.create()
 		this.timeText = this.add.text(200, 100, "Time: 0:00")
 		
-		this.resetButton = new Button(750, 400, 'Restart', this, () => { this.resetLevel() }, 18, 10)
+		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
 		this.resetButton.setVisible(false)
+		this.backButton = new Button(750, 460, 'BACK', this, () => { this.backToMain() })
+		this.backButton.setVisible(false)
+
 
 		this.createTimers()
 
@@ -126,6 +134,10 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		});
 	}
+
+	backToMain(){
+		this.scene.start('MainMenu')
+	}
 	
 	countTime(){
 		if(this.gameOver){
@@ -193,6 +205,7 @@ export default class RoomScene extends BaseLevelScene {
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			this.resetButton.setVisible(true)
+			this.backButton.setVisible(true)
 			return
 		}
 
