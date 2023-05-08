@@ -16,9 +16,8 @@ backgroundMusic:any
     const centerY = height / 2
     
     this.add.video(centerX, centerY, "Start-Animation").play(true)
-
-    this.backgroundMusic = this.sound.add(`audio`, {
-      volume:.5,
+    this.backgroundMusic = this.sound.add('menu-audio', {
+      volume:1,
       loop:true
     })
 
@@ -26,25 +25,27 @@ backgroundMusic:any
     this.backgroundMusic.play()
 
 
-    new Button(centerX - 75, centerY - 25, 'Play', this, () => { this.handlePlay() })
-    new Button(centerX- 75, centerY - 100, 'Tutorial', this, () => { this.handleTutorial() })
+    new Button(centerX - 100, centerY - 85, 'PLAY', this, () => { this.handlePlay() })
+    new Button(centerX- 100, centerY - 10, 'TUTORIAL', this, () => { this.handleTutorial() })
 
-    this.add.text(centerX-100, centerY/2, 'Ghost Shed', {
+    this.add.text(centerX-100, centerY/2, 'GHOST SHED', {
       fontFamily:"CustomFont",
     })
-     .setFontSize(60)
+     .setFontSize(30)
      .setOrigin(0.5, 0.5)
-     .setColor("Red")
+     .setColor('#4B0101')
 
   }
 
   handlePlay () {
     this.backgroundMusic.destroy()
+    this.sound.play('Button-sound')
     this.scene.start('RoomScene')
   }
 
   handleTutorial () {
     this.backgroundMusic.destroy()
+    this.sound.play('Button-sound')
     this.scene.start('TutorialScene')
   }
 
