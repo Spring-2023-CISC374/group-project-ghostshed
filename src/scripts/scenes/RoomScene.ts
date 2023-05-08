@@ -23,6 +23,7 @@ export default class RoomScene extends BaseLevelScene {
 
 	init(data: {level:number}){
 		this.level = data.level;
+		console.log(this.level)
 	}
 
 	create() {
@@ -31,8 +32,8 @@ export default class RoomScene extends BaseLevelScene {
 		
 		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
 		this.resetButton.setVisible(false)
-		this.backButton = new Button(750, 460, 'BACK', this, () => { this.backToMain() })
-		this.backButton.setVisible(false)
+		//this.backButton = new Button(750, 460, 'BACK', this, () => { this.backToMain() })
+		//this.backButton.setVisible(false)
 
 
 		this.createTimers()
@@ -136,6 +137,8 @@ export default class RoomScene extends BaseLevelScene {
 	}
 
 	backToMain(){
+		this.resetLevel()
+		this.sound.play('Button-sound')
 		this.scene.start('MainMenu')
 	}
 	
@@ -205,7 +208,7 @@ export default class RoomScene extends BaseLevelScene {
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			this.resetButton.setVisible(true)
-			this.backButton.setVisible(true)
+			//this.backButton.setVisible(true)
 			return
 		}
 
@@ -267,12 +270,12 @@ export default class RoomScene extends BaseLevelScene {
 	}
 
 	resetLevel() {
+		this.sound.play('Button-sound')
 		this.createTimers()
 		this.resetCandles()
 		this.currentTime = 0
 		this.curZone = 1
 		this.timeText.setText(`Time: 0:00`)
-
 		
 		for (let ghost of this.ghosts){
 			ghost.reset()
@@ -282,5 +285,6 @@ export default class RoomScene extends BaseLevelScene {
 
 		this.gameOver = false
 		this.resetButton.setVisible(false)
+		//this.backButton.setVisible(false)
 	}
 }

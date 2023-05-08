@@ -63,18 +63,23 @@ protected backButton?:Button
   }
 
   handleCredits(){
+    //this.handleSound()
+    //this.scene.start('something for the credit')
 
   }
 
-  handlePlay (level:number) {
+  handleSound(){
     this.backgroundMusic.destroy()
     this.sound.play('Button-sound')
+  }
+
+  handlePlay (level:number) {
+    this.handleSound()
     this.scene.start('RoomScene', {level: level})
   }
 
   handleTutorial () {
-    this.backgroundMusic.destroy()
-    this.sound.play('Button-sound')
+    this.handleSound()
     this.scene.start('TutorialScene')
   }
 
