@@ -22,7 +22,7 @@ export default class RoomScene extends BaseLevelScene {
 
 	create() {
 		super.create()
-		this.timeText = this.add.text(200, 100, "Time: 0:00")
+		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
 		this.resetButton = new Button(750, 400, 'Restart', this, () => { this.resetLevel() }, 18, 10)
 		this.resetButton.setVisible(false)
