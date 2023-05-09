@@ -14,6 +14,7 @@ export default class RoomScene extends BaseLevelScene {
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 	protected doorTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
+	protected backButton!: Button;
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -21,17 +22,24 @@ export default class RoomScene extends BaseLevelScene {
 		super({ key: 'RoomScene' })
 	}
 
+	init(data: {level:number}){
+		this.level = data.level;
+	}
+
 	create() {
 		super.create()
 		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
-		this.resetButton = new Button(750, 400, 'Restart', this, () => { this.resetLevel() }, 18, 10)
+		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
 		this.resetButton.setVisible(false)
+		this.backButton = new Button(750, 460, 'BACK', this, () => { this.backToMain() })
+		this.backButton.setVisible(false)
+
 
 		this.createTimers()
-
+		this.candleTiles = []
 		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
 		}
 
 		const leftDoorTiles = this.map.getLayer('Walls').data[11][3]
@@ -47,6 +55,7 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 4){
 				console.log("Hiding")
 				this.killGhost("hide");
+				this.sound.play(Sounds.HIDE)
 			}else{
 				console.log("No wheres to hide")
 			}
@@ -152,6 +161,12 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		});
 	}
+
+	backToMain(){
+		this.sound.play('Button-sound')
+		this.resetLevel()
+		this.scene.start("MainMenu")
+	}
 	
 	countTime(){
 		if(this.gameOver){
@@ -163,6 +178,7 @@ export default class RoomScene extends BaseLevelScene {
 		// current time is in seconds, constant variables are in ms
 		if (!this.ghosts[2].isVisible() && (this.currentTime*1000) % this.WINDOW_INTERVAL === 0){
 			this.ghosts[2].startOnPath()
+			this.sound.play(Sounds.OPEN_WINDOW)
 		}
 
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
@@ -219,6 +235,7 @@ export default class RoomScene extends BaseLevelScene {
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			this.resetButton.setVisible(true)
+			this.backButton.setVisible(true)
 			return
 		}
 
@@ -238,11 +255,13 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		}
 		
+		// spawn the ghost in zone 3 when the ghost in zone 2 reaches a specific distance in the path
 		let dist = this.ghosts[0].getDistance()
 		if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[1].startOnPath();
 		}
 
+		// spawn the ghost in zone 2 when the ghost in zone 3 reaches a specific distance in the path
 		dist = this.ghosts[1].getDistance()
 		if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[0].startOnPath();
@@ -280,12 +299,13 @@ export default class RoomScene extends BaseLevelScene {
 	}
 
 	resetLevel() {
+		this.sound.play('Button-sound')
 		this.createTimers()
 		this.resetCandles()
 		this.currentTime = 0
 		this.curZone = 1
 		this.timeText.setText(`Time: 0:00`)
-
+		
 		
 		for (let ghost of this.ghosts){
 			ghost.reset()
@@ -295,5 +315,6 @@ export default class RoomScene extends BaseLevelScene {
 
 		this.gameOver = false
 		this.resetButton.setVisible(false)
+		this.backButton.setVisible(false)
 	}
 }

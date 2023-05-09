@@ -76,6 +76,14 @@ export default class BaseLevelScene extends Phaser.Scene {
 			else if (this.curZone == 3 && !this.ghosts[0].isVisible())
 				this.ghosts[0].startOnPath();
 		}
+
+		// if the side ghosts are killed with the door, if the other ghost is at the door already, spawn the dead ghost again
+		if (retreated && action === 'door'){
+			if (this.curZone == 2 && this.ghosts[1].getPlayerZoneStatus())
+				this.ghosts[0].startOnPath();
+			else if (this.curZone == 3 && this.ghosts[0].getPlayerZoneStatus())
+				this.ghosts[1].startOnPath();
+		}
 	}
 
   create () {
@@ -83,6 +91,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
+		this.ghosts = []
 		this.ghosts.push(new Ghost(this, 2, this.level))
 		this.ghosts.push(new Ghost(this, 3, this.level))
 		this.ghosts.push(new Ghost(this, 4, this.level))
@@ -99,6 +108,8 @@ export default class BaseLevelScene extends Phaser.Scene {
 			this.map.createLayer(layerName, this.tiles, 100, 0).setPipeline('Light2D');
 		}
 
+		this.candleTiles = []
+		this.pointLights = []
 		// Initialize candles and their lights
 		for(let i = 0; i < 4; i++){
 			const tile = this.map.getLayer('Zone 1').data[15][8 + i]

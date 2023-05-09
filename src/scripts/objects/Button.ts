@@ -2,7 +2,7 @@ export default class Button {
 
   public buttonInnerObj
 
-  constructor(x: number, y: number, text: string, scene: Phaser.Scene, action: Function, fontSize: number = 20, padding: number = 20) {
+  constructor(x: number, y: number, text: string, scene: Phaser.Scene, action: Function, fontSize: number = 12, padding: number = 15) {
       this.buttonInnerObj = scene.add.text(x, y, text)
           .setOrigin(0.5, 0.5) // Set the origin to be the middle of the button, halfway (0.5)
           .setPadding(padding)

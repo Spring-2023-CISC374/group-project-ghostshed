@@ -11,7 +11,7 @@ body {
 
 @font-face {
   font-family:CustomFont;
-  src: url('./OctoberCrow.ttf');
+  src: url('./font.ttf');
   font-weight: 400;
   font-weight: normal;
 }
