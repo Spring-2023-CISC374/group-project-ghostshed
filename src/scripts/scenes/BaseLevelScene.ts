@@ -83,6 +83,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.tiles = this.map.addTilesetImage('tileset', 'tileset_image')
 		
 		// the index of the ghost is zone # - 2
+		this.ghosts = []
 		this.ghosts.push(new Ghost(this, 2, this.level))
 		this.ghosts.push(new Ghost(this, 3, this.level))
 		this.ghosts.push(new Ghost(this, 4, this.level))
@@ -99,6 +100,8 @@ export default class BaseLevelScene extends Phaser.Scene {
 			this.map.createLayer(layerName, this.tiles, 100, 0).setPipeline('Light2D');
 		}
 
+		this.candleTiles = []
+		this.pointLights = []
 		// Initialize candles and their lights
 		for(let i = 0; i < 4; i++){
 			const tile = this.map.getLayer('Zone 1').data[15][8 + i]

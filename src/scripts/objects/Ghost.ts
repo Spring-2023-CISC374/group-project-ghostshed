@@ -54,7 +54,7 @@ export default class Ghost extends Phaser.Physics.Arcade.Sprite {
                 this.GHOST_SPEED *= 1.5;
                 break;
             case 3: 
-                this.GHOST_SPEED *= 2;
+                this.GHOST_SPEED *= 2.0;
                 break;
             default:
                 this.GHOST_SPEED *= 1;

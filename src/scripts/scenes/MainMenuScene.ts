@@ -17,7 +17,6 @@ protected backButton?:Button
 	}
 
   create () {
-
     const { width, height } = this.scale // width and height of the current view
     const centerX = width / 2
     const centerY = height / 2
