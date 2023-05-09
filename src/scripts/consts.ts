@@ -5,7 +5,8 @@ enum Sounds {
   GHOST_HIT_WITH_FLASHLIGHT = 'Ghost Hit By Flashlight',
   CLOSE_DOOR = 'Door Close',
   BLOW_CANDLES = 'Blow Candles',
-  LIGHTCANDLE = 'Light Candle 1'
+  LIGHTCANDLE = 'Light Candle 1',
+  OPEN_WINDOW = 'Window Open'
 }
 
 const TutorialStepText = [
