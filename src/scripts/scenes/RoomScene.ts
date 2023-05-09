@@ -28,6 +28,7 @@ export default class RoomScene extends BaseLevelScene {
 
 	create() {
 		super.create()
+		this.doorTiles = []
 		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
 		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
