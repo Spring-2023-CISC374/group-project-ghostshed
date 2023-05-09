@@ -87,14 +87,12 @@ export default class RoomScene extends BaseLevelScene {
 				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Left Door Closed")
 				this.killGhost("door");
-				this.doorTiles[0].index = 754
 				this.doorTiles[0].index = 753
 			}
 			else if(this.curZone == 3){
 				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Right Door Closed")
 				this.killGhost("door");
-				this.doorTiles[1].index = 751
 				this.doorTiles[1].index = 752
 			}
 			else{
@@ -145,7 +143,6 @@ export default class RoomScene extends BaseLevelScene {
 				this.player.move(this.curZone, 3);
 				this.sound.play(Sounds.MOVE)
 				this.doorTiles[0].index = 755
-				console.log('tick')
 				this.doorTiles[1].index = 750
 			}
 		});
@@ -156,7 +153,6 @@ export default class RoomScene extends BaseLevelScene {
 				this.player.move(this.curZone, 4);
 				this.sound.play(Sounds.MOVE)
 				this.doorTiles[0].index = 755
-				console.log('tick')
 				this.doorTiles[1].index = 750
 			}
 		});
