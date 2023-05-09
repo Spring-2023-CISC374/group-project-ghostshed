@@ -12,6 +12,7 @@ export default class RoomScene extends BaseLevelScene {
 	protected currentCandleTime: number = 0
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
+	protected doorTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
 
 	private WINDOW_INTERVAL: number = 3000;
@@ -32,6 +33,11 @@ export default class RoomScene extends BaseLevelScene {
 		for(let i = 0; i < 4; i++){
 			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
 		}
+
+		const leftDoorTiles = this.map.getLayer('Walls').data[11][3]
+		const rightDoorTiles = this.map.getLayer('Walls').data[11][16]
+		this.doorTiles.push(leftDoorTiles)
+		this.doorTiles.push(rightDoorTiles)
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -68,11 +74,21 @@ export default class RoomScene extends BaseLevelScene {
 		dKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to close door")
-			if(this.curZone == 2 || this.curZone == 3){
+			if(this.curZone == 2){
 				this.sound.play(Sounds.CLOSE_DOOR)
-				console.log("Door Closed")
+				console.log("Left Door Closed")
 				this.killGhost("door");
-			}else{
+				this.doorTiles[0].index = 754
+				this.doorTiles[0].index = 753
+			}
+			else if(this.curZone == 3){
+				this.sound.play(Sounds.CLOSE_DOOR)
+				console.log("Right Door Closed")
+				this.killGhost("door");
+				this.doorTiles[1].index = 751
+				this.doorTiles[1].index = 752
+			}
+			else{
 				console.log("No door close")
 			}
 	
@@ -99,6 +115,8 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 1);
 				this.sound.play(Sounds.MOVE)
+				this.doorTiles[0].index = 755
+				this.doorTiles[1].index = 750
 			}
 		});
 
@@ -107,6 +125,8 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 2);
 				this.sound.play(Sounds.MOVE)
+				this.doorTiles[0].index = 755
+				this.doorTiles[1].index = 750
 			}
 		});
 
@@ -115,6 +135,9 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 3);
 				this.sound.play(Sounds.MOVE)
+				this.doorTiles[0].index = 755
+				console.log('tick')
+				this.doorTiles[1].index = 750
 			}
 		});
 
@@ -123,6 +146,9 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 4);
 				this.sound.play(Sounds.MOVE)
+				this.doorTiles[0].index = 755
+				console.log('tick')
+				this.doorTiles[1].index = 750
 			}
 		});
 	}
