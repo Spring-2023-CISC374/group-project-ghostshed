@@ -13,6 +13,7 @@ export default class RoomScene extends BaseLevelScene {
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
+	protected backButton!: Button;
 
 	private WINDOW_INTERVAL: number = 3000;
 
@@ -20,17 +21,24 @@ export default class RoomScene extends BaseLevelScene {
 		super({ key: 'RoomScene' })
 	}
 
+	init(data: {level:number}){
+		this.level = data.level;
+	}
+
 	create() {
 		super.create()
 		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
-		this.resetButton = new Button(750, 400, 'Restart', this, () => { this.resetLevel() }, 18, 10)
+		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
 		this.resetButton.setVisible(false)
+		this.backButton = new Button(750, 460, 'BACK', this, () => { this.backToMain() })
+		this.backButton.setVisible(false)
+
 
 		this.createTimers()
-
+		this.candleTiles = []
 		for(let i = 0; i < 4; i++){
-			this.candleTiles.push(this.map.getLayer('Decorations Ground').data[15][8 + i])
+			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
 		}
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
@@ -126,6 +134,12 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		});
 	}
+
+	backToMain(){
+		this.sound.play('Button-sound')
+		this.resetLevel()
+		this.scene.start("MainMenu")
+	}
 	
 	countTime(){
 		if(this.gameOver){
@@ -193,6 +207,7 @@ export default class RoomScene extends BaseLevelScene {
 	update(time: any, delta: any) {
 		if(this.gameOver){
 			this.resetButton.setVisible(true)
+			this.backButton.setVisible(true)
 			return
 		}
 
@@ -256,12 +271,13 @@ export default class RoomScene extends BaseLevelScene {
 	}
 
 	resetLevel() {
+		this.sound.play('Button-sound')
 		this.createTimers()
 		this.resetCandles()
 		this.currentTime = 0
 		this.curZone = 1
 		this.timeText.setText(`Time: 0:00`)
-
+		
 		
 		for (let ghost of this.ghosts){
 			ghost.reset()
@@ -271,5 +287,6 @@ export default class RoomScene extends BaseLevelScene {
 
 		this.gameOver = false
 		this.resetButton.setVisible(false)
+		this.backButton.setVisible(false)
 	}
 }
