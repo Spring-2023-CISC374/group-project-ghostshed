@@ -11,6 +11,7 @@ protected Level1Button?:Button
 protected Level2Button?:Button
 protected Level3Button?:Button
 protected backButton?:Button
+protected creditText?: any
 
 	constructor () {
 		super({ key: 'MainMenu' })
@@ -31,7 +32,7 @@ protected backButton?:Button
 
     this.playButton = new Button(centerX - 100, centerY - 90, 'PLAY', this, () => { this.showButtons(false) })
     this.tutorialButton = new Button(centerX- 100, centerY - 30, 'TUTORIAL', this, () => { this.handleTutorial() })
-    this.creditButton = new Button(centerX- 100, centerY + 30, 'CREDIT', this, () => { this.handleCredits() })
+    this.creditButton = new Button(centerX- 100, centerY + 30, 'CREDIT', this, () => { this.handleCredits(true) })
     this.Level1Button = new Button(centerX - 100, centerY - 90, 'EASY', this, () => { this.handlePlay(1) })
     this.Level1Button.setVisible(false)
     this.Level2Button= new Button(centerX- 100, centerY - 30, 'MEDIUM', this, () => { this.handlePlay(2) })
@@ -41,6 +42,13 @@ protected backButton?:Button
     this.backButton = new Button(centerX- 100, centerY + 90, 'BACK', this, () => { this.showButtons(true) })
     this.backButton.setVisible(false)
 
+    this.creditText = this.add.text(centerX-60, centerY/2 + 115, `CREATED BY \n JAYDON REAP\n DANIEL HORTA\n BENJAMIN RAYMON\n PATRICK TAYLOR\n AARON LIU\n @JUNKARTIE (Tumblr/Instagram) `, {
+      fontFamily:"CustomFont",
+    })
+     .setFontSize(12)
+     .setOrigin(0.5, 0.5)
+     .setColor('#4B0101')
+     .setVisible(false)
 
     this.add.text(centerX-100, centerY/2, 'GHOST SHED', {
       fontFamily:"CustomFont",
@@ -59,12 +67,20 @@ protected backButton?:Button
     this.Level2Button?.setVisible(!firstSet)
     this.Level3Button?.setVisible(!firstSet)
     this.backButton?.setVisible(!firstSet)
+    this.creditText.setVisible(false)
   }
 
-  handleCredits(){
-    //this.handleSound()
-    //this.scene.start('something for the credit')
-
+  handleCredits(showCredits:boolean){
+    if(showCredits){
+      this.playButton?.setVisible(false)
+      this.tutorialButton?.setVisible(false)
+      this.creditButton?.setVisible(false)
+      this.Level1Button?.setVisible(false)
+      this.Level2Button?.setVisible(false)
+      this.Level3Button?.setVisible(false)
+      this.backButton?.setVisible(true)
+      this.creditText.setVisible(true)
+    }
   }
 
   handleSound(){
