@@ -49,6 +49,7 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 4){
 				console.log("Hiding")
 				this.killGhost("hide");
+				this.sound.play(Sounds.HIDE)
 			}else{
 				console.log("No wheres to hide")
 			}
@@ -151,6 +152,7 @@ export default class RoomScene extends BaseLevelScene {
 		// current time is in seconds, constant variables are in ms
 		if (!this.ghosts[2].isVisible() && (this.currentTime*1000) % this.WINDOW_INTERVAL === 0){
 			this.ghosts[2].startOnPath()
+			this.sound.play(Sounds.OPEN_WINDOW)
 		}
 
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
