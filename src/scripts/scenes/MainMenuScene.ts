@@ -43,7 +43,7 @@ protected creditText?: any
     this.backButton.setVisible(false)
 
     this.creditText = this.add.text(centerX-60, centerY/2 + 115, `
-      CREATED BY \n JAYDON REAP\n DANIEL HORTA\n BENJAMIN RAYMON\n PATRICK TAYLOR\n AARON LIU\n @JUNKARTIE (Tumblr/Instagram) `, {
+      CREATED BY \n JAYDON REAP\n DANIEL HORTA\n BENJAMIN RAYMON\n PATRICK TAYLOR\n AARON LIU\n @JUNKARTIE (Tumblr / Instagram) `, {
       fontFamily:"CustomFont",
     })
      .setFontSize(12)
