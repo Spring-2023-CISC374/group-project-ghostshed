@@ -32,7 +32,7 @@ protected creditText?: any
 
     this.playButton = new Button(centerX - 100, centerY - 90, 'PLAY', this, () => { this.showButtons(false) })
     this.tutorialButton = new Button(centerX- 100, centerY - 30, 'TUTORIAL', this, () => { this.handleTutorial() })
-    this.creditButton = new Button(centerX- 100, centerY + 30, 'CREDIT', this, () => { this.handleCredits(true) })
+    this.creditButton = new Button(centerX- 100, centerY + 30, 'CREDITS', this, () => { this.handleCredits(true) })
     this.Level1Button = new Button(centerX - 100, centerY - 90, 'EASY', this, () => { this.handlePlay(1) })
     this.Level1Button.setVisible(false)
     this.Level2Button= new Button(centerX- 100, centerY - 30, 'MEDIUM', this, () => { this.handlePlay(2) })
