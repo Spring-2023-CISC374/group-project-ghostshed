@@ -56,6 +56,22 @@ export default class BaseLevelScene extends Phaser.Scene {
 		}
 	}
 
+	closeDoor () {
+		if (this.curZone === 2) {
+			this.doorTiles[0].index = 753
+		} else {
+			this.doorTiles[1].index = 752
+		}
+	}
+
+	openDoor () {
+		if (this.curZone === 2) {
+			this.doorTiles[0].index = 755
+		} else {
+			this.doorTiles[1].index = 750
+		}
+	}
+
 	extinguishCandle(currentlylit: number){
 		this.candleTiles[currentlylit-1].index = 201
 		this.pointLights[currentlylit-1].visible = false

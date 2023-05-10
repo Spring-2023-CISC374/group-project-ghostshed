@@ -77,14 +77,14 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 2){
 				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Left Door Closed")
-				this.killGhost("door");
-				this.doorTiles[0].index = 753
+				this.killGhost("door")
+				this.closeDoor()
 			}
 			else if(this.curZone == 3){
 				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Right Door Closed")
-				this.killGhost("door");
-				this.doorTiles[1].index = 752
+				this.killGhost("door")
+				this.closeDoor()
 			}
 			else{
 				console.log("No door close")
@@ -113,8 +113,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 1);
 				this.sound.play(Sounds.MOVE)
-				this.doorTiles[0].index = 755
-				this.doorTiles[1].index = 750
+				this.openDoor()
 			}
 		});
 
@@ -123,8 +122,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 2);
 				this.sound.play(Sounds.MOVE)
-				this.doorTiles[0].index = 755
-				this.doorTiles[1].index = 750
+				this.openDoor()
 			}
 		});
 
@@ -133,8 +131,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 3);
 				this.sound.play(Sounds.MOVE)
-				this.doorTiles[0].index = 755
-				this.doorTiles[1].index = 750
+				this.openDoor()
 			}
 		});
 
@@ -143,8 +140,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 4);
 				this.sound.play(Sounds.MOVE)
-				this.doorTiles[0].index = 755
-				this.doorTiles[1].index = 750
+				this.openDoor()
 			}
 		});
 	}
