@@ -24,7 +24,7 @@ const config: Phaser.Types.Core.GameConfig = {
             width: 840,
             height: 640
         },
-        zoom: 1.35,  // Size of game canvas = game size * zoom
+        zoom: 1.25,  // Size of game canvas = game size * zoom
     },
 }
 
