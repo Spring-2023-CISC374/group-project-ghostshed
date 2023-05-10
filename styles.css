@@ -1,0 +1,17 @@
+body {
+  background-color: black;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+@font-face {
+  font-family:CustomFont;
+  src: url('./font.ttf');
+  font-weight: 400;
+  font-weight: normal;
+}
