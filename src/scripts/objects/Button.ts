@@ -7,6 +7,7 @@ export default class Button {
           .setOrigin(0.5, 0.5) // Set the origin to be the middle of the button, halfway (0.5)
           .setPadding(padding)
           .setFontSize(fontSize)
+          .setShadow(0.5)
           .setStyle({ 
             backgroundColor: '#852c09',
             color: '#000000',
