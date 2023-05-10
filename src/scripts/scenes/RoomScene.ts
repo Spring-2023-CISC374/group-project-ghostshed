@@ -27,7 +27,7 @@ export default class RoomScene extends BaseLevelScene {
 
 	create() {
 		super.create()
-		this.timeText = this.add.text(200, 100, "Time: 0:00")
+		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
 		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
 		this.resetButton.setVisible(false)
@@ -49,6 +49,7 @@ export default class RoomScene extends BaseLevelScene {
 			if(this.curZone == 4){
 				console.log("Hiding")
 				this.killGhost("hide");
+				this.sound.play(Sounds.HIDE)
 			}else{
 				console.log("No wheres to hide")
 			}
@@ -151,6 +152,7 @@ export default class RoomScene extends BaseLevelScene {
 		// current time is in seconds, constant variables are in ms
 		if (!this.ghosts[2].isVisible() && (this.currentTime*1000) % this.WINDOW_INTERVAL === 0){
 			this.ghosts[2].startOnPath()
+			this.sound.play(Sounds.OPEN_WINDOW)
 		}
 
 		this.timeText.setText(`Time: ${Math.floor(this.currentTime/60)}:${this.currentTime%60<10 ? `0${this.currentTime%60}`: this.currentTime%60}`);
@@ -227,11 +229,13 @@ export default class RoomScene extends BaseLevelScene {
 			}
 		}
 		
+		// spawn the ghost in zone 3 when the ghost in zone 2 reaches a specific distance in the path
 		let dist = this.ghosts[0].getDistance()
 		if (this.ghosts[0].isVisible() && !this.ghosts[1].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[1].startOnPath();
 		}
 
+		// spawn the ghost in zone 2 when the ghost in zone 3 reaches a specific distance in the path
 		dist = this.ghosts[1].getDistance()
 		if (this.ghosts[1].isVisible() && !this.ghosts[0].isVisible() && dist >= 0.75 && dist <= 0.77){
 			this.ghosts[0].startOnPath();

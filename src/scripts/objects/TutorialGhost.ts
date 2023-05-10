@@ -45,6 +45,10 @@ export default class TutorialGhost extends Ghost {
         this.doorMode = !this.doorMode
     }
 
+    public overrideTValue(t: number) {
+        this.follower.t = t
+    } 
+
     update(time: any, delta: any)
     {
         if (this.toFadeIn){
