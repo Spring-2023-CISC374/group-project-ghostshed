@@ -9,9 +9,6 @@ export default class RoomScene extends BaseLevelScene {
 	protected candleTimer!: Phaser.Time.TimerEvent
 	protected timeText: any
 	protected currentTime:number = 0;
-	protected currentCandleTime: number = 0
-	protected litCandles: number = 0;
-	protected candleTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
 	protected backButton!: Button;
 
@@ -77,11 +74,19 @@ export default class RoomScene extends BaseLevelScene {
 		dKey.on('down',  (_key:any, _event:any) => {
 
 			console.log("Trying to close door")
-			if(this.curZone == 2 || this.curZone == 3){
+			if(this.curZone == 2){
 				this.sound.play(Sounds.CLOSE_DOOR)
-				console.log("Door Closed")
-				this.killGhost("door");
-			}else{
+				console.log("Left Door Closed")
+				this.killGhost("door")
+				this.closeDoor()
+			}
+			else if(this.curZone == 3){
+				this.sound.play(Sounds.CLOSE_DOOR)
+				console.log("Right Door Closed")
+				this.killGhost("door")
+				this.closeDoor()
+			}
+			else{
 				console.log("No door close")
 			}
 	
@@ -108,6 +113,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 1);
 				this.sound.play(Sounds.MOVE)
+				this.openDoor()
 			}
 		});
 
@@ -116,6 +122,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 2);
 				this.sound.play(Sounds.MOVE)
+				this.openDoor()
 			}
 		});
 
@@ -124,6 +131,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 3);
 				this.sound.play(Sounds.MOVE)
+				this.openDoor()
 			}
 		});
 
@@ -132,6 +140,7 @@ export default class RoomScene extends BaseLevelScene {
 			if (!this.gameOver){
 				this.player.move(this.curZone, 4);
 				this.sound.play(Sounds.MOVE)
+				this.openDoor()
 			}
 		});
 	}
