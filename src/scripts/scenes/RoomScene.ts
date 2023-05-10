@@ -9,10 +9,6 @@ export default class RoomScene extends BaseLevelScene {
 	protected candleTimer!: Phaser.Time.TimerEvent
 	protected timeText: any
 	protected currentTime:number = 0;
-	protected currentCandleTime: number = 0
-	protected litCandles: number = 0;
-	protected candleTiles: Phaser.Tilemaps.Tile[] = []
-	protected doorTiles: Phaser.Tilemaps.Tile[] = []
 	protected resetButton!: Button;
 	protected backButton!: Button;
 
@@ -28,7 +24,6 @@ export default class RoomScene extends BaseLevelScene {
 
 	create() {
 		super.create()
-		this.doorTiles = []
 		this.timeText = this.add.text(200, 100, "Time: 0:00", { font: '18px Arial' })
 		
 		this.resetButton = new Button(750, 400, 'RESTART', this, () => { this.resetLevel() })
@@ -42,11 +37,6 @@ export default class RoomScene extends BaseLevelScene {
 		for(let i = 0; i < 4; i++){
 			this.candleTiles.push(this.map.getLayer('Zone 1').data[15][8 + i])
 		}
-
-		const leftDoorTiles = this.map.getLayer('Walls').data[11][3]
-		const rightDoorTiles = this.map.getLayer('Walls').data[11][16]
-		this.doorTiles.push(leftDoorTiles)
-		this.doorTiles.push(rightDoorTiles)
 		
 		const hKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 

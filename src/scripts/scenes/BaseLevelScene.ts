@@ -17,6 +17,7 @@ export default class BaseLevelScene extends Phaser.Scene {
 	protected chance!: number
 	protected litCandles: number = 0;
 	protected candleTiles: Phaser.Tilemaps.Tile[] = []
+	protected doorTiles: Phaser.Tilemaps.Tile[] = []
 
 	protected pointLights: Phaser.GameObjects.Light[] = []
 
@@ -123,10 +124,19 @@ export default class BaseLevelScene extends Phaser.Scene {
 		this.player = new Player(this);
 		this.player.setScale(2,2)
 
+		this.initializeDoors()
 		this.initializeLighting()
 		this.initializeZones()
     this.initializeAudio()
   }
+
+	initializeDoors () {
+		this.doorTiles = []
+		const leftDoorTiles = this.map.getLayer('Walls').data[11][3]
+		const rightDoorTiles = this.map.getLayer('Walls').data[11][16]
+		this.doorTiles.push(leftDoorTiles)
+		this.doorTiles.push(rightDoorTiles)
+	}
 
 	initializeLighting () {
 		this.lights.enable().setAmbientColor(0x171717);
