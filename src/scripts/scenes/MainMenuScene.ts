@@ -37,12 +37,13 @@ protected creditText?: any
     this.Level1Button.setVisible(false)
     this.Level2Button= new Button(centerX- 100, centerY - 30, 'MEDIUM', this, () => { this.handlePlay(2) })
     this.Level2Button.setVisible(false)
-    this.Level3Button = new Button(centerX- 100, centerY + 30, 'DIFICULT', this, () => { this.handlePlay(3) })
+    this.Level3Button = new Button(centerX- 100, centerY + 30, 'DIFFICULT', this, () => { this.handlePlay(3) })
     this.Level3Button.setVisible(false)
     this.backButton = new Button(centerX- 100, centerY + 90, 'BACK', this, () => { this.showButtons(true) })
     this.backButton.setVisible(false)
 
-    this.creditText = this.add.text(centerX-60, centerY/2 + 115, `CREATED BY \n JAYDON REAP\n DANIEL HORTA\n BENJAMIN RAYMON\n PATRICK TAYLOR\n AARON LIU\n @JUNKARTIE (Tumblr/Instagram) `, {
+    this.creditText = this.add.text(centerX-60, centerY/2 + 115, `
+      CREATED BY \n JAYDON REAP\n DANIEL HORTA\n BENJAMIN RAYMON\n PATRICK TAYLOR\n AARON LIU\n @JUNKARTIE (Tumblr/Instagram) `, {
       fontFamily:"CustomFont",
     })
      .setFontSize(12)
