@@ -302,6 +302,7 @@ export default class TutorialScene extends BaseLevelScene {
 					this.timeText.setVisible(false)
 					this.finishButton.setVisible(true)
 					this.timer.destroy()
+					this.candleTimer.destroy()
 					this.gameOver = true
 				}
 				break
@@ -407,6 +408,7 @@ export default class TutorialScene extends BaseLevelScene {
 				this.sound.play(Sounds.CLOSE_DOOR)
 				console.log("Door Closed")
 				this.killGhost("door");
+				this.closeDoor()
 			}else{
 				console.log("No door close")
 			}
@@ -435,6 +437,7 @@ export default class TutorialScene extends BaseLevelScene {
 			this.player.move(this.curZone, 1);
 			this.sound.play(Sounds.MOVE)
 			this.visitedZones[0] = true
+			this.openDoor()
 		});
 
 		const Zone2Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -442,6 +445,7 @@ export default class TutorialScene extends BaseLevelScene {
 			this.player.move(this.curZone, 2);
 			this.sound.play(Sounds.MOVE)
 			this.visitedZones[1] = true
+			this.openDoor()
 		});
 
 		const Zone3Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -449,6 +453,7 @@ export default class TutorialScene extends BaseLevelScene {
 			this.player.move(this.curZone, 3);
 			this.sound.play(Sounds.MOVE)
 			this.visitedZones[2] = true
+			this.openDoor()
 		});
 
 		const Zone4Key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -456,6 +461,7 @@ export default class TutorialScene extends BaseLevelScene {
 			this.player.move(this.curZone, 4);
 			this.sound.play(Sounds.MOVE)
 			this.visitedZones[3] = true
+			this.openDoor()
 		});
 
 
